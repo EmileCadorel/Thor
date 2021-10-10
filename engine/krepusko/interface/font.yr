@@ -66,7 +66,7 @@ pub class Font {
     pub def render (mut self, text : [c8])-> dmut &Texture2D
         throws &FontError
     {
-        let dmut surf = TTF_RenderText_Blended (alias self._font, text.toStringZ (), SDL_Color (r-> 255u8, g-> 255u8, b-> 255u8, a-> 255u8));
+        let dmut surf = TTF_RenderText_Blended (alias self._font, text.toStringZ (), SDL_Color (r-> 0u8, g-> 0u8, b-> 0u8, a-> 255u8));
         if (surf is null) {
             throw FontError::new ("Failed to render text"s8);
         }

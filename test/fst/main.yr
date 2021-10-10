@@ -27,7 +27,7 @@ class MyActivity over Activity {
     }
 
     pub over on2dDraw (mut self) {        
-        self._drawer.drawQuad (vec2 (0.0f, 0.0f), vec2 (0.1f, 0.05f), self._tex, color-> vec3 (1.0f, 1.0f, 1.0f));        
+        self._drawer.drawQuad (vec2 (0.0f, 0.0f), vec2 (0.1f, 0.05f), self._tex, color-> vec3 (0.0f, 1.0f, 0.0f));        
     }
 
     def computeFps (mut self) {
