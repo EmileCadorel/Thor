@@ -3,6 +3,7 @@ import krepusko::math::vector;
 import krepusko::math::matrix;
 import krepusko::opengl::cubemap, krepusko::opengl::gtexture;
 import krepusko::opengl::depthbuffer;
+import krepusko::opengl::texture;
 import sdl2::opengl_ext;
 
 
@@ -186,4 +187,14 @@ pub def set (samp : Sampler, depth : &DepthBuffer) {
     glActiveTexture (GL_TEXTURE0 + samp.index);
     glUniform1i (samp.loc, cast!i32 (samp.index));
     depth.bindTexture ();
+}
+
+
+/**
+ * Bind a texture to a sampler
+ */
+pub def set (samp : Sampler, tex : &Texture2D) {
+    glActiveTexture (GL_TEXTURE0 + samp.index);
+    glUniform1i (samp.loc, cast!i32 (samp.index));
+    tex.bind ();
 }

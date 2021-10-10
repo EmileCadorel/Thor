@@ -1,8 +1,10 @@
 mod krepusko::interface::drawer;
 import krepusko::opengl::shader, krepusko::opengl::mesh, krepusko::opengl::vertex;
 import krepusko::opengl::uniform;
-import krepusko::math::vector, krepusko::math::matrix, krepusko::math::utils;
+import krepusko::math::vector, krepusko::math::matrix;
+import krepusko::opengl::texture, krepusko::interface::widget;
 import std::io, std::conv;
+
 
 
 aka texture_vs = str8#{
@@ -61,12 +63,14 @@ aka color_fs = str8#{
 };
 
 pub class WidgetDrawer {
-
-    let dmut _texShader : &Shader;    
-    let dmut _colorShader : &Shader;
+    
+    /// Dmut to be disposable
+    let dmut _texShader = { Shader::compile (texture_vs, texture_fs) } catch { x : &ShaderError => { println (x); __pragma!panic (); } }
+    let dmut _colorShader = { Shader::compile (color_vs, color_fs) } catch { x : &ShaderError => { println (x); __pragma!panic (); } }
 
     let dmut _colorQuad = createQuadMesh (1.0f, 1.0f);
     let dmut _colorTriangle = createTriangleMesh (1.0f);
+    let dmut _texQuad = createQuadTexMesh (1.0f, 1.0f);
 
     let mut _pos = vec2 (0.0f, 0.0f);
     let mut _size = vec2 (0.0f, 0.0f);
@@ -79,8 +83,6 @@ pub class WidgetDrawer {
      *   - h: the height of the window
      */
     pub self (w : u32, h : u32) with
-        _texShader = __pragma!trusted ({ Shader::compile (texture_vs, texture_fs) }),
-        _colorShader = __pragma!trusted ({ Shader::compile (color_vs, color_fs) }),
         _size = vec2 (w.to!f32 (), h.to!f32 ()),
         _global_size = vec2 (w.to!f32 (), h.to!f32 ())
     {}
@@ -94,7 +96,7 @@ pub class WidgetDrawer {
     }
 
     /**
-     * Draw a quad on the screen
+     * Draw a quad on using the widget shaders
      * @paramas: 
      *  - pos: the position of the top left corner of the quad (between 0 and 1)
      *  - size: the size of the quad between O and 1
@@ -125,7 +127,7 @@ pub class WidgetDrawer {
 
 
     /**
-     * Draw a triangle on the screen
+     * Draw a triangle using the widget shaders
      * @params: 
      *   - center: the center of the triangle
      *   - size: the size of the triangle (size of the height)
@@ -153,12 +155,69 @@ pub class WidgetDrawer {
         self._colorShader.unuse ();
     }
 
+    /**
+     * Draw a quad using the widget texture shaders
+     * @params: 
+     *   - pos: the position of the top left corner of the quad (between 0 and 1)
+     *   - size: the size of the quad between 0 and 1
+     *   - tex: the texture to apply to the quad
+     *   - color: the color transformation of the texture (can be usefull for text rendering for example)
+     */
+    pub def drawQuad (self, pos : vec2, size : vec2, tex : &Texture2D, color : vec3 = vec3 (1.0f, 1.0f, 1.0f)) {
+        let pixel_pos = vec2 ((pos.x * self._size.x) + self._pos.x, (pos.y * self._size.y) + self._pos.y);
+        let pixel_size = vec2 (size.x * self._size.x, size.y * self._size.y);
 
+        
+        let x_move = -1.0f + (pixel_pos.x + pixel_size.x / 2.0f) / (self._global_size.x / 2.0f);
+        let y_move = 1.0f - (pixel_pos.y + pixel_size.y / 2.0f) / (self._global_size.y / 2.0f);
+
+        let x_scale = pixel_size.x / self._global_size.x;
+        let y_scale = pixel_size.y / self._global_size.y;
+        
+        self._texShader.use ();
+        __pragma!trusted ({
+            self._texShader.uniform ("translation"s8).set (vec2 (x_move, y_move));
+            self._texShader.uniform ("scale"s8).set (vec2 (x_scale, y_scale));
+            self._texShader.uniform ("rotation"s8).set (mat4 ());
+            self._texShader.texture ("diffuse"s8).set (tex);
+            self._texShader.uniform ("color"s8).set (color);
+        });
+
+        self._texQuad.draw (self._texShader);
+        self._texShader.unuse ();
+    }    
+
+    /**
+     * Draw a child widget using the drawer 
+     * @warning: this is the only way to draw child widget 
+     * @params: 
+     *  - pos: the position of the child widget
+     *  - size: the size of the child widget
+     *  - widget: the widget to draw
+     */
+    pub def drawWidget (mut self, pos : vec2, size : vec2, widget : &Widget) {
+        let anc_pos = self._pos, anc_size = self._size;
+
+        let pixel_pos = vec2 ((pos.x * self._size.x) + self._pos.x, (pos.y * self._size.y) + self._pos.y);
+        let pixel_size = vec2 (size.x * self._size.x, size.y * self._size.y);
+        self._pos = pixel_pos;
+        self._size = pixel_size;
+
+        widget.draw (alias self);
+
+        self._pos = anc_pos;
+        self._size = anc_size;
+    }
+        
     impl Disposable {
 
         pub over dispose (mut self) {
             self._texShader:.dispose ();
             self._colorShader:.dispose ();
+
+            self._texQuad:.dispose ();
+            self._colorQuad:.dispose ();
+            self._colorTriangle:.dispose ();
         }        
     }
 

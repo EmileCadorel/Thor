@@ -67,7 +67,12 @@ pub class Mesh {V of Vertex!{U}, U...} {
     }    
 }
 
-
+/**
+ * Create a simple mesh containing a quad (two right triangles, with common hypothenus) 
+ * @params: 
+ *  - w: the width of the mesh (along x coordinates)
+ *  - h: the height of the mesh (along y coordinates)
+ */
 pub def createQuadMesh (w : f32, h : f32) -> dmut &Mesh!{Vertex!{vec3}} {
     return Mesh::new (
         [Vertex!{vec3} (vec3 (-h, -w, 0.0f)),
@@ -80,7 +85,32 @@ pub def createQuadMesh (w : f32, h : f32) -> dmut &Mesh!{Vertex!{vec3}} {
         );
 }
 
+/**
+ * Create a simple mesh containing a quad (two right triangles, with common hypothenus) 
+ * This quad also contains texture coordinates
+ * @params: 
+ *  - w: the width of the mesh (along x coordinates)
+ *  - h: the height of the mesh (along y coordinates)
+ */
+pub def createQuadTexMesh (w : f32, h : f32) -> dmut &Mesh!{Vertex!{vec3, vec2}} {
+    return Mesh::new (
+        [makeVertex (vec3 (-h, -w, 0.0f), vec2 (0.0f, 1.0f)),
+         makeVertex (vec3 (h, -w, 0.0f), vec2 (1.0f, 1.0f)),
+         makeVertex(vec3 (-h, w, 0.0f), vec2 (0.0f, 0.0f)),
+         
+         makeVertex(vec3 (h, w, 0.0f), vec2 (1.0f, 0.0f)),
+         makeVertex(vec3 (h, -w, 0.0f), vec2 (1.0f, 1.0f)),
+         makeVertex(vec3 (-h, w, 0.0f), vec2 (0.0f, 0.0f))]
+        );
+    
+}
 
+/**
+ * Create a simple mesh containing a triangle 
+ * @params: 
+ *  - w: the width of the mesh (along x coordinates), width of the bottom edge of the triangle
+ *  - h: the height of the mesh (along y coordinates), height of the triangle from bottom edge to top corner
+ */
 pub def createTriangleMesh (size : f32) -> dmut &Mesh!{Vertex!{vec3}} {
     return Mesh::new (
         [Vertex!{vec3} (vec3 (-size, -size, 0.0f)),

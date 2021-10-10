@@ -121,7 +121,6 @@ pub class Window {
         SDL_HideWindow (alias self._sdlWindow);
         
         self:.setDefaultOpenGLOptions (config);
-        
     }
 
     /**
@@ -277,6 +276,7 @@ pub class Window {
         self:.setCullFunc (config);
         self:.setBlendFunc (config);
         self:.setMultisample (config);
+        self:.setVSync (config);
     }
 
     /**
@@ -286,7 +286,7 @@ pub class Window {
         match config ["depth"]? {
             Ok (sub_conf : _) => {
                 glEnable (GL_DEPTH_TEST);
-                self._clearInfos = GL_DEPTH_TEST | GL_COLOR_BUFFER_BIT;
+                self._clearInfos = GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT;
                 match (sub_conf ["test"]?).toOr ("less") {
                     "less" => glDepthFunc (GL_LESS);
                     "never" => glDepthFunc (GL_NEVER);
@@ -381,9 +381,9 @@ pub class Window {
      * Set vsync infos
      */
     def setVSync (mut self, config : &Config) {
-        match config ["vsync"]? {
-            Ok () => {SDL_GL_SetSwapInterval (0);}
-            _ =>  {SDL_GL_SetSwapInterval (1);}
+        match (config ["vsync"]?).toOr (false) {
+            true => {SDL_GL_SetSwapInterval (1);}
+            _ =>  {SDL_GL_SetSwapInterval (0);}
         }
     }
 

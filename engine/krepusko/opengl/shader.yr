@@ -75,6 +75,7 @@ pub class Shader {
      * =====================
      */
     pub def bindAttributes (self, size : usize) {
+        import std::io;
         let mut offset : &void = null;
         for i in 0us .. self._attributes.len {
             glEnableVertexAttribArray (cast!u32 (i));
@@ -246,8 +247,7 @@ pub class Shader {
         throws &ShaderError
     {
         let mut count = 0;
-        glGetProgramiv (self._program, GL_ACTIVE_ATTRIBUTES, alias &count);
-
+        glGetProgramiv (self._program, GL_ACTIVE_ATTRIBUTES, alias &count);        
         self._attributes = [(0u32, 0us, 0u32) ; new count];
 
         let mut len = 0, mut size = 0, mut type = 0u32;

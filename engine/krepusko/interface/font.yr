@@ -1,0 +1,191 @@
+mod krepusko::interface::font;
+import sdl2::ttf, sdl2::pixels, sdl2::surface;
+import std::conv, std::fs::path, std::io;
+import krepusko::opengl::texture;
+
+pub class FontError over Exception {
+    pub let msg : [c8];
+
+    pub self (msg : [c8]) with msg = msg {}
+
+    impl Streamable {
+        pub over toStream (self, dmut stream : &StringStream) {
+            self::super.toStream (alias stream);
+        }
+    }
+}
+
+
+/**
+ * Holder of a font, that can create textures containing text
+ */
+pub class Font {
+
+    let dmut _font : &TTF_Font = null;
+
+    let mut _path : &Path;
+    
+    let mut _size : u32 = 1u32;
+
+    /**
+     * Load a new font
+     * @params: 
+     *   - path: the file path of the ttf font (supported format is .ttf only)
+     *   - size: the size of the font (in pt)
+     * @throws: 
+     *   - &FontError: if the loading of the font failed
+     */
+    pub self open (path : &Path, size : u32 = 100u32)
+        with _size = size, _path = path
+        throws &FontError
+    {
+        self._font = TTF_OpenFont (path.toStr ().toStringZ (), cast!i32 (size));
+        if (self._font is null) {
+            throw FontError::new ("Failed to open font"s8);
+        }
+    }
+
+    /**
+     * @returns: the path of the font
+     */
+    pub def getPath (self)-> &Path {
+        self._path
+    }    
+    
+    /**
+     * Create a texture using the font 
+     * @params: 
+     *   - text: the text to render inside the texture
+     * @returns: 
+     *  - 0: the width of the texture (in pixels)
+     *  - 1: the height of the texture (in pixels)
+     *  - 2: the opengl texture
+     * @throws: 
+     *   - &FontError: if something went wrong (check the message for more information)
+     */
+    pub def render (mut self, text : [c8])-> dmut &Texture2D
+        throws &FontError
+    {
+        let dmut surf = TTF_RenderText_Blended (alias self._font, text.toStringZ (), SDL_Color (r-> 255u8, g-> 255u8, b-> 255u8, a-> 255u8));
+        if (surf is null) {
+            throw FontError::new ("Failed to render text"s8);
+        }
+        
+        let w = cast!u32 ((*surf).w), h = cast!u32 ((*surf).h);
+        let dmut tex = Texture2D::new ((*surf).pixels, w, h, (*(*surf).format).format, clamp-> true, linear-> true);
+        
+        SDL_FreeSurface (alias surf);
+
+        alias tex
+    } catch {
+        x : &FontError => throw x;
+        _ : &TextureError => throw FontError::new ("Failed to transform into a valid texture"s8);
+        _ : &SegFault => throw FontError::new ("Failed to create a texture (SDL2 error : seg fault)"s8);
+    }    
+    
+    impl Disposable {
+
+        pub over dispose (mut self) {
+            if (self._font !is null) {
+                TTF_CloseFont (alias self._font);
+                self._font = null;
+                self._size = 0u32;
+            }
+        }
+    }
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }    
+}
+
+
+/**
+ * Font loading is slow, and consume memory
+ * It is important to have a manager to manage the different font that are loaded in the engine
+ */
+pub class FontManager {
+
+    let dmut _fonts : [&Font] = [];
+
+    let mut _max_fonts : usize;
+
+    /**
+     * Create an empty manager that stores fonts
+     * @params: 
+     *  - max_fonts: the maximal number of font loaded at the same time
+     */
+    pub self (max_fonts : usize = 10us) with
+        _max_fonts = max_fonts
+    {}
+
+    /**
+     * Find a font from a path and a size
+     * If the font was already loaded, simply return it
+     * Otherwise, load it first
+     * @info: can close font, if the maximal number of loaded font is reached
+     * @returns: a font that can be used to render text
+     * @throws: 
+     *  - &FontError: loading a font can fail
+     * @warning: the font must not be stored nor disposed outside, as it might be disposed by the font manager at any moment
+     */
+    pub def get (mut self, path : &Path)-> dmut &Font
+        throws &FontError
+    {
+        for i in 0us .. self._fonts.len {
+            if self._fonts [i].getPath ().toStr () == path.toStr () {
+                return alias self._fonts [i];
+            }
+        }
+
+        // Close the font that was loaded first, maybe not the best move
+        // A better idea would be to unload the font that is the less used
+        if (self._fonts.len == self._max_fonts) {
+            self._fonts [0us]:.dispose ();
+            self._fonts = self._fonts [1us .. $];
+        }
+        
+        self._fonts = alias (self._fonts ~ [Font::open (path)]);
+        alias self._fonts [$ - 1us]
+    } catch {
+        x : &FontError => throw x;
+        _ : &OutOfArray => __pragma!panic ();  // All array access are safe (or there is something strange in here)
+    }
+
+    /**
+     * Close a font that has been loaded but is no more used
+     * @params: 
+     *  - path: the path of the font
+     */
+    pub def close (mut self, path : &Path) {
+        for i in 0us .. self._fonts.len {
+            if self._fonts [i].getPath ().toStr () == path.toStr () {
+                self._fonts [i]:.dispose ();
+                self._fonts = alias (self._fonts [0us .. i] ~ self._fonts [i + 1us .. $]);
+                
+                return {} // there is only one font of that kind in the slice
+            }
+        }
+    } catch {
+        _ : &OutOfArray => __pragma!panic (); // All array access are safe (or there is something strange in here)
+    }
+
+    
+    impl Disposable {
+
+        /**
+         * Close all fonts
+         */
+        pub over dispose (mut self) {
+            for i in 0us .. self._fonts.len {
+                __pragma!trusted ({ self._fonts [i]:.dispose () });
+            }
+
+            self._fonts = [];
+        }
+    }
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }    
+}

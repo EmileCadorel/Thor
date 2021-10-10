@@ -1,13 +1,18 @@
 import std::fs::path;
 import krepusko::core::_;
-import std::io;
+import std::io, std::conv;
 import krepusko::interface::drawer;
+import krepusko::interface::font;
+import krepusko::opengl::texture;
 import krepusko::math::vector;
+
 
 class MyActivity over Activity {
 
     let _i : u32;
     let dmut _drawer : &WidgetDrawer;
+    let dmut _loader = FontManager::new ();
+    let dmut _tex = Texture2D::new ();
     
     pub self (dmut app : &Application, i : u32) with
         super (alias app),
@@ -17,9 +22,22 @@ class MyActivity over Activity {
         app:.getInputManager ():.connect (KeyInfo (SDLK_ESCAPE, KeyEvent::DOWN), &self:.quit);
     }
 
+    pub over onUpdate (mut self) {
+        self:.computeFps ();
+    }
 
-    pub over on2dDraw (mut self) {
-        self._drawer.drawTriangle (vec2 (0.5f, 0.5f), 0.5f, vec3 (1.0f, 1.0f, 1.0f));
+    pub over on2dDraw (mut self) {        
+        self._drawer.drawQuad (vec2 (0.0f, 0.0f), vec2 (0.1f, 0.05f), self._tex, color-> vec3 (1.0f, 1.0f, 1.0f));        
+    }
+
+    def computeFps (mut self) {
+        {
+            self._tex = self._loader:.get (Path::new ("../resources/fonts/arial.ttf")):.render (self._app.getFrameCount ().to![c8] () ~ " FPS"s8);
+        } catch {
+            x : &FontError => {
+                println ("Failed to render text... => ", x);
+            }
+        }
     }
     
     def quit (mut self, _ : KeyInfo) {
@@ -30,6 +48,7 @@ class MyActivity over Activity {
     impl Disposable {
         pub over dispose (mut self) {
             println ("Destroying : ", self._i);
+            self._tex:.dispose ();
         }
     }
 

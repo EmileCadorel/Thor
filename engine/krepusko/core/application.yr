@@ -2,13 +2,14 @@ mod krepusko::core::application;
 
 import sdl2::timer;
 import std::fs::path, std::fs::_;
-import std::io, std::conv;
+import std::io, std::conv, std::time::_;
 import std::config::toml, std::config, std::config::conv;
 import krepusko::utils::_;
 import krepusko::core::window;
 import krepusko::core::input;
 import krepusko::concurrency::timer;
 import krepusko::core::activity;
+import krepusko::utils::option;
 
 /**
  * Error thrown by the application when an error occur
@@ -48,7 +49,7 @@ pub class Application {
     let mut _isRunning : bool = true;
 
     /// the duration of a frame in ms
-    let mut _frameDuration : u32 = 0u32;
+    let mut _frameDuration : Duration = dur::millis (16u64) + dur::micros (666u64);
 
     /// The number of frame in the current second
     let mut _nbFrame : u32 = 0u32;
@@ -138,18 +139,17 @@ pub class Application {
     prv def waitFrame (mut self) {
         self._nbFrame += 1u32;
 
-        if (self._secondTimer.timeSinceStart () >= 1000u32) {
+        if (self._secondTimer.timeSinceStart () >= dur::seconds (1u64)) {
             self._secondTimer:.reset ();
             self._lastNbFrame = self._nbFrame;
             self._nbFrame = 0u32;
         }
 
         let tick = self._frameTimer.timeSinceStart ();
-        if (tick < self._frameDuration) {
-            SDL_Delay (self._frameDuration - tick);
-        }
-
-        self._frameTimer:.reset ();
+        let x = instant::now ();
+        let r = self._frameDuration - tick - dur::micros (1u64);
+        sleep (r);
+        self._frameTimer:.reset ((instant::now () - x) - r);
     }
 
     /**
@@ -301,7 +301,7 @@ pub class Application {
                 throw ApplicationError::new ("File not found : "s8 ~ path.toStr ());
             }
             s : &SyntaxError => {
-                throw ApplicationError::new ("Configuration format : "s8 ~ s.msg.to![c8]() ~ ":("s8 ~ s.line.to![c8] () ~ ","s8 ~ s.col.to![c8] () ~ ")"s8);
+                throw ApplicationError::new ("Configuration format : "s8 ~ s.msg.(conv::to)![c8]() ~ ":("s8 ~ s.line.(conv::to)![c8] () ~ ","s8 ~ s.col.(conv::to)![c8] () ~ ")"s8);
             }
         }
 
@@ -326,19 +326,19 @@ pub class Application {
         match conf ["window"]? {
             Ok (subConf : _) => {
                 let w = match subConf ["width"]? {
-                    Ok (_w : _) => { _w.to!u32 () } catch { _ => throw ApplicationError::new ("Malformed 'window::width' field in configuration"s8); }
+                    Ok (_w : _) => { _w.(conv::to)!u32 () } catch { _ => throw ApplicationError::new ("Malformed 'window::width' field in configuration"s8); }
                     _ => throw ApplicationError::new ("Missing 'window::width' field in configuration"s8);                
                 }
 
                 let h = match subConf ["height"]? {
-                    Ok (_h : _) => { _h.to!u32 () } catch { _ => throw ApplicationError::new ("Malformed 'window::height' field in configuration"s8); }
+                    Ok (_h : _) => { _h.(conv::to)!u32 () } catch { _ => throw ApplicationError::new ("Malformed 'window::height' field in configuration"s8); }
                     _ => throw ApplicationError::new ("Missing 'window::width' field in configuration"s8);                
                 }
                 
                 self._window:.setDimension (w, h);
 
                 let name = match subConf ["name"]? {
-                    Ok (_n : _) => { _n.to![c8] () } catch { _ => throw ApplicationError::new ("Malformed 'window::name' field in configuration"s8); }
+                    Ok (_n : _) => { _n.(conv::to)![c8] () } catch { _ => throw ApplicationError::new ("Malformed 'window::name' field in configuration"s8); }
                     _ => throw ApplicationError::new ("Missing 'window::name' field in configuration"s8);                
                 }
                 self._window:.setName (name);                
@@ -354,7 +354,10 @@ pub class Application {
             Err () => {
                 throw ApplicationError::new ("Missing 'opengl' field in configuration"s8);                
             }
-        }        
+        }
+
+        let frame_per_sec = (conf["timer"]["fps"]?).toOr (60u64);
+        self._frameDuration = dur::seconds (1u64) / frame_per_sec;
     }
 
         

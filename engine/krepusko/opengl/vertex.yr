@@ -16,3 +16,7 @@ def isOnlyVectors {F} () -> bool {
 def isOnlyVectors {F, T...} ()-> bool {
     isOnlyVectors!{F} () && isOnlyVectors!{T} ()
 }
+
+pub def makeVertex {T...} (a : T) -> Vertex!{T} {
+    Vertex!{T} (a)
+}

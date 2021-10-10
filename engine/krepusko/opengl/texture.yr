@@ -35,21 +35,31 @@ pub class Texture2D {
     /**
      * Create a texture from datas, a given width and a given height
      */
-    pub self (datas : &(void),  w : u32, h : u32, format : u32) with 
+    pub self (datas : &(void),  w : u32, h : u32, format : u32, clamp : bool = false, linear : bool = true) with 
         _w = w, _h = h
         throws &TextureError
     {
         glGenTextures (1, alias &self._tex);
 
         glBindTexture (GL_TEXTURE_2D, self._tex);
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, cast!i32 (GL_REPEAT));
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, cast!i32 (GL_REPEAT));
-        
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, cast!i32 (GL_LINEAR_MIPMAP_LINEAR));
-        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, cast!i32 (GL_LINEAR));
+        if (!clamp) {
+            glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, cast!i32 (GL_REPEAT));
+            glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, cast!i32 (GL_REPEAT));
+        } else {
+            glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, cast!i32 (GL_CLAMP_TO_EDGE));
+            glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, cast!i32 (GL_CLAMP_TO_EDGE));
+        }
 
+        if (linear) {
+            glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, cast!i32 (GL_LINEAR_MIPMAP_LINEAR));
+            glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, cast!i32 (GL_LINEAR));
+        } else {
+            glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, cast!i32 (GL_NEAREST));
+            glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, cast!i32 (GL_NEAREST));
+        }
+        
         match format {
-            SDL_PIXELFORMAT_RGBA32 => glTexImage2D (GL_TEXTURE_2D, 0, cast!i32 (GL_RGBA), cast!i32 (w), cast!i32 (h), 0, GL_RGBA, GL_UNSIGNED_BYTE, datas);
+            SDL_PIXELFORMAT_RGBA32 => glTexImage2D (GL_TEXTURE_2D, 0, cast!i32 (GL_RGBA), cast!i32 (w), cast!i32 (h), 0, GL_RGBA, GL_UNSIGNED_BYTE, datas);            
             SDL_PIXELFORMAT_RGB24 => glTexImage2D (GL_TEXTURE_2D, 0, cast!i32 (GL_RGB), cast!i32 (w), cast!i32 (h), 0, GL_RGB, GL_UNSIGNED_BYTE, datas);
             SDL_PIXELFORMAT_ARGB8888 => glTexImage2D (GL_TEXTURE_2D, 0, cast!i32 (GL_RGBA), cast!i32 (w), cast!i32 (h), 0, GL_RGBA, GL_UNSIGNED_BYTE, datas);
             SDL_PIXELFORMAT_BGR24 => {                
@@ -80,6 +90,19 @@ pub class Texture2D {
         glBindTexture (GL_TEXTURE_2D, 0u32);        
     }
 
+    /**
+     * @returns: the width (in pixels) of the texture
+     */
+    pub def getWidth (self) -> u32 {
+        self._w
+    }
+
+    /**
+     * @returns: the height (in pixels) of the texture
+     */
+    pub def getHeight (self) -> u32 {
+        self._h
+    }
 
     impl Disposable {
 
@@ -87,7 +110,7 @@ pub class Texture2D {
         pub over dispose (mut self) {
             if (self._tex != 0u32) {
                 glDeleteTextures (1, alias &self._tex);
-                self._tex = 0u32;                
+                self._tex = 0u32;
             }
             self._w = 0u32;
             self._h = 0u32;
