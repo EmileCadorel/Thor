@@ -1,0 +1,56 @@
+mod krepusko::math::vector;
+
+pub struct
+| x : f32 
+| y : f32
+ -> vec2;
+
+pub struct
+| x : f32
+| y : f32
+| z : f32
+ -> vec3;
+
+pub struct
+| x : f32
+| y : f32
+| z : f32
+| w : f32
+ -> vec4;
+
+pub struct
+| x : i32
+| y : i32
+ -> ivec2;
+
+pub struct
+| x : i32
+| y : i32
+| z : i32
+ -> ivec3;
+
+pub struct
+| x : i32
+| y : i32
+| z : i32
+| w : i32
+ -> ivec4;
+
+
+pub struct
+| x : u32
+| y : u32
+ -> uvec2;
+
+pub struct
+| x : u32
+| y : u32
+| z : u32
+ -> uvec3;
+
+pub struct
+| x : u32
+| y : u32
+| z : u32
+| w : u32
+ -> uvec4;

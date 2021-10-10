@@ -1,0 +1,222 @@
+mod krepusko::opengl::buffers;
+import sdl2::opengl, sdl2::opengl_ext;
+import krepusko::opengl::vertex;
+
+
+pub class VertexArrayObject {
+
+    let mut _vao = 0u32;
+
+    /**
+     * Empty buffer containing nothing
+     */
+    pub self () {}
+
+    /**
+     * Create a new vertex_array_object pointer
+     * First method to use to be able to use a vertex_array_object
+     */
+    pub def generate (mut self) {
+        self:.dispose ();
+        glGenVertexArrays (1, alias &self._vao);        
+    }
+
+    /**
+     * Bind the vertex_array_object 
+     */
+    pub def bind (self) {
+        glBindVertexArray (self._vao);
+    }
+
+    /**
+     * Unbind the vertex_array_object, and bind the empty vertex_array_object
+     */
+    pub def unbind (self) {
+        glBindVertexArray (0u32);
+    }
+
+    /**
+     * @returns: true if the buffer contains nothing
+     */
+    pub def isEmpty (self) -> bool {
+        self._vao == 0u32
+    }
+    
+
+    impl Disposable {
+        pub over dispose (mut self) {
+            if self._vao != 0u32 {
+                glDeleteVertexArrays (1, &self._vao);
+                self._vao = 0u32;
+            }
+        }        
+    }
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }
+    
+}
+
+pub class VertexBufferObject {T of Vertex!{U}, U...} {
+
+    let mut _vbo = 0u32;
+
+    let mut _data : [T] = [];
+
+    let mut _size : usize = 0us;
+
+
+    /**
+     * Empty buffer containing nothing
+     */
+    pub self () {}
+
+    /**
+     * Generate the buffer pointer
+     * @info: does not upload the data
+     */
+    pub def generate (mut self) {
+        self:.dispose ();
+        glGenBuffers (1, alias &self._vbo);
+    }
+    
+    /**
+     * Reference the vertices inside the CPU RAM
+     * @warning: does not upload the data to GPU
+     */
+    pub def setLocalVertices (mut self, x : [T]) {
+        self._data = x;
+    }
+
+    /**
+     * Upload the data to the GPU, and forget the reference to the local datas
+     */
+    pub def uploadAndClearLocal (mut self) {
+        if (self._data.len != 0us) {
+            glBufferData (GL_ARRAY_BUFFER, cast!i32 (sizeof (T) * self._data.len), cast!{&void} (self._data.ptr), GL_STATIC_DRAW);
+            self._size = self._data.len;
+            self._data = [];
+        }
+    }
+
+    /**
+     * GL bind of the buffer
+     */
+    pub def bind (self) {
+        glBindBuffer (GL_ARRAY_BUFFER, self._vbo);
+    }
+
+    /**
+     * Unbind the buffer
+     */
+    pub def unbind (self) {
+        glBindBuffer (GL_ARRAY_BUFFER, 0u32);
+    }
+
+    /**
+     * @returns: the number of element inside the buffer (in GPU ram)
+     */
+    pub def getSize (self)-> usize {
+        self._size
+    }
+
+
+    impl Disposable {
+
+        pub over dispose (mut self) {
+            if (self._vbo != 0u32) {
+                glDeleteBuffers (1, alias &self._vbo);
+                self._vbo = 0u32;                
+            }
+            self._data = [];
+            self._size = 0us;
+        }
+        
+    }
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }
+    
+}
+
+pub class IndexBufferObject {
+
+    let mut _ibo = 0u32;
+
+    let mut _size : usize = 0us;
+
+    let mut _data : [i32] = [];
+
+    /**
+     * Empty index buffer object containing nothing
+     */
+    pub self () {}
+
+    /**
+     * Generate the buffer but does not upload the datas
+     */
+    pub def generate (mut self) {
+        self:.dispose ();
+        glGenBuffers (1, alias &self._ibo);
+    }
+
+    /**
+     * Reference the indices inside the CPU RAM
+     */
+    pub def setLocalIndices (mut self, data : [i32]) {
+        self._data = data;
+    }
+
+    /**
+     * Bind the buffer for opengl
+     */
+    pub def bind (self) {
+        glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, self._ibo);
+    }
+
+    /**
+     * Unbind the buffer for opengl
+     */
+    pub def unbind (self) {
+        glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0u32);
+    }
+
+    /**
+     * Upload the data to the GPU, and forget the reference to the local datas
+     */
+    pub def uploadAndClearLocal (mut self) {
+        if (self._data.len != 0u32) {
+            glBufferData (GL_ELEMENT_ARRAY_BUFFER, cast!i32 (self._data.len * sizeof (i32)), cast!{&void} (self._data.ptr), GL_STATIC_DRAW);
+            self._size = self._data.len;
+            self._data = [];
+        }
+    }
+
+    /**
+     * @returns: the number of element inside the buffer (in GPU ram)
+     */
+    pub def getSize (self)-> usize {
+        self._size
+    }
+
+    
+    impl Disposable {
+
+        pub over dispose (mut self) {
+            if (self._ibo != 0u32) {
+                glDeleteBuffers (1, &self._ibo);
+                self._ibo = 0u32;
+            }
+            self._data = [];
+            self._size = 0us;
+        }
+        
+    }
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }    
+    
+}

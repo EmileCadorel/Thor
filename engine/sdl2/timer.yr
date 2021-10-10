@@ -1,0 +1,57 @@
+mod sdl2::timer;
+
+/**
+ * \brief Get the number of milliseconds since the SDL library initialization.
+ * \note This value wraps if the program runs for more than ~49 days.
+ */
+pub extern (C) def SDL_GetTicks()-> u32;
+
+
+
+/**
+ * \brief Get the current value of the high resolution counter
+ */
+pub extern (C) def SDL_GetPerformanceCounter()-> u64;
+
+/**
+ * \brief Get the count per second of the high resolution counter
+ */
+pub extern (C) def SDL_GetPerformanceFrequency()-> u64;
+
+/**
+ * \brief Wait a specified number of milliseconds before returning.
+ */
+pub extern (C) def SDL_Delay(ms : u32);
+
+/**
+ *  Function prototype for the timer callback function.
+ *
+ *  The callback function is passed the current timer interval and returns
+ *  the next timer interval.  If the returned value is the same as the one
+ *  passed in, the periodic alarm continues, otherwise a new alarm is
+ *  scheduled.  If the callback returns 0, the periodic alarm is cancelled.
+ */
+pub aka SDL_TimerCallback = fn (u32, dmut &void)-> u32;
+
+/**
+ * Definition of the timer ID type.
+ */
+pub aka SDL_TimerID = i32;
+
+/**
+ * \brief Add a new timer to the pool of timers already running.
+ *
+ * \return A timer ID, or 0 when an error occurs.
+ */
+pub extern (C) def SDL_AddTimer(interval : u32,
+                                callback : SDL_TimerCallback ,
+                                dmut param : &void)-> i32;
+
+/**
+ * \brief Remove a timer knowing its ID.
+ *
+ * \return A boolean value indicating success or failure.
+ *
+ * \warning It is not safe to remove a timer multiple times.
+ */
+pub extern (C) def SDL_RemoveTimer(id : SDL_TimerID)-> bool;

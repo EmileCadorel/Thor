@@ -1,0 +1,1655 @@
+mod sdl2::opengl;
+
+/*
+ * Datatypes
+ */
+pub aka GLenum= u32;
+pub aka GLboolean= bool;
+pub aka GLbitfield= u32;
+pub aka GLvoid= void;
+pub aka GLbyte= i8;		/* 1-byte signed */
+pub aka GLshort= i16;	/* 2-byte signed */
+pub aka GLint= i32;		/* 4-byte signed */
+pub aka GLubyte= u8;	/* 1-byte unsigned */
+pub aka GLushort= u16;	/* 2-byte unsigned */
+pub aka GLuint= u32;		/* 4-byte unsigned */
+pub aka GLsizei= i32;	/* 4-byte signed */
+pub aka GLfloat= f32;	/* single precision float */
+pub aka GLclampf= f32;	/* single precision float in [0,1] */
+pub aka GLdouble= f64;	/* double precision float */
+pub aka GLclampd= f64;	/* double precision float in [0,1] */
+
+
+
+pub aka GL_FALSE = 0u32
+pub aka GL_TRUE  = 1u32
+
+/* Data types */
+pub aka GL_BYTE	    = 0x1400u32
+pub aka GL_UNSIGNED_BYTE  = 0x1401u32
+pub aka GL_SHORT	    = 0x1402u32
+pub aka GL_UNSIGNED_SHORT = 0x1403u32
+pub aka GL_INT	    = 0x1404u32
+pub aka GL_UNSIGNED_INT   = 0x1405u32
+pub aka GL_FLOAT	    = 0x1406u32
+pub aka GL_2_BYTES	    = 0x1407u32
+pub aka GL_3_BYTES	    = 0x1408u32
+pub aka GL_4_BYTES	    = 0x1409u32
+pub aka GL_DOUBLE	    = 0x140Au32
+
+/* Primitives */
+pub aka GL_POINTS	    = 0x0000u32
+pub aka GL_LINES	    = 0x0001u32
+pub aka GL_LINE_LOOP	    = 0x0002u32
+pub aka GL_LINE_STRIP	    = 0x0003u32
+pub aka GL_TRIANGLES	    = 0x0004u32
+pub aka GL_TRIANGLE_STRIP = 0x0005u32
+pub aka GL_TRIANGLE_FAN   = 0x0006u32
+pub aka GL_QUADS	    = 0x0007u32
+pub aka GL_QUAD_STRIP	    = 0x0008u32
+pub aka GL_POLYGON	    = 0x0009u32
+
+/* Vertex Arrays */
+pub aka GL_VERTEX_ARRAY		 = 0x8074u32
+pub aka GL_NORMAL_ARRAY		 = 0x8075u32
+pub aka GL_COLOR_ARRAY		 = 0x8076u32
+pub aka GL_INDEX_ARRAY		 = 0x8077u32
+pub aka GL_TEXTURE_COORD_ARRAY	 = 0x8078u32
+pub aka GL_EDGE_FLAG_ARRAY		 = 0x8079u32
+pub aka GL_VERTEX_ARRAY_SIZE		 = 0x807Au32
+pub aka GL_VERTEX_ARRAY_TYPE		 = 0x807Bu32
+pub aka GL_VERTEX_ARRAY_STRIDE	 = 0x807Cu32
+pub aka GL_NORMAL_ARRAY_TYPE		 = 0x807Eu32
+pub aka GL_NORMAL_ARRAY_STRIDE	 = 0x807Fu32
+pub aka GL_COLOR_ARRAY_SIZE		 = 0x8081u32
+pub aka GL_COLOR_ARRAY_TYPE		 = 0x8082u32
+pub aka GL_COLOR_ARRAY_STRIDE		 = 0x8083u32
+pub aka GL_INDEX_ARRAY_TYPE		 = 0x8085u32
+pub aka GL_INDEX_ARRAY_STRIDE		 = 0x8086u32
+pub aka GL_TEXTURE_COORD_ARRAY_SIZE	 = 0x8088u32
+pub aka GL_TEXTURE_COORD_ARRAY_TYPE	 = 0x8089u32
+pub aka GL_TEXTURE_COORD_ARRAY_STRIDE	 = 0x808Au32
+pub aka GL_EDGE_FLAG_ARRAY_STRIDE	 = 0x808Cu32
+pub aka GL_VERTEX_ARRAY_POINTER	 = 0x808Eu32
+pub aka GL_NORMAL_ARRAY_POINTER	 = 0x808Fu32
+pub aka GL_COLOR_ARRAY_POINTER	 = 0x8090u32
+pub aka GL_INDEX_ARRAY_POINTER	 = 0x8091u32
+pub aka GL_TEXTURE_COORD_ARRAY_POINTER = 0x8092u32
+pub aka GL_EDGE_FLAG_ARRAY_POINTER	 = 0x8093u32
+pub aka GL_V2F			 = 0x2A20u32
+pub aka GL_V3F			 = 0x2A21u32
+pub aka GL_C4UB_V2F			 = 0x2A22u32
+pub aka GL_C4UB_V3F			 = 0x2A23u32
+pub aka GL_C3F_V3F			 = 0x2A24u32
+pub aka GL_N3F_V3F			 = 0x2A25u32
+pub aka GL_C4F_N3F_V3F		 = 0x2A26u32
+pub aka GL_T2F_V3F			 = 0x2A27u32
+pub aka GL_T4F_V4F			 = 0x2A28u32
+pub aka GL_T2F_C4UB_V3F		 = 0x2A29u32
+pub aka GL_T2F_C3F_V3F		 = 0x2A2Au32
+pub aka GL_T2F_N3F_V3F		 = 0x2A2Bu32
+pub aka GL_T2F_C4F_N3F_V3F		 = 0x2A2Cu32
+pub aka GL_T4F_C4F_N3F_V4F		 = 0x2A2Du32
+
+/* Matrix Mode */
+pub aka GL_MATRIX_MODE = 0x0BA0u32
+pub aka GL_MODELVIEW	 = 0x1700u32
+pub aka GL_PROJECTION	 = 0x1701u32
+pub aka GL_TEXTURE	 = 0x1702u32
+
+/* Points */
+pub aka GL_POINT_SMOOTH				= 0x0B10u32
+pub aka GL_POINT_SIZE		    = 0x0B11u32
+pub aka GL_POINT_SIZE_GRANULARITY = 0x0B13u32
+pub aka GL_POINT_SIZE_RANGE	    = 0x0B12u32
+
+/* Lines */
+pub aka GL_LINE_SMOOTH				= 0x0B20u32
+pub aka GL_LINE_STIPPLE	    = 0x0B24u32
+pub aka GL_LINE_STIPPLE_PATTERN   = 0x0B25u32
+pub aka GL_LINE_STIPPLE_REPEAT    = 0x0B26u32
+pub aka GL_LINE_WIDTH		    = 0x0B21u32
+pub aka GL_LINE_WIDTH_GRANULARITY = 0x0B23u32
+pub aka GL_LINE_WIDTH_RANGE	    = 0x0B22u32
+
+/* Polygons */
+pub aka GL_POINT				= 0x1B00u32
+pub aka GL_LINE		   = 0x1B01u32
+pub aka GL_FILL		   = 0x1B02u32
+pub aka GL_CW			   = 0x0900u32
+pub aka GL_CCW		   = 0x0901u32
+pub aka GL_FRONT		   = 0x0404u32
+pub aka GL_BACK		   = 0x0405u32
+pub aka GL_POLYGON_MODE	   = 0x0B40u32
+pub aka GL_POLYGON_SMOOTH	   = 0x0B41u32
+pub aka GL_POLYGON_STIPPLE	   = 0x0B42u32
+pub aka GL_EDGE_FLAG		   = 0x0B43u32
+pub aka GL_CULL_FACE		   = 0x0B44u32
+pub aka GL_CULL_FACE_MODE	   = 0x0B45u32
+pub aka GL_FRONT_FACE		   = 0x0B46u32
+pub aka GL_POLYGON_OFFSET_FACTOR = 0x8038u32
+pub aka GL_POLYGON_OFFSET_UNITS  = 0x2A00u32
+pub aka GL_POLYGON_OFFSET_POINT  = 0x2A01u32
+pub aka GL_POLYGON_OFFSET_LINE   = 0x2A02u32
+pub aka GL_POLYGON_OFFSET_FILL   = 0x8037u32
+
+/* Display Lists */
+pub aka GL_COMPILE		 = 0x1300u32
+pub aka GL_COMPILE_AND_EXECUTE = 0x1301u32
+pub aka GL_LIST_BASE		 = 0x0B32u32
+pub aka GL_LIST_INDEX		 = 0x0B33u32
+pub aka GL_LIST_MODE		 = 0x0B30u32
+
+/* Depth buffer */
+pub aka GL_NEVER				= 0x0200u32
+pub aka GL_LESS	       = 0x0201u32
+pub aka GL_EQUAL	       = 0x0202u32
+pub aka GL_LEQUAL	       = 0x0203u32
+pub aka GL_GREATER	       = 0x0204u32
+pub aka GL_NOTEQUAL	       = 0x0205u32
+pub aka GL_GEQUAL	       = 0x0206u32
+pub aka GL_ALWAYS	       = 0x0207u32
+pub aka GL_DEPTH_TEST	       = 0x0B71u32
+pub aka GL_DEPTH_BITS	       = 0x0D56u32
+pub aka GL_DEPTH_CLEAR_VALUE = 0x0B73u32
+pub aka GL_DEPTH_FUNC	       = 0x0B74u32
+pub aka GL_DEPTH_RANGE       = 0x0B70u32
+pub aka GL_DEPTH_WRITEMASK   = 0x0B72u32
+pub aka GL_DEPTH_COMPONENT   = 0x1902u32
+
+/* Lighting */
+pub aka GL_LIGHTING = 0x0B50u32
+pub aka GL_LIGHT0		      = 0x4000u32
+pub aka GL_LIGHT1		      = 0x4001u32
+pub aka GL_LIGHT2		      = 0x4002u32
+pub aka GL_LIGHT3		      = 0x4003u32
+pub aka GL_LIGHT4		      = 0x4004u32
+pub aka GL_LIGHT5		      = 0x4005u32
+pub aka GL_LIGHT6		      = 0x4006u32
+pub aka GL_LIGHT7		      = 0x4007u32
+pub aka GL_SPOT_EXPONENT	      = 0x1205u32
+pub aka GL_SPOT_CUTOFF	      = 0x1206u32
+pub aka GL_CONSTANT_ATTENUATION     = 0x1207u32
+pub aka GL_LINEAR_ATTENUATION	      = 0x1208u32
+pub aka GL_QUADRATIC_ATTENUATION    = 0x1209u32
+pub aka GL_AMBIENT		      = 0x1200u32
+pub aka GL_DIFFUSE		      = 0x1201u32
+pub aka GL_SPECULAR		      = 0x1202u32
+pub aka GL_SHININESS		      = 0x1601u32
+pub aka GL_EMISSION		      = 0x1600u32
+pub aka GL_POSITION		      = 0x1203u32
+pub aka GL_SPOT_DIRECTION	      = 0x1204u32
+pub aka GL_AMBIENT_AND_DIFFUSE      = 0x1602u32
+pub aka GL_COLOR_INDEXES	      = 0x1603u32
+pub aka GL_LIGHT_MODEL_TWO_SIDE     = 0x0B52u32
+pub aka GL_LIGHT_MODEL_LOCAL_VIEWER = 0x0B51u32
+pub aka GL_LIGHT_MODEL_AMBIENT      = 0x0B53u32
+pub aka GL_FRONT_AND_BACK	      = 0x0408u32
+pub aka GL_SHADE_MODEL	      = 0x0B54u32
+pub aka GL_FLAT		      = 0x1D00u32
+pub aka GL_SMOOTH		      = 0x1D01u32
+pub aka GL_COLOR_MATERIAL	      = 0x0B57u32
+pub aka GL_COLOR_MATERIAL_FACE      = 0x0B55u32
+pub aka GL_COLOR_MATERIAL_PARAMETER = 0x0B56u32
+pub aka GL_NORMALIZE				= 0x0BA1u32
+
+/* User clipping planes */
+pub aka GL_CLIP_PLANE0 = 0x3000u32
+pub aka GL_CLIP_PLANE1 = 0x3001u32
+pub aka GL_CLIP_PLANE2				= 0x3002u32
+pub aka GL_CLIP_PLANE3 = 0x3003u32
+pub aka GL_CLIP_PLANE4 = 0x3004u32
+pub aka GL_CLIP_PLANE5 = 0x3005u32
+
+/* Accumulation buffer */
+pub aka GL_ACCUM_RED_BITS    = 0x0D58u32
+pub aka GL_ACCUM_GREEN_BITS  = 0x0D59u32
+pub aka GL_ACCUM_BLUE_BITS   = 0x0D5Au32
+pub aka GL_ACCUM_ALPHA_BITS  = 0x0D5Bu32
+pub aka GL_ACCUM_CLEAR_VALUE = 0x0B80u32
+pub aka GL_ACCUM				= 0x0100u32
+pub aka GL_ADD	       = 0x0104u32
+pub aka GL_LOAD	       = 0x0101u32
+pub aka GL_MULT	       = 0x0103u32
+pub aka GL_RETURN	       = 0x0102u32
+
+/* Alpha testing */
+pub aka GL_ALPHA_TEST	     = 0x0BC0u32
+pub aka GL_ALPHA_TEST_REF  = 0x0BC2u32
+pub aka GL_ALPHA_TEST_FUNC = 0x0BC1u32
+
+/* Blending */
+pub aka GL_BLEND		 = 0x0BE2u32
+pub aka GL_BLEND_SRC		 = 0x0BE1u32
+pub aka GL_BLEND_DST		 = 0x0BE0u32
+pub aka GL_ZERO		 = 0u32
+pub aka GL_ONE		 = 1u32
+pub aka GL_SRC_COLOR		 = 0x0300u32
+pub aka GL_ONE_MINUS_SRC_COLOR = 0x0301u32
+pub aka GL_SRC_ALPHA		 = 0x0302u32
+pub aka GL_ONE_MINUS_SRC_ALPHA = 0x0303u32
+pub aka GL_DST_ALPHA		 = 0x0304u32
+pub aka GL_ONE_MINUS_DST_ALPHA			= 0x0305u32
+pub aka GL_DST_COLOR		 = 0x0306u32
+pub aka GL_ONE_MINUS_DST_COLOR = 0x0307u32
+pub aka GL_SRC_ALPHA_SATURATE			= 0x0308u32
+
+/* Render Mode */
+pub aka GL_FEEDBACK = 0x1C01u32
+pub aka GL_RENDER   = 0x1C00u32
+pub aka GL_SELECT   = 0x1C02u32
+
+/* Feedback */
+pub aka GL_2D			  = 0x0600u32
+pub aka GL_3D			  = 0x0601u32
+pub aka GL_3D_COLOR		  = 0x0602u32
+pub aka GL_3D_COLOR_TEXTURE	  = 0x0603u32
+pub aka GL_4D_COLOR_TEXTURE	  = 0x0604u32
+pub aka GL_POINT_TOKEN	  = 0x0701u32
+pub aka GL_LINE_TOKEN		  = 0x0702u32
+pub aka GL_LINE_RESET_TOKEN	  = 0x0707u32
+pub aka GL_POLYGON_TOKEN	  = 0x0703u32
+pub aka GL_BITMAP_TOKEN	  = 0x0704u32
+pub aka GL_DRAW_PIXEL_TOKEN	  = 0x0705u32
+pub aka GL_COPY_PIXEL_TOKEN	  = 0x0706u32
+pub aka GL_PASS_THROUGH_TOKEN	  = 0x0700u32
+pub aka GL_FEEDBACK_BUFFER_POINTER		= 0x0DF0u32
+pub aka GL_FEEDBACK_BUFFER_SIZE = 0x0DF1u32
+pub aka GL_FEEDBACK_BUFFER_TYPE = 0x0DF2u32
+
+/* Selection */
+pub aka GL_SELECTION_BUFFER_POINTER = 0x0DF3u32
+pub aka GL_SELECTION_BUFFER_SIZE    = 0x0DF4u32
+
+/* Fog */
+pub aka GL_FOG	 = 0x0B60u32
+pub aka GL_FOG_MODE	 = 0x0B65u32
+pub aka GL_FOG_DENSITY = 0x0B62u32
+pub aka GL_FOG_COLOR	 = 0x0B66u32
+pub aka GL_FOG_INDEX	 = 0x0B61u32
+pub aka GL_FOG_START	 = 0x0B63u32
+pub aka GL_FOG_END				= 0x0B64u32
+pub aka GL_LINEAR	 = 0x2601u32
+pub aka GL_EXP	 = 0x0800u32
+pub aka GL_EXP2	 = 0x0801u32
+
+/* Logic Ops */
+pub aka GL_LOGIC_OP	    = 0x0BF1u32
+pub aka GL_INDEX_LOGIC_OP = 0x0BF1u32
+pub aka GL_COLOR_LOGIC_OP = 0x0BF2u32
+pub aka GL_LOGIC_OP_MODE  = 0x0BF0u32
+pub aka GL_CLEAR	    = 0x1500u32
+pub aka GL_SET	    = 0x150Fu32
+pub aka GL_COPY	    = 0x1503u32
+pub aka GL_COPY_INVERTED  = 0x150Cu32
+pub aka GL_NOOP	    = 0x1505u32
+pub aka GL_INVERT	    = 0x150Au32
+pub aka GL_AND	    = 0x1501u32
+pub aka GL_NAND	    = 0x150Eu32
+pub aka GL_OR		    = 0x1507u32
+pub aka GL_NOR	    = 0x1508u32
+pub aka GL_XOR	    = 0x1506u32
+pub aka GL_EQUIV	    = 0x1509u32
+pub aka GL_AND_REVERSE    = 0x1502u32
+pub aka GL_AND_INVERTED				= 0x1504u32
+pub aka GL_OR_REVERSE	    = 0x150Bu32
+pub aka GL_OR_INVERTED    = 0x150Du32
+
+/* Stencil */
+pub aka GL_STENCIL_BITS	     = 0x0D57u32
+pub aka GL_STENCIL_TEST	     = 0x0B90u32
+pub aka GL_STENCIL_CLEAR_VALUE     = 0x0B91u32
+pub aka GL_STENCIL_FUNC	     = 0x0B92u32
+pub aka GL_STENCIL_VALUE_MASK	     = 0x0B93u32
+pub aka GL_STENCIL_FAIL	     = 0x0B94u32
+pub aka GL_STENCIL_PASS_DEPTH_FAIL = 0x0B95u32
+pub aka GL_STENCIL_PASS_DEPTH_PASS = 0x0B96u32
+pub aka GL_STENCIL_REF	     = 0x0B97u32
+pub aka GL_STENCIL_WRITEMASK	     = 0x0B98u32
+pub aka GL_STENCIL_INDEX	     = 0x1901u32
+pub aka GL_KEEP		     = 0x1E00u32
+pub aka GL_REPLACE				= 0x1E01u32
+pub aka GL_INCR					= 0x1E02u32
+pub aka GL_DECR		     = 0x1E03u32
+
+/* Buffers, Pixel Drawing/Reading */
+pub aka GL_NONE					= 0u32
+pub aka GL_LEFT					= 0x0406u32
+pub aka GL_RIGHT				= 0x0407u32
+/*GL_FRONT	     = 0x0404u32 */
+/*GL_BACK	     = 0x0405u32 */
+/*GL_FRONT_AND_BACK  = 0x0408u32 */
+pub aka GL_FRONT_LEFT	     = 0x0400u32
+pub aka GL_FRONT_RIGHT     = 0x0401u32
+pub aka GL_BACK_LEFT	     = 0x0402u32
+pub aka GL_BACK_RIGHT	     = 0x0403u32
+pub aka GL_AUX0	     = 0x0409u32
+pub aka GL_AUX1	     = 0x040Au32
+pub aka GL_AUX2	     = 0x040Bu32
+pub aka GL_AUX3	     = 0x040Cu32
+pub aka GL_COLOR_INDEX     = 0x1900u32
+pub aka GL_RED	     = 0x1903u32
+pub aka GL_GREEN	     = 0x1904u32
+pub aka GL_BLUE	     = 0x1905u32
+pub aka GL_ALPHA	     = 0x1906u32
+pub aka GL_LUMINANCE	     = 0x1909u32
+pub aka GL_LUMINANCE_ALPHA = 0x190Au32
+pub aka GL_ALPHA_BITS	     = 0x0D55u32
+pub aka GL_RED_BITS	     = 0x0D52u32
+pub aka GL_GREEN_BITS	     = 0x0D53u32
+pub aka GL_BLUE_BITS	     = 0x0D54u32
+pub aka GL_INDEX_BITS	     = 0x0D51u32
+pub aka GL_SUBPIXEL_BITS   = 0x0D50u32
+pub aka GL_AUX_BUFFERS     = 0x0C00u32
+pub aka GL_READ_BUFFER     = 0x0C02u32
+pub aka GL_DRAW_BUFFER     = 0x0C01u32
+pub aka GL_DOUBLEBUFFER    = 0x0C32u32
+pub aka GL_STEREO	     = 0x0C33u32
+pub aka GL_BITMAP	     = 0x1A00u32
+pub aka GL_COLOR	     = 0x1800u32
+pub aka GL_DEPTH	     = 0x1801u32
+pub aka GL_STENCIL				= 0x1802u32
+pub aka GL_DITHER	     = 0x0BD0u32
+pub aka GL_RGB	     = 0x1907u32
+pub aka GL_RGBA	     = 0x1908u32
+
+/* Implementation limits */
+pub aka GL_MAX_LIST_NESTING		   = 0x0B31u32
+pub aka GL_MAX_EVAL_ORDER		   = 0x0D30u32
+pub aka GL_MAX_LIGHTS			   = 0x0D31u32
+pub aka GL_MAX_CLIP_PLANES		   = 0x0D32u32
+pub aka GL_MAX_TEXTURE_SIZE		   = 0x0D33u32
+pub aka GL_MAX_PIXEL_MAP_TABLE	   = 0x0D34u32
+pub aka GL_MAX_ATTRIB_STACK_DEPTH	   = 0x0D35u32
+pub aka GL_MAX_MODELVIEW_STACK_DEPTH	   = 0x0D36u32
+pub aka GL_MAX_NAME_STACK_DEPTH	   = 0x0D37u32
+pub aka GL_MAX_PROJECTION_STACK_DEPTH		= 0x0D38u32
+pub aka GL_MAX_TEXTURE_STACK_DEPTH	   = 0x0D39u32
+pub aka GL_MAX_VIEWPORT_DIMS		   = 0x0D3Au32
+pub aka GL_MAX_CLIENT_ATTRIB_STACK_DEPTH = 0x0D3Bu32
+
+/* Gets */
+pub aka GL_ATTRIB_STACK_DEPTH		   = 0x0BB0u32
+pub aka GL_CLIENT_ATTRIB_STACK_DEPTH	   = 0x0BB1u32
+pub aka GL_COLOR_CLEAR_VALUE		   = 0x0C22u32
+pub aka GL_COLOR_WRITEMASK		   = 0x0C23u32
+pub aka GL_CURRENT_INDEX		   = 0x0B01u32
+pub aka GL_CURRENT_COLOR		   = 0x0B00u32
+pub aka GL_CURRENT_NORMAL		   = 0x0B02u32
+pub aka GL_CURRENT_RASTER_COLOR	   = 0x0B04u32
+pub aka GL_CURRENT_RASTER_DISTANCE	   = 0x0B09u32
+pub aka GL_CURRENT_RASTER_INDEX	   = 0x0B05u32
+pub aka GL_CURRENT_RASTER_POSITION	   = 0x0B07u32
+pub aka GL_CURRENT_RASTER_TEXTURE_COORDS = 0x0B06u32
+pub aka GL_CURRENT_RASTER_POSITION_VALID = 0x0B08u32
+pub aka GL_CURRENT_TEXTURE_COORDS	   = 0x0B03u32
+pub aka GL_INDEX_CLEAR_VALUE		   = 0x0C20u32
+pub aka GL_INDEX_MODE			   = 0x0C30u32
+pub aka GL_INDEX_WRITEMASK		   = 0x0C21u32
+pub aka GL_MODELVIEW_MATRIX		   = 0x0BA6u32
+pub aka GL_MODELVIEW_STACK_DEPTH	   = 0x0BA3u32
+pub aka GL_NAME_STACK_DEPTH		   = 0x0D70u32
+pub aka GL_PROJECTION_MATRIX		   = 0x0BA7u32
+pub aka GL_PROJECTION_STACK_DEPTH	   = 0x0BA4u32
+pub aka GL_RENDER_MODE		   = 0x0C40u32
+pub aka GL_RGBA_MODE			   = 0x0C31u32
+pub aka GL_TEXTURE_MATRIX		   = 0x0BA8u32
+pub aka GL_TEXTURE_STACK_DEPTH	   = 0x0BA5u32
+pub aka GL_VIEWPORT			   = 0x0BA2u32
+
+/* Evaluators */
+pub aka GL_AUTO_NORMAL = 0x0D80u32
+pub aka GL_MAP1_COLOR_4	  = 0x0D90u32
+pub aka GL_MAP1_INDEX		  = 0x0D91u32
+pub aka GL_MAP1_NORMAL	  = 0x0D92u32
+pub aka GL_MAP1_TEXTURE_COORD_1 = 0x0D93u32
+pub aka GL_MAP1_TEXTURE_COORD_2 = 0x0D94u32
+pub aka GL_MAP1_TEXTURE_COORD_3 = 0x0D95u32
+pub aka GL_MAP1_TEXTURE_COORD_4 = 0x0D96u32
+pub aka GL_MAP1_VERTEX_3	  = 0x0D97u32
+pub aka GL_MAP1_VERTEX_4	  = 0x0D98u32
+pub aka GL_MAP2_COLOR_4	  = 0x0DB0u32
+pub aka GL_MAP2_INDEX		  = 0x0DB1u32
+pub aka GL_MAP2_NORMAL	  = 0x0DB2u32
+pub aka GL_MAP2_TEXTURE_COORD_1 = 0x0DB3u32
+pub aka GL_MAP2_TEXTURE_COORD_2 = 0x0DB4u32
+pub aka GL_MAP2_TEXTURE_COORD_3 = 0x0DB5u32
+pub aka GL_MAP2_TEXTURE_COORD_4 = 0x0DB6u32
+pub aka GL_MAP2_VERTEX_3	  = 0x0DB7u32
+pub aka GL_MAP2_VERTEX_4	  = 0x0DB8u32
+pub aka GL_MAP1_GRID_DOMAIN	  = 0x0DD0u32
+pub aka GL_MAP1_GRID_SEGMENTS	  = 0x0DD1u32
+pub aka GL_MAP2_GRID_DOMAIN	  = 0x0DD2u32
+pub aka GL_MAP2_GRID_SEGMENTS	  = 0x0DD3u32
+pub aka GL_COEFF		  = 0x0A00u32
+pub aka GL_ORDER		  = 0x0A01u32
+pub aka GL_DOMAIN		  = 0x0A02u32
+
+/* Hints */
+pub aka GL_PERSPECTIVE_CORRECTION_HINT = 0x0C50u32
+pub aka GL_POINT_SMOOTH_HINT		 = 0x0C51u32
+pub aka GL_LINE_SMOOTH_HINT		 = 0x0C52u32
+pub aka GL_POLYGON_SMOOTH_HINT	 = 0x0C53u32
+pub aka GL_FOG_HINT				= 0x0C54u32
+pub aka GL_DONT_CARE			 = 0x1100u32
+pub aka GL_FASTEST			 = 0x1101u32
+pub aka GL_NICEST			 = 0x1102u32
+
+/* Scissor box */
+pub aka GL_SCISSOR_BOX  = 0x0C10u32
+pub aka GL_SCISSOR_TEST = 0x0C11u32
+
+/* Pixel Mode / Transfer */
+pub aka GL_MAP_COLOR		   = 0x0D10u32
+pub aka GL_MAP_STENCIL	   = 0x0D11u32
+pub aka GL_INDEX_SHIFT	   = 0x0D12u32
+pub aka GL_INDEX_OFFSET	   = 0x0D13u32
+pub aka GL_RED_SCALE		   = 0x0D14u32
+pub aka GL_RED_BIAS		   = 0x0D15u32
+pub aka GL_GREEN_SCALE	   = 0x0D18u32
+pub aka GL_GREEN_BIAS		   = 0x0D19u32
+pub aka GL_BLUE_SCALE		   = 0x0D1Au32
+pub aka GL_BLUE_BIAS		   = 0x0D1Bu32
+pub aka GL_ALPHA_SCALE	   = 0x0D1Cu32
+pub aka GL_ALPHA_BIAS		   = 0x0D1Du32
+pub aka GL_DEPTH_SCALE	   = 0x0D1Eu32
+pub aka GL_DEPTH_BIAS		   = 0x0D1Fu32
+pub aka GL_PIXEL_MAP_S_TO_S_SIZE = 0x0CB1u32
+pub aka GL_PIXEL_MAP_I_TO_I_SIZE = 0x0CB0u32
+pub aka GL_PIXEL_MAP_I_TO_R_SIZE = 0x0CB2u32
+pub aka GL_PIXEL_MAP_I_TO_G_SIZE = 0x0CB3u32
+pub aka GL_PIXEL_MAP_I_TO_B_SIZE = 0x0CB4u32
+pub aka GL_PIXEL_MAP_I_TO_A_SIZE = 0x0CB5u32
+pub aka GL_PIXEL_MAP_R_TO_R_SIZE = 0x0CB6u32
+pub aka GL_PIXEL_MAP_G_TO_G_SIZE = 0x0CB7u32
+pub aka GL_PIXEL_MAP_B_TO_B_SIZE = 0x0CB8u32
+pub aka GL_PIXEL_MAP_A_TO_A_SIZE = 0x0CB9u32
+pub aka GL_PIXEL_MAP_S_TO_S	   = 0x0C71u32
+pub aka GL_PIXEL_MAP_I_TO_I	   = 0x0C70u32
+pub aka GL_PIXEL_MAP_I_TO_R	   = 0x0C72u32
+pub aka GL_PIXEL_MAP_I_TO_G	   = 0x0C73u32
+pub aka GL_PIXEL_MAP_I_TO_B	   = 0x0C74u32
+pub aka GL_PIXEL_MAP_I_TO_A	   = 0x0C75u32
+pub aka GL_PIXEL_MAP_R_TO_R	   = 0x0C76u32
+pub aka GL_PIXEL_MAP_G_TO_G	   = 0x0C77u32
+pub aka GL_PIXEL_MAP_B_TO_B	   = 0x0C78u32
+pub aka GL_PIXEL_MAP_A_TO_A	   = 0x0C79u32
+pub aka GL_PACK_ALIGNMENT	   = 0x0D05u32
+pub aka GL_PACK_LSB_FIRST	   = 0x0D01u32
+pub aka GL_PACK_ROW_LENGTH	   = 0x0D02u32
+pub aka GL_PACK_SKIP_PIXELS	   = 0x0D04u32
+pub aka GL_PACK_SKIP_ROWS	   = 0x0D03u32
+pub aka GL_PACK_SWAP_BYTES	   = 0x0D00u32
+pub aka GL_UNPACK_ALIGNMENT	   = 0x0CF5u32
+pub aka GL_UNPACK_LSB_FIRST	   = 0x0CF1u32
+pub aka GL_UNPACK_ROW_LENGTH			= 0x0CF2u32
+pub aka GL_UNPACK_SKIP_PIXELS	   = 0x0CF4u32
+pub aka GL_UNPACK_SKIP_ROWS	   = 0x0CF3u32
+pub aka GL_UNPACK_SWAP_BYTES	   = 0x0CF0u32
+pub aka GL_ZOOM_X		   = 0x0D16u32
+pub aka GL_ZOOM_Y		   = 0x0D17u32
+
+/* Texture mapping */
+pub aka GL_TEXTURE_ENV	    = 0x2300u32
+pub aka GL_TEXTURE_ENV_MODE	    = 0x2200u32
+pub aka GL_TEXTURE_1D		    = 0x0DE0u32
+pub aka GL_TEXTURE_2D		    = 0x0DE1u32
+pub aka GL_TEXTURE_WRAP_S	    = 0x2802u32
+pub aka GL_TEXTURE_WRAP_T	    = 0x2803u32
+pub aka GL_TEXTURE_MAG_FILTER	    = 0x2800u32
+pub aka GL_TEXTURE_MIN_FILTER	    = 0x2801u32
+pub aka GL_TEXTURE_ENV_COLOR	    = 0x2201u32
+pub aka GL_TEXTURE_GEN_S	    = 0x0C60u32
+pub aka GL_TEXTURE_GEN_T	    = 0x0C61u32
+pub aka GL_TEXTURE_GEN_R	    = 0x0C62u32
+pub aka GL_TEXTURE_GEN_Q	    = 0x0C63u32
+pub aka GL_TEXTURE_GEN_MODE	    = 0x2500u32
+pub aka GL_TEXTURE_BORDER_COLOR   = 0x1004u32
+pub aka GL_TEXTURE_WIDTH	    = 0x1000u32
+pub aka GL_TEXTURE_HEIGHT	    = 0x1001u32
+pub aka GL_TEXTURE_BORDER	    = 0x1005u32
+pub aka GL_TEXTURE_COMPONENTS	    = 0x1003u32
+pub aka GL_TEXTURE_RED_SIZE	    = 0x805Cu32
+pub aka GL_TEXTURE_GREEN_SIZE	    = 0x805Du32
+pub aka GL_TEXTURE_BLUE_SIZE	    = 0x805Eu32
+pub aka GL_TEXTURE_ALPHA_SIZE	    = 0x805Fu32
+pub aka GL_TEXTURE_LUMINANCE_SIZE = 0x8060u32
+pub aka GL_TEXTURE_INTENSITY_SIZE = 0x8061u32
+pub aka GL_NEAREST_MIPMAP_NEAREST = 0x2700u32
+pub aka GL_NEAREST_MIPMAP_LINEAR  = 0x2702u32
+pub aka GL_LINEAR_MIPMAP_NEAREST  = 0x2701u32
+pub aka GL_LINEAR_MIPMAP_LINEAR   = 0x2703u32
+pub aka GL_OBJECT_LINEAR	    = 0x2401u32
+pub aka GL_OBJECT_PLANE	    = 0x2501u32
+pub aka GL_EYE_LINEAR		    = 0x2400u32
+pub aka GL_EYE_PLANE		    = 0x2502u32
+pub aka GL_SPHERE_MAP		    = 0x2402u32
+pub aka GL_DECAL				= 0x2101u32
+pub aka GL_MODULATE		    = 0x2100u32
+pub aka GL_NEAREST		    = 0x2600u32
+pub aka GL_REPEAT		    = 0x2901u32
+pub aka GL_CLAMP		    = 0x2900u32
+pub aka GL_S					= 0x2000u32
+pub aka GL_T			    = 0x2001u32
+pub aka GL_R			    = 0x2002u32
+pub aka GL_Q			    = 0x2003u32
+
+/* Utility */
+pub aka GL_VENDOR = 0x1F00u32
+pub aka GL_RENDERER = 0x1F01u32
+pub aka GL_VERSION  = 0x1F02u32
+pub aka GL_EXTENSIONS				= 0x1F03u32
+
+/* Errors */
+pub aka GL_NO_ERROR 	       = 0
+pub aka GL_INVALID_ENUM      = 0x0500u32
+pub aka GL_INVALID_VALUE     = 0x0501u32
+pub aka GL_INVALID_OPERATION = 0x0502u32
+pub aka GL_STACK_OVERFLOW    = 0x0503u32
+pub aka GL_STACK_UNDERFLOW   = 0x0504u32
+pub aka GL_OUT_OF_MEMORY     = 0x0505u32
+
+/* glPush/PopAttrib bits */
+pub aka GL_CURRENT_BIT	 = 0x00000001u32
+pub aka GL_POINT_BIT		 = 0x00000002u32
+pub aka GL_LINE_BIT		 = 0x00000004u32
+pub aka GL_POLYGON_BIT	 = 0x00000008u32
+pub aka GL_POLYGON_STIPPLE_BIT = 0x00000010u32
+pub aka GL_PIXEL_MODE_BIT	 = 0x00000020u32
+pub aka GL_LIGHTING_BIT	 = 0x00000040u32
+pub aka GL_FOG_BIT		 = 0x00000080u32
+pub aka GL_DEPTH_BUFFER_BIT	 = 0x00000100u32
+pub aka GL_ACCUM_BUFFER_BIT	 = 0x00000200u32
+pub aka GL_STENCIL_BUFFER_BIT	 = 0x00000400u32
+pub aka GL_VIEWPORT_BIT	 = 0x00000800u32
+pub aka GL_TRANSFORM_BIT	 = 0x00001000u32
+pub aka GL_ENABLE_BIT				= 0x00002000u32
+pub aka GL_COLOR_BUFFER_BIT	 = 0x00004000u32
+pub aka GL_HINT_BIT		 = 0x00008000u32
+pub aka GL_EVAL_BIT		 = 0x00010000u32
+pub aka GL_LIST_BIT		 = 0x00020000u32
+pub aka GL_TEXTURE_BIT	 = 0x00040000u32
+pub aka GL_SCISSOR_BIT	 = 0x00080000u32
+pub aka GL_ALL_ATTRIB_BITS	 = 0x000FFFFFu32
+
+
+/* Open : GL1.1 */
+pub aka GL_PROXY_TEXTURE_1D	     = 0x8063u32
+pub aka GL_PROXY_TEXTURE_2D	     = 0x8064u32
+pub aka GL_TEXTURE_PRIORITY	     = 0x8066u32
+pub aka GL_TEXTURE_RESIDENT	     = 0x8067u32
+pub aka GL_TEXTURE_BINDING_1D	     = 0x8068u32
+pub aka GL_TEXTURE_BINDING_2D	     = 0x8069u32
+pub aka GL_TEXTURE_INTERNAL_FORMAT = 0x1003u32
+pub aka GL_ALPHA4		     = 0x803Bu32
+pub aka GL_ALPHA8		     = 0x803Cu32
+pub aka GL_ALPHA12		     = 0x803Du32
+pub aka GL_ALPHA16		     = 0x803Eu32
+pub aka GL_LUMINANCE4		     = 0x803Fu32
+pub aka GL_LUMINANCE8		     = 0x8040u32
+pub aka GL_LUMINANCE12	     = 0x8041u32
+pub aka GL_LUMINANCE16	     = 0x8042u32
+pub aka GL_LUMINANCE4_ALPHA4	     = 0x8043u32
+pub aka GL_LUMINANCE6_ALPHA2	     = 0x8044u32
+pub aka GL_LUMINANCE8_ALPHA8	     = 0x8045u32
+pub aka GL_LUMINANCE12_ALPHA4	     = 0x8046u32
+pub aka GL_LUMINANCE12_ALPHA12     = 0x8047u32
+pub aka GL_LUMINANCE16_ALPHA16     = 0x8048u32
+pub aka GL_INTENSITY		     = 0x8049u32
+pub aka GL_INTENSITY4		     = 0x804Au32
+pub aka GL_INTENSITY8		     = 0x804Bu32
+pub aka GL_INTENSITY12	     = 0x804Cu32
+pub aka GL_INTENSITY16	     = 0x804Du32
+pub aka GL_R3_G3_B2		     = 0x2A10u32
+pub aka GL_RGB4		     = 0x804Fu32
+pub aka GL_RGB5		     = 0x8050u32
+pub aka GL_RGB8		     = 0x8051u32
+pub aka GL_RGB10		     = 0x8052u32
+pub aka GL_RGB12		     = 0x8053u32
+pub aka GL_RGB16		     = 0x8054u32
+pub aka GL_RGBA2		     = 0x8055u32
+pub aka GL_RGBA4		     = 0x8056u32
+pub aka GL_RGB5_A1		     = 0x8057u32
+pub aka GL_RGBA8		     = 0x8058u32
+pub aka GL_RGB10_A2		     = 0x8059u32
+pub aka GL_RGBA12		     = 0x805Au32
+pub aka GL_RGBA16		     = 0x805Bu32
+pub aka GL_CLIENT_PIXEL_STORE_BIT  = 0x00000001u32
+pub aka GL_CLIENT_VERTEX_ARRAY_BIT = 0x00000002u32
+pub aka GL_ALL_CLIENT_ATTRIB_BITS  = 0xFFFFFFFFu32
+pub aka GL_CLIENT_ALL_ATTRIB_BITS  = 0xFFFFFFFFu32
+
+pub aka GL_RESCALE_NORMAL			= 0x803Au32
+pub aka GL_MAX_ELEMENTS_VERTICES		= 0x80E8u32
+pub aka GL_MAX_ELEMENTS_INDICES			= 0x80E9u32
+pub aka GL_BGR					= 0x80E0u32
+pub aka GL_BGRA					= 0x80E1u32
+pub aka GL_UNSIGNED_BYTE_3_3_2			= 0x8032u32
+pub aka GL_UNSIGNED_BYTE_2_3_3_REV		= 0x8362u32
+pub aka GL_UNSIGNED_SHORT_5_6_5			= 0x8363u32
+pub aka GL_UNSIGNED_SHORT_5_6_5_REV		= 0x8364u32
+pub aka GL_UNSIGNED_SHORT_4_4_4_4		= 0x8033u32
+pub aka GL_UNSIGNED_SHORT_4_4_4_4_REV		= 0x8365u32
+pub aka GL_UNSIGNED_SHORT_5_5_5_1		= 0x8034u32
+pub aka GL_UNSIGNED_SHORT_1_5_5_5_REV		= 0x8366u32
+pub aka GL_UNSIGNED_INT_8_8_8_8			= 0x8035u32
+pub aka GL_UNSIGNED_INT_8_8_8_8_REV		= 0x8367u32
+pub aka GL_UNSIGNED_INT_10_10_10_2		= 0x8036u32
+pub aka GL_UNSIGNED_INT_2_10_10_10_REV		= 0x8368u32
+pub aka GL_LIGHT_MODEL_COLOR_CONTROL		= 0x81F8u32
+pub aka GL_SINGLE_COLOR				= 0x81F9u32
+pub aka GL_SEPARATE_SPECULAR_COLOR		= 0x81FAu32
+pub aka GL_TEXTURE_MIN_LOD			= 0x813Au32
+pub aka GL_TEXTURE_MAX_LOD			= 0x813Bu32
+pub aka GL_TEXTURE_BASE_LEVEL			= 0x813Cu32
+pub aka GL_TEXTURE_MAX_LEVEL			= 0x813Du32
+pub aka GL_SMOOTH_POINT_SIZE_RANGE		= 0x0B12u32
+pub aka GL_SMOOTH_POINT_SIZE_GRANULARITY	= 0x0B13u32
+pub aka GL_SMOOTH_LINE_WIDTH_RANGE		= 0x0B22u32
+pub aka GL_SMOOTH_LINE_WIDTH_GRANULARITY	= 0x0B23u32
+pub aka GL_ALIASED_POINT_SIZE_RANGE		= 0x846Du32
+pub aka GL_ALIASED_LINE_WIDTH_RANGE		= 0x846Eu32
+pub aka GL_PACK_SKIP_IMAGES			= 0x806Bu32
+pub aka GL_PACK_IMAGE_HEIGHT			= 0x806Cu32
+pub aka GL_UNPACK_SKIP_IMAGES			= 0x806Du32
+pub aka GL_UNPACK_IMAGE_HEIGHT			= 0x806Eu32
+pub aka GL_TEXTURE_3D				= 0x806Fu32
+pub aka GL_PROXY_TEXTURE_3D			= 0x8070u32
+pub aka GL_TEXTURE_DEPTH			= 0x8071u32
+pub aka GL_MAX_3D_TEXTURE_SIZE			= 0x8073u32
+pub aka GL_TEXTURE_BINDING_3D			= 0x806Au32
+
+
+/*
+ * Miscellaneous
+ */
+
+pub extern (C) def  glClearIndex( c : GLfloat);
+
+pub extern (C) def  glClearColor( red : GLclampf, green : GLclampf, blue : GLclampf, alpha : GLclampf);
+
+pub extern (C) def  glClear( mask : GLbitfield );
+
+pub extern (C) def  glIndexMask( mask : GLuint );
+
+pub extern (C) def  glColorMask( red : GLboolean, green : GLboolean, blue : GLboolean, alpha : GLboolean);
+
+pub extern (C) def  glAlphaFunc( func : GLenum, ref_ : GLclampf);
+
+pub extern (C) def  glBlendFunc( sfactor : GLenum, dfactor : GLenum);
+
+pub extern (C) def  glLogicOp( opcode : GLenum );
+
+pub extern (C) def  glCullFace( mode : GLenum );
+
+pub extern (C) def  glFrontFace( mode : GLenum );
+
+pub extern (C) def  glPointSize( size : GLfloat );
+
+pub extern (C) def  glLineWidth( width : GLfloat );
+
+pub extern (C) def  glLineStipple( factor : GLint, pattern : GLushort);
+
+pub extern (C) def  glPolygonMode( face : GLenum, mode : GLenum );
+
+pub extern (C) def  glPolygonOffset( factor : GLfloat, units : GLfloat);
+
+pub extern (C) def  glPolygonStipple( mask : &GLubyte);
+
+pub extern (C) def  glGetPolygonStipple( dmut mask : &GLubyte);
+
+pub extern (C) def  glEdgeFlag( flag : GLboolean );
+
+pub extern (C) def  glEdgeFlagv( flag : &GLboolean);
+
+pub extern (C) def  glScissor( x : GLint, y : GLint, width : GLsizei, height : GLsizei);
+
+pub extern (C) def  glClipPlane( plane : GLenum, equation : &GLdouble);
+
+pub extern (C) def  glGetClipPlane( plane : GLenum, dmut equation : &GLdouble);
+
+pub extern (C) def  glDrawBuffer( mode : GLenum );
+
+pub extern (C) def  glReadBuffer( mode : GLenum );
+
+pub extern (C) def  glEnable( cap : GLenum );
+
+pub extern (C) def  glDisable( cap : GLenum );
+
+pub extern (C) def glIsEnabled( cap : GLenum )-> GLboolean;
+
+
+pub extern (C) def  glEnableClientState( cap : GLenum);  /* 1.1 */
+
+pub extern (C) def  glDisableClientState( cap : GLenum);  /* 1.1 */
+
+
+pub extern (C) def  glGetBooleanv( pname : GLenum, dmut params : &GLboolean);
+
+pub extern (C) def  glGetDoublev( pname : GLenum, dmut params : &GLdouble);
+
+pub extern (C) def  glGetFloatv( pname : GLenum, params : &GLfloat);
+
+pub extern (C) def  glGetIntegerv( pname : GLenum, params : &GLint);
+
+
+pub extern (C) def  glPushAttrib( mask : GLbitfield );
+
+pub extern (C) def  glPopAttrib(  );
+
+
+pub extern (C) def  glPushClientAttrib( mask : GLbitfield);  /* 1.1 */
+
+pub extern (C) def  glPopClientAttrib( );  /* 1.1 */
+
+
+pub extern (C) def  glRenderMode( mode : GLenum )-> GLint;
+
+pub extern (C) def glGetError( )-> GLenum;
+
+pub extern (C) def  glGetString( name : GLenum )-> GLubyte;
+
+pub extern (C) def  glFinish( );
+
+pub extern (C) def  glFlush( );
+
+pub extern (C) def  glHint(  target : GLenum,  mode : GLenum);
+
+/*
+ * Depth Buffer
+ */
+
+pub extern (C) def  glClearDepth( depth : GLclampd );
+
+pub extern (C) def  glDepthFunc( func : GLenum );
+
+pub extern (C) def  glDepthMask( flag : GLboolean );
+
+pub extern (C) def  glDepthRange( near_val : GLclampd, far_val : GLclampd);
+
+
+/*
+ * Accumulation Buffer
+ */
+
+pub extern (C) def  glClearAccum( red : GLfloat,  green : GLfloat,  blue : GLfloat,  alpha : GLfloat);
+
+pub extern (C) def  glAccum( op : GLenum, value : GLfloat );
+
+
+/*
+ * Transformation
+ */
+
+pub extern (C) def  glMatrixMode( mode : GLenum );
+
+pub extern (C) def  glOrtho( left : GLdouble,  right : GLdouble,
+                         bottom : GLdouble, top : GLdouble,
+                         near_val : GLdouble,  far_val : GLdouble);
+
+pub extern (C) def  glFrustum( left : GLdouble, right : GLdouble,
+                           bottom : GLdouble,  top : GLdouble,
+                           near_val : GLdouble, far_val : GLdouble );
+
+pub extern (C) def  glViewport( x : GLint,  y : GLint,
+                            width : GLsizei,  height : GLsizei);
+
+pub extern (C) def  glPushMatrix(  );
+
+pub extern (C) def  glPopMatrix(  );
+
+pub extern (C) def  glLoadIdentity(  );
+
+pub extern (C) def  glLoadMatrixd( m : &GLdouble);
+pub extern (C) def  glLoadMatrixf( m : &GLfloat);
+
+pub extern (C) def  glMultMatrixd( m : &GLdouble);
+pub extern (C) def  glMultMatrixf( m : &GLfloat);
+
+pub extern (C) def  glRotated(  angle : GLdouble,
+                            x : GLdouble,  y : GLdouble, z : GLdouble );
+
+pub extern (C) def  glRotatef( angle : GLfloat,
+                           x : GLfloat,  y : GLfloat,  z : GLfloat);
+
+pub extern (C) def  glScaled( x : GLdouble,  y : GLdouble,  z : GLdouble);
+pub extern (C) def  glScalef( x : GLfloat,  y : GLfloat,  z : GLfloat);
+
+pub extern (C) def  glTranslated( x : GLdouble, y : GLdouble, z : GLdouble );
+pub extern (C) def  glTranslatef( x : GLfloat, y : GLfloat, z : GLfloat );
+
+
+/*
+ * Display Lists
+ */
+
+pub extern (C) def  glIsList( list : GLuint )-> GLboolean;
+
+pub extern (C) def  glDeleteLists( list : GLuint,  range : GLsizei);
+
+pub extern (C) def glGenLists( range : GLsizei )-> GLuint;
+
+pub extern (C) def  glNewList( list : GLuint, mode : GLenum );
+
+pub extern (C) def  glEndList( );
+
+pub extern (C) def  glCallList( list : GLuint);
+
+pub extern (C) def  glCallLists( n : GLsizei, type : GLenum,
+                             lists : &GLvoid);
+
+pub extern (C) def  glListBase( base : GLuint );
+
+
+/*
+ * Drawing Functions
+ */
+
+pub extern (C) def  glBegin( mode : GLenum );
+
+pub extern (C) def  glEnd( );
+
+
+pub extern (C) def  glVertex2d(  x : GLdouble,  y : GLdouble);
+pub extern (C) def  glVertex2f( x : GLfloat, y : GLfloat );
+pub extern (C) def  glVertex2i( x : GLint,  y : GLint);
+pub extern (C) def  glVertex2s( x : GLshort,  y : GLshort);
+
+pub extern (C) def  glVertex3d( x : GLdouble, y : GLdouble, z : GLdouble);
+pub extern (C) def  glVertex3f( x : GLfloat, y : GLfloat, z : GLfloat );
+pub extern (C) def  glVertex3i( x : GLint, y : GLint, z : GLint);
+pub extern (C) def  glVertex3s( x : GLshort, y : GLshort, z : GLshort );
+
+pub extern (C) def  glVertex4d( x : GLdouble, y : GLdouble,  z : GLdouble,  w : GLdouble);
+pub extern (C) def  glVertex4f( x : GLfloat, y : GLfloat, z : GLfloat, w : GLfloat );
+pub extern (C) def  glVertex4i( x : GLint, y : GLint, z : GLint, w : GLint);
+pub extern (C) def  glVertex4s( x : GLshort, y : GLshort, z : GLshort, w : GLshort );
+
+pub extern (C) def  glVertex2dv( v : &GLdouble);
+pub extern (C) def  glVertex2fv( v : &GLfloat);
+pub extern (C) def  glVertex2iv( v : &GLint);
+pub extern (C) def  glVertex2sv( v : &GLshort);
+
+pub extern (C) def  glVertex3dv( v : &GLdouble);
+pub extern (C) def  glVertex3fv( v : &GLfloat);
+pub extern (C) def  glVertex3iv( v : &GLint);
+pub extern (C) def  glVertex3sv( v : &GLshort);
+
+pub extern (C) def  glVertex4dv( v : &GLdouble);
+pub extern (C) def  glVertex4fv( v : &GLfloat);
+pub extern (C) def  glVertex4iv( v : &GLint);
+pub extern (C) def  glVertex4sv( v : &GLshort);
+
+
+pub extern (C) def  glNormal3b( nx : GLbyte,  ny : GLbyte,  nz : GLbyte);
+pub extern (C) def  glNormal3d( nx : GLdouble, ny : GLdouble, nz : GLdouble );
+pub extern (C) def  glNormal3f( nx : GLfloat,  ny : GLfloat,  nz : GLfloat);
+pub extern (C) def  glNormal3i( nx : GLint, ny : GLint, nz : GLint );
+pub extern (C) def  glNormal3s( nx : GLshort,  ny : GLshort,  nz : GLshort);
+
+pub extern (C) def  glNormal3bv( v : &GLbyte);
+pub extern (C) def  glNormal3dv( v : &GLdouble);
+pub extern (C) def  glNormal3fv( v : &GLfloat);
+pub extern (C) def  glNormal3iv( v : &GLint);
+pub extern (C) def  glNormal3sv( v : &GLshort);
+
+
+pub extern (C) def  glIndexd( c : GLdouble);
+pub extern (C) def  glIndexf( c : GLfloat );
+pub extern (C) def  glIndexi( c : GLint );
+pub extern (C) def  glIndexs( c : GLshort );
+pub extern (C) def  glIndexub( c : GLubyte);  /* 1.1 */
+
+pub extern (C) def  glIndexdv( c : &GLdouble);
+pub extern (C) def  glIndexfv( c : &GLfloat);
+pub extern (C) def  glIndexiv( c : &GLint);
+pub extern (C) def  glIndexsv( c : &GLshort );
+pub extern (C) def  glIndexubv( c : &GLubyte );  /* 1.1 */
+
+pub extern (C) def  glColor3b( red : GLbyte, green : GLbyte, blue : GLbyte );
+pub extern (C) def  glColor3d( red : GLdouble, green : GLdouble, blue : GLdouble );
+pub extern (C) def  glColor3f( red : GLfloat, green : GLfloat, blue : GLfloat );
+pub extern (C) def  glColor3i( red : GLint, green : GLint, blue : GLint );
+pub extern (C) def  glColor3s( red : GLshort, green : GLshort, blue : GLshort );
+pub extern (C) def  glColor3ub( red : GLubyte, green : GLubyte, blue : GLubyte );
+pub extern (C) def  glColor3ui( red : GLuint, green : GLuint, blue : GLuint );
+pub extern (C) def  glColor3us( red : GLushort, green : GLushort, blue : GLushort );
+
+pub extern (C) def  glColor4b( red : GLbyte, green : GLbyte,
+                           blue : GLbyte, alpha : GLbyte );
+pub extern (C) def  glColor4d( red : GLdouble, green : GLdouble,
+                           blue : GLdouble, alpha : GLdouble );
+pub extern (C) def  glColor4f( red : GLfloat, green : GLfloat,
+                           blue : GLfloat, alpha : GLfloat );
+pub extern (C) def  glColor4i( red : GLint, green : GLint,
+                           blue : GLint, alpha : GLint );
+pub extern (C) def  glColor4s( red : GLshort, green : GLshort,
+                           blue : GLshort, alpha : GLshort );
+pub extern (C) def  glColor4ub( red : GLubyte, green : GLubyte,
+                            blue : GLubyte, alpha : GLubyte );
+pub extern (C) def  glColor4ui( red : GLuint, green : GLuint,
+                            blue : GLuint, alpha : GLuint );
+pub extern (C) def  glColor4us( red : GLushort, green : GLushort,
+                            blue : GLushort, alpha : GLushort );
+
+
+pub extern (C) def  glColor3bv( v : &GLbyte);
+pub extern (C) def  glColor3dv( v : &GLdouble);
+pub extern (C) def  glColor3fv( v : &GLfloat);
+pub extern (C) def  glColor3iv( v : &GLint);
+pub extern (C) def  glColor3sv( v : &GLshort);
+pub extern (C) def  glColor3ubv( v : &GLubyte);
+pub extern (C) def  glColor3uiv( v : &GLuint);
+pub extern (C) def  glColor3usv( v : &GLushort);
+
+pub extern (C) def  glColor4bv( v : &GLbyte);
+pub extern (C) def  glColor4dv( v : &GLdouble);
+pub extern (C) def  glColor4fv( v : &GLfloat);
+pub extern (C) def  glColor4iv( v : &GLint);
+pub extern (C) def  glColor4sv( v : &GLshort);
+pub extern (C) def  glColor4ubv( v : &GLubyte);
+pub extern (C) def  glColor4uiv( v : &GLuint);
+pub extern (C) def  glColor4usv( v : &GLushort);
+
+
+pub extern (C) def  glTexCoord1d( s : GLdouble );
+pub extern (C) def  glTexCoord1f( s : GLfloat );
+pub extern (C) def  glTexCoord1i( s : GLint );
+pub extern (C) def  glTexCoord1s( s : GLshort );
+
+pub extern (C) def  glTexCoord2d( s : GLdouble, t : GLdouble );
+pub extern (C) def  glTexCoord2f( s : GLfloat, t : GLfloat );
+pub extern (C) def  glTexCoord2i( s : GLint, t : GLint );
+pub extern (C) def  glTexCoord2s( s : GLshort, t : GLshort );
+
+pub extern (C) def  glTexCoord3d( s : GLdouble, t : GLdouble, r : GLdouble );
+pub extern (C) def  glTexCoord3f( s : GLfloat, t : GLfloat, r : GLfloat );
+pub extern (C) def  glTexCoord3i( s : GLint, t : GLint, r : GLint );
+pub extern (C) def  glTexCoord3s( s : GLshort, t : GLshort, r : GLshort );
+
+pub extern (C) def  glTexCoord4d( s : GLdouble, t : GLdouble, r : GLdouble, q : GLdouble );
+pub extern (C) def  glTexCoord4f( s : GLfloat, t : GLfloat, r : GLfloat, q : GLfloat );
+pub extern (C) def  glTexCoord4i( s : GLint, t : GLint, r : GLint, q : GLint );
+pub extern (C) def  glTexCoord4s( s : GLshort, t : GLshort, r : GLshort, q : GLshort );
+
+pub extern (C) def  glTexCoord1dv( v : &GLdouble);
+pub extern (C) def  glTexCoord1fv( v : &GLfloat);
+pub extern (C) def  glTexCoord1iv( v : &GLint);
+pub extern (C) def  glTexCoord1sv( v : &GLshort);
+
+pub extern (C) def  glTexCoord2dv( v : &GLdouble);
+pub extern (C) def  glTexCoord2fv( v : &GLfloat);
+pub extern (C) def  glTexCoord2iv( v : &GLint);
+pub extern (C) def  glTexCoord2sv( v : &GLshort);
+
+pub extern (C) def  glTexCoord3dv( v : &GLdouble);
+pub extern (C) def  glTexCoord3fv( v : &GLfloat);
+pub extern (C) def  glTexCoord3iv( v : &GLint);
+pub extern (C) def  glTexCoord3sv( v : &GLshort);
+
+pub extern (C) def  glTexCoord4dv( v : &GLdouble);
+pub extern (C) def  glTexCoord4fv( v : &GLfloat);
+pub extern (C) def  glTexCoord4iv( v : &GLint);
+pub extern (C) def  glTexCoord4sv( v : &GLshort);
+
+
+pub extern (C) def  glRasterPos2d( x : GLdouble, y : GLdouble );
+pub extern (C) def  glRasterPos2f( x : GLfloat, y : GLfloat );
+pub extern (C) def  glRasterPos2i( x : GLint, y : GLint );
+pub extern (C) def  glRasterPos2s( x : GLshort, y : GLshort );
+
+pub extern (C) def  glRasterPos3d( x : GLdouble, y : GLdouble, z : GLdouble );
+pub extern (C) def  glRasterPos3f( x : GLfloat, y : GLfloat, z : GLfloat );
+pub extern (C) def  glRasterPos3i( x : GLint, y : GLint, z : GLint );
+pub extern (C) def  glRasterPos3s( x : GLshort, y : GLshort, z : GLshort );
+
+pub extern (C) def  glRasterPos4d( x : GLdouble, y : GLdouble, z : GLdouble, w : GLdouble );
+pub extern (C) def  glRasterPos4f( x : GLfloat, y : GLfloat, z : GLfloat, w : GLfloat );
+pub extern (C) def  glRasterPos4i( x : GLint, y : GLint, z : GLint, w : GLint );
+pub extern (C) def  glRasterPos4s( x : GLshort, y : GLshort, z : GLshort, w : GLshort );
+
+pub extern (C) def  glRasterPos2dv( v : &GLdouble);
+pub extern (C) def  glRasterPos2fv( v : &GLfloat);
+pub extern (C) def  glRasterPos2iv( v : &GLint);
+pub extern (C) def  glRasterPos2sv( v : &GLshort);
+
+pub extern (C) def  glRasterPos3dv( v : &GLdouble);
+pub extern (C) def  glRasterPos3fv( v : &GLfloat);
+pub extern (C) def  glRasterPos3iv( v : &GLint);
+pub extern (C) def  glRasterPos3sv( v : &GLshort);
+
+pub extern (C) def  glRasterPos4dv( v : &GLdouble);
+pub extern (C) def  glRasterPos4fv( v : &GLfloat);
+pub extern (C) def  glRasterPos4iv( v : &GLint);
+pub extern (C) def  glRasterPos4sv( v : &GLshort);
+
+
+pub extern (C) def  glRectd( x1 : GLdouble, y1 : GLdouble, x2 : GLdouble, y2 : GLdouble );
+pub extern (C) def  glRectf( x1 : GLfloat, y1 : GLfloat, x2 : GLfloat, y2 : GLfloat );
+pub extern (C) def  glRecti( x1 : GLint, y1 : GLint, x2 : GLint, y2 : GLint );
+pub extern (C) def  glRects( x1 : GLshort, y1 : GLshort, x2 : GLshort, y2 : GLshort );
+
+
+pub extern (C) def  glRectdv( v1 : &GLdouble, v2 : &GLdouble );
+pub extern (C) def  glRectfv( v1 : &GLfloat, v2 : &GLfloat );
+pub extern (C) def  glRectiv( v1 : &GLint, v2 : &GLint );
+pub extern (C) def  glRectsv( v1 : &GLshort, v2 : &GLshort );
+
+
+/*
+ * Vertex Arrays  (1.1)
+ */
+
+pub extern (C) def  glVertexPointer( size : GLint, type : GLenum,
+                                 stride : GLsizei, ptr : &GLvoid);
+
+pub extern (C) def  glNormalPointer( type : GLenum, stride : GLsizei,
+                                 ptr : &GLvoid);
+
+pub extern (C) def  glColorPointer( size : GLint, type : GLenum,
+                                stride : GLsizei, ptr : &GLvoid);
+
+pub extern (C) def  glIndexPointer( type : GLenum, stride : GLsizei,
+                                ptr : &GLvoid);
+
+pub extern (C) def  glTexCoordPointer( size : GLint, type : GLenum,
+                                   stride : GLsizei, ptr : &GLvoid);
+
+pub extern (C) def  glEdgeFlagPointer( stride : GLsizei, ptr : &GLvoid);
+
+pub extern (C) def  glGetPointerv( pname : GLenum,  dmut params : &(&GLvoid) );
+
+pub extern (C) def  glArrayElement( i : GLint );
+
+pub extern (C) def  glDrawArrays( mode : GLenum, first : GLint, count : GLsizei );
+
+pub extern (C) def  glDrawElements( mode : GLenum, count : GLsizei,
+                                type : GLenum, indices : &GLvoid);
+
+pub extern (C) def  glInterleavedArrays( format : GLenum, stride : GLsizei,
+                                     pointer : &GLvoid);
+
+/*
+ * Lighting
+ */
+
+pub extern (C) def  glShadeModel( mode : GLenum );
+
+pub extern (C) def  glLightf( light : GLenum, pname : GLenum, param : GLfloat );
+pub extern (C) def  glLighti( light : GLenum, pname : GLenum, param : GLint );
+pub extern (C) def  glLightfv( light : GLenum, pname : GLenum,
+                           params : &GLfloat);
+pub extern (C) def  glLightiv( light : GLenum, pname : GLenum,
+                           params : &GLint);
+
+pub extern (C) def  glGetLightfv( light : GLenum, pname : GLenum,
+                              dmut params : &GLfloat );
+pub extern (C) def  glGetLightiv( light : GLenum, pname : GLenum,
+                              dmut params : &GLint );
+
+pub extern (C) def  glLightModelf( pname : GLenum, param : GLfloat );
+pub extern (C) def  glLightModeli( pname : GLenum, param : GLint );
+pub extern (C) def  glLightModelfv( pname : GLenum, params : &GLfloat);
+pub extern (C) def  glLightModeliv( pname : GLenum, params : &GLint);
+
+pub extern (C) def  glMaterialf( face : GLenum, pname : GLenum, param : GLfloat );
+pub extern (C) def  glMateriali( face : GLenum, pname : GLenum, param : GLint );
+pub extern (C) def  glMaterialfv( face : GLenum, pname : GLenum, params : &GLfloat);
+pub extern (C) def  glMaterialiv( face : GLenum, pname : GLenum, params : &GLint);
+
+pub extern (C) def  glGetMaterialfv( face : GLenum, pname : GLenum,  dmut params : &GLfloat );
+pub extern (C) def  glGetMaterialiv( face : GLenum, pname : GLenum,  dmut params : &GLint );
+
+pub extern (C) def  glColorMaterial( face : GLenum, mode : GLenum );
+
+
+/*
+ * Raster functions
+ */
+
+pub extern (C) def  glPixelZoom( xfactor : GLfloat, yfactor : GLfloat );
+
+pub extern (C) def  glPixelStoref( pname : GLenum, param : GLfloat );
+pub extern (C) def  glPixelStorei( pname : GLenum, param : GLint );
+
+pub extern (C) def  glPixelTransferf( pname : GLenum, param : GLfloat );
+pub extern (C) def  glPixelTransferi( pname : GLenum, param : GLint );
+
+pub extern (C) def  glPixelMapfv( map : GLenum, mapsize : GLsizei,
+                              values : &GLfloat);
+pub extern (C) def  glPixelMapuiv( map : GLenum, mapsize : GLsizei,
+                               values : &GLuint);
+pub extern (C) def  glPixelMapusv( map : GLenum, mapsize : GLsizei,
+                               values : &GLushort);
+
+pub extern (C) def  glGetPixelMapfv( map : GLenum,  dmut values : &GLfloat );
+pub extern (C) def  glGetPixelMapuiv( map : GLenum,  dmut values : &GLuint );
+pub extern (C) def  glGetPixelMapusv( map : GLenum,  dmut values : &GLushort );
+
+pub extern (C) def  glBitmap( width : GLsizei, height : GLsizei,
+                          xorig : GLfloat, yorig : GLfloat,
+                          xmove : GLfloat, ymove : GLfloat,
+                          bitmap : &GLubyte);
+
+pub extern (C) def  glReadPixels( x : GLint, y : GLint,
+                              width : GLsizei, height : GLsizei,
+                              format : GLenum, type : GLenum,
+                              dmut pixels : &GLvoid );
+
+pub extern (C) def  glDrawPixels( width : GLsizei, height : GLsizei,
+                              format : GLenum, type : GLenum,
+                              pixels : &GLvoid);
+
+pub extern (C) def  glCopyPixels( x : GLint, y : GLint,
+                              width : GLsizei, height : GLsizei,
+                              type : GLenum );
+
+/*
+ * Stenciling
+ */
+
+pub extern (C) def  glStencilFunc( func : GLenum, ref_ : GLint, mask : GLuint );
+
+pub extern (C) def  glStencilMask( mask : GLuint );
+
+pub extern (C) def  glStencilOp( fail : GLenum, zfail : GLenum, zpass : GLenum );
+
+pub extern (C) def  glClearStencil( s : GLint );
+
+
+
+/*
+ * Texture mapping
+ */
+
+pub extern (C) def  glTexGend( coord : GLenum, pname : GLenum, param : GLdouble );
+pub extern (C) def  glTexGenf( coord : GLenum, pname : GLenum, param : GLfloat );
+pub extern (C) def  glTexGeni( coord : GLenum, pname : GLenum, param : GLint );
+
+pub extern (C) def  glTexGendv( coord : GLenum, pname : GLenum, params : &GLdouble);
+pub extern (C) def  glTexGenfv( coord : GLenum, pname : GLenum, params : &GLfloat);
+pub extern (C) def  glTexGeniv( coord : GLenum, pname : GLenum, params : &GLint);
+
+pub extern (C) def  glGetTexGendv( coord : GLenum, pname : GLenum,  dmut params : &GLdouble );
+pub extern (C) def  glGetTexGenfv( coord : GLenum, pname : GLenum,  dmut params : &GLfloat );
+pub extern (C) def  glGetTexGeniv( coord : GLenum, pname : GLenum,  dmut params : &GLint );
+
+
+pub extern (C) def  glTexEnvf( target : GLenum, pname : GLenum, param : GLfloat );
+pub extern (C) def  glTexEnvi( target : GLenum, pname : GLenum, param : GLint );
+
+pub extern (C) def  glTexEnvfv( target : GLenum, pname : GLenum, params : &GLfloat);
+pub extern (C) def  glTexEnviv( target : GLenum, pname : GLenum, params : &GLint);
+
+pub extern (C) def  glGetTexEnvfv( target : GLenum, pname : GLenum,  dmut params : &GLfloat );
+pub extern (C) def  glGetTexEnviv( target : GLenum, pname : GLenum,  dmut params : &GLint );
+
+
+pub extern (C) def  glTexParameterf( target : GLenum, pname : GLenum, param : GLfloat );
+pub extern (C) def  glTexParameteri( target : GLenum, pname : GLenum, param : GLint );
+
+pub extern (C) def  glTexParameterfv( target : GLenum, pname : GLenum,
+                                  params : &GLfloat);
+
+pub extern (C) def  glTexParameteriv( target : GLenum, pname : GLenum,
+                                  params : &GLint);
+
+pub extern (C) def  glGetTexParameterfv( target : GLenum,
+                                     pname : GLenum,  dmut params : &GLfloat);
+pub extern (C) def  glGetTexParameteriv( target : GLenum,
+                                     pname : GLenum,  dmut params : &GLint );
+
+pub extern (C) def  glGetTexLevelParameterfv( target : GLenum, level : GLint,
+                                          pname : GLenum,  dmut params : &GLfloat );
+pub extern (C) def  glGetTexLevelParameteriv( target : GLenum, level : GLint,
+                                          pname : GLenum,  dmut params : &GLint );
+
+
+pub extern (C) def  glTexImage1D( target : GLenum, level : GLint,
+                              internalFormat : GLint,
+                              width : GLsizei, border : GLint,
+                              format : GLenum, type : GLenum,
+                              pixels : &GLvoid);
+
+pub extern (C) def  glTexImage2D( target : GLenum, level : GLint,
+                              internalFormat : GLint,
+                              width : GLsizei, height : GLsizei,
+                              border : GLint, format : GLenum, type : GLenum,
+                              pixels : &GLvoid);
+
+pub extern (C) def  glGetTexImage( target : GLenum, level : GLint,
+                               format : GLenum, type : GLenum,
+                               dmut pixels : &GLvoid );
+
+
+/* 1.1 functions */
+
+pub extern (C) def  glGenTextures( n : GLsizei,  dmut textures : &GLuint );
+
+pub extern (C) def  glDeleteTextures( n : GLsizei, textures : &GLuint);
+
+pub extern (C) def  glBindTexture( target : GLenum, texture : GLuint );
+
+pub extern (C) def  glPrioritizeTextures( n : GLsizei,
+                                      textures : &GLuint,
+                                      priorities : &GLclampf);
+
+pub extern (C) def  glAreTexturesResident( n : GLsizei,
+                                       textures : &GLuint,
+                                       dmut residences : &GLboolean )-> GLboolean;
+
+pub extern (C) def glIsTexture( texture : GLuint )-> GLboolean;
+
+
+pub extern (C) def  glTexSubImage1D( target : GLenum, level : GLint,
+                                 xoffset : GLint,
+                                 width : GLsizei, format : GLenum,
+                                 type : GLenum, pixels : &GLvoid);
+
+
+pub extern (C) def  glTexSubImage2D( target : GLenum, level : GLint,
+                                 xoffset : GLint, yoffset : GLint,
+                                 width : GLsizei, height : GLsizei,
+                                 format : GLenum, type : GLenum,
+                                 pixels : &GLvoid);
+
+
+pub extern (C) def  glCopyTexImage1D( target : GLenum, level : GLint,
+                                  internalformat : GLenum,
+                                  x : GLint, y : GLint,
+                                  width : GLsizei, border : GLint );
+
+
+pub extern (C) def  glCopyTexImage2D( target : GLenum, level : GLint,
+                                  internalformat : GLenum,
+                                  x : GLint, y : GLint,
+                                  width : GLsizei, height : GLsizei,
+                                  border : GLint );
+
+
+pub extern (C) def  glCopyTexSubImage1D( target : GLenum, level : GLint,
+                                     xoffset : GLint, x : GLint, y : GLint,
+                                     width : GLsizei );
+
+
+pub extern (C) def  glCopyTexSubImage2D( target : GLenum, level : GLint,
+                                     xoffset : GLint, yoffset : GLint,
+                                     x : GLint, y : GLint,
+                                     width : GLsizei, height : GLsizei );
+
+
+/*
+ * Evaluators
+ */
+
+pub extern (C) def  glMap1d( target : GLenum, u1 : GLdouble, u2 : GLdouble,
+                         stride : GLint,
+                         order : GLint, points : &GLdouble);
+pub extern (C) def  glMap1f( target : GLenum, u1 : GLfloat, u2 : GLfloat,
+                         stride : GLint,
+                         order : GLint, points : &GLfloat);
+
+pub extern (C) def  glMap2d( target : GLenum,
+		         u1 : GLdouble, u2 : GLdouble, ustride : GLint, uorder : GLint,
+		         v1 : GLdouble, v2 : GLdouble, vstride : GLint, vorder : GLint,
+		         points : &GLdouble);
+pub extern (C) def  glMap2f( target : GLenum,
+		         u1 : GLfloat, u2 : GLfloat, ustride : GLint, uorder : GLint,
+		         v1 : GLfloat, v2 : GLfloat, vstride : GLint, vorder : GLint,
+		         points : &GLfloat);
+
+pub extern (C) def  glGetMapdv( target : GLenum, query : GLenum,  dmut v : &GLdouble );
+pub extern (C) def  glGetMapfv( target : GLenum, query : GLenum,  dmut v : &GLfloat );
+pub extern (C) def  glGetMapiv( target : GLenum, query : GLenum,  dmut v : &GLint );
+
+pub extern (C) def  glEvalCoord1d( u : GLdouble );
+pub extern (C) def  glEvalCoord1f( u : GLfloat );
+
+pub extern (C) def  glEvalCoord1dv( u : &GLdouble);
+pub extern (C) def  glEvalCoord1fv( u : &GLfloat);
+
+pub extern (C) def  glEvalCoord2d( u : GLdouble, v : GLdouble );
+pub extern (C) def  glEvalCoord2f( u : GLfloat, v : GLfloat );
+
+pub extern (C) def  glEvalCoord2dv( u : &GLdouble);
+pub extern (C) def  glEvalCoord2fv( u : &GLfloat);
+
+pub extern (C) def  glMapGrid1d( un : GLint, u1 : GLdouble, u2 : GLdouble );
+pub extern (C) def  glMapGrid1f( un : GLint, u1 : GLfloat, u2 : GLfloat );
+
+pub extern (C) def  glMapGrid2d( un : GLint, u1 : GLdouble, u2 : GLdouble,
+                             vn : GLint, v1 : GLdouble, v2 : GLdouble );
+pub extern (C) def  glMapGrid2f( un : GLint, u1 : GLfloat, u2 : GLfloat,
+                             vn : GLint, v1 : GLfloat, v2 : GLfloat );
+
+pub extern (C) def  glEvalPoint1( i : GLint );
+
+pub extern (C) def  glEvalPoint2( i : GLint, j : GLint );
+
+pub extern (C) def  glEvalMesh1( mode : GLenum, i1 : GLint, i2 : GLint );
+
+pub extern (C) def  glEvalMesh2( mode : GLenum, i1 : GLint, i2 : GLint, j1 : GLint, j2 : GLint );
+
+
+/*
+ * Fog
+ */
+
+pub extern (C) def  glFogf( pname : GLenum, param : GLfloat );
+
+pub extern (C) def  glFogi( pname : GLenum, param : GLint );
+
+pub extern (C) def  glFogfv( pname : GLenum, params : &GLfloat);
+
+pub extern (C) def  glFogiv( pname : GLenum, params : &GLint);
+
+
+/*
+ * Selection and Feedback
+ */
+
+pub extern (C) def  glFeedbackBuffer( size : GLsizei, type : GLenum,  dmut buffer : &GLfloat );
+
+pub extern (C) def  glPassThrough( token : GLfloat );
+
+pub extern (C) def  glSelectBuffer( size : GLsizei, dmut buffer : &GLuint );
+
+pub extern (C) def  glInitNames( );
+
+pub extern (C) def  glLoadName( name : GLuint );
+
+pub extern (C) def  glPushName( name : GLuint );
+
+pub extern (C) def  glPopName( );
+
+
+
+/*
+ * Open : GL1.2
+ */
+
+
+pub extern (C) def  glDrawRangeElements( mode : GLenum, start : GLuint,
+	                             end : GLuint, count : GLsizei, type : GLenum, indices : &GLvoid);
+
+pub extern (C) def  glTexImage3D( target : GLenum, level : GLint,
+                              internalFormat : GLint,
+                              width : GLsizei, height : GLsizei,
+                              depth : GLsizei, border : GLint,
+                              format : GLenum, type : GLenum,
+                              pixels : &GLvoid);
+
+pub extern (C) def glTexSubImage3D( target : GLenum, level : GLint,
+                                xoffset : GLint, yoffset : GLint,
+                                zoffset : GLint, width : GLsizei,
+                                height : GLsizei, depth : GLsizei,
+                                format : GLenum,
+                                type : GLenum, pixels : &GLvoid);
+
+pub extern (C) def glCopyTexSubImage3D( target : GLenum, level : GLint,
+                                    xoffset : GLint, yoffset : GLint,
+                                    zoffset : GLint, x : GLint,
+                                    y : GLint, width : GLsizei,
+                                    height : GLsizei );
+
+
+
+
+pub aka GL_COLOR_TABLE				= 0x80D0u32
+pub aka GL_POST_CONVOLUTION_COLOR_TABLE		= 0x80D1u32
+pub aka GL_POST_COLOR_MATRIX_COLOR_TABLE	= 0x80D2u32
+pub aka GL_PROXY_COLOR_TABLE			= 0x80D3u32
+pub aka GL_PROXY_POST_CONVOLUTION_COLOR_TABLE	= 0x80D4u32
+pub aka GL_PROXY_POST_COLOR_MATRIX_COLOR_TABLE	= 0x80D5u32
+pub aka GL_COLOR_TABLE_SCALE			= 0x80D6u32
+pub aka GL_COLOR_TABLE_BIAS			= 0x80D7u32
+pub aka GL_COLOR_TABLE_FORMAT			= 0x80D8u32
+pub aka GL_COLOR_TABLE_WIDTH			= 0x80D9u32
+pub aka GL_COLOR_TABLE_RED_SIZE			= 0x80DAu32
+pub aka GL_COLOR_TABLE_GREEN_SIZE		= 0x80DBu32
+pub aka GL_COLOR_TABLE_BLUE_SIZE		= 0x80DCu32
+pub aka GL_COLOR_TABLE_ALPHA_SIZE		= 0x80DDu32
+pub aka GL_COLOR_TABLE_LUMINANCE_SIZE		= 0x80DEu32
+pub aka GL_COLOR_TABLE_INTENSITY_SIZE		= 0x80DFu32
+pub aka GL_CONVOLUTION_1D			= 0x8010u32
+pub aka GL_CONVOLUTION_2D			= 0x8011u32
+pub aka GL_SEPARABLE_2D				= 0x8012u32
+pub aka GL_CONVOLUTION_BORDER_MODE		= 0x8013u32
+pub aka GL_CONVOLUTION_FILTER_SCALE		= 0x8014u32
+pub aka GL_CONVOLUTION_FILTER_BIAS		= 0x8015u32
+pub aka GL_REDUCE				= 0x8016u32
+pub aka GL_CONVOLUTION_FORMAT			= 0x8017u32
+pub aka GL_CONVOLUTION_WIDTH			= 0x8018u32
+pub aka GL_CONVOLUTION_HEIGHT			= 0x8019u32
+pub aka GL_MAX_CONVOLUTION_WIDTH		= 0x801Au32
+pub aka GL_MAX_CONVOLUTION_HEIGHT		= 0x801Bu32
+pub aka GL_POST_CONVOLUTION_RED_SCALE		= 0x801Cu32
+pub aka GL_POST_CONVOLUTION_GREEN_SCALE		= 0x801Du32
+pub aka GL_POST_CONVOLUTION_BLUE_SCALE		= 0x801Eu32
+pub aka GL_POST_CONVOLUTION_ALPHA_SCALE		= 0x801Fu32
+pub aka GL_POST_CONVOLUTION_RED_BIAS		= 0x8020u32
+pub aka GL_POST_CONVOLUTION_GREEN_BIAS		= 0x8021u32
+pub aka GL_POST_CONVOLUTION_BLUE_BIAS		= 0x8022u32
+pub aka GL_POST_CONVOLUTION_ALPHA_BIAS		= 0x8023u32
+pub aka GL_CONSTANT_BORDER			= 0x8151u32
+pub aka GL_REPLICATE_BORDER			= 0x8153u32
+pub aka GL_CONVOLUTION_BORDER_COLOR		= 0x8154u32
+pub aka GL_COLOR_MATRIX				= 0x80B1u32
+pub aka GL_COLOR_MATRIX_STACK_DEPTH		= 0x80B2u32
+pub aka GL_MAX_COLOR_MATRIX_STACK_DEPTH		= 0x80B3u32
+pub aka GL_POST_COLOR_MATRIX_RED_SCALE		= 0x80B4u32
+pub aka GL_POST_COLOR_MATRIX_GREEN_SCALE	= 0x80B5u32
+pub aka GL_POST_COLOR_MATRIX_BLUE_SCALE		= 0x80B6u32
+pub aka GL_POST_COLOR_MATRIX_ALPHA_SCALE	= 0x80B7u32
+pub aka GL_POST_COLOR_MATRIX_RED_BIAS		= 0x80B8u32
+pub aka GL_POST_COLOR_MATRIX_GREEN_BIAS		= 0x80B9u32
+pub aka GL_POST_COLOR_MATRIX_BLUE_BIAS		= 0x80BAu32
+pub aka GL_POST_COLOR_MATRIX_ALPHA_BIAS		= 0x80BBu32
+pub aka GL_HISTOGRAM				= 0x8024u32
+pub aka GL_PROXY_HISTOGRAM			= 0x8025u32
+pub aka GL_HISTOGRAM_WIDTH			= 0x8026u32
+pub aka GL_HISTOGRAM_FORMAT			= 0x8027u32
+pub aka GL_HISTOGRAM_RED_SIZE			= 0x8028u32
+pub aka GL_HISTOGRAM_GREEN_SIZE			= 0x8029u32
+pub aka GL_HISTOGRAM_BLUE_SIZE			= 0x802Au32
+pub aka GL_HISTOGRAM_ALPHA_SIZE			= 0x802Bu32
+pub aka GL_HISTOGRAM_LUMINANCE_SIZE		= 0x802Cu32
+pub aka GL_HISTOGRAM_SINK			= 0x802Du32
+pub aka GL_MINMAX				= 0x802Eu32
+pub aka GL_MINMAX_FORMAT			= 0x802Fu32
+pub aka GL_MINMAX_SINK				= 0x8030u32
+pub aka GL_TABLE_TOO_LARGE			= 0x8031u32
+pub aka GL_BLEND_EQUATION			= 0x8009u32
+pub aka GL_MIN					= 0x8007u32
+pub aka GL_MAX					= 0x8008u32
+pub aka GL_FUNC_ADD				= 0x8006u32
+pub aka GL_FUNC_SUBTRACT			= 0x800Au32
+pub aka GL_FUNC_REVERSE_SUBTRACT		= 0x800Bu32
+pub aka GL_BLEND_COLOR				= 0x8005u32
+
+
+    
+pub extern (C) def glColorTable( target : GLenum, internalformat : GLenum,
+                             width : GLsizei, format : GLenum,
+                             type : GLenum , table : &GLvoid );
+
+pub extern (C) def glColorSubTable( target : GLenum,
+                                start : GLsizei,  count : GLsizei,
+                                format : GLenum, type : GLenum ,
+                                data : &GLvoid );
+
+pub extern (C) def glColorTableParameteriv(target : GLenum, pname : GLenum ,
+                                       params : &GLint);
+
+pub extern (C) def glColorTableParameterfv(target : GLenum, pname : GLenum ,
+                                       params : &GLfloat);
+
+pub extern (C) def glCopyColorSubTable( target : GLenum, start : GLsizei ,
+                                    x : GLint , y : GLint , width : GLsizei );
+
+pub extern (C) def glCopyColorTable( target : GLenum, internalformat : GLenum,
+                                 x : GLint ,  y : GLint, width : GLsizei );
+
+pub extern (C) def glGetColorTable( target : GLenum, format : GLenum,
+                                type : GLenum , dmut table : &GLvoid );
+
+pub extern (C) def glGetColorTableParameterfv( target : GLenum, pname : GLenum ,
+                                           dmut params : &GLfloat );
+
+pub extern (C) def glGetColorTableParameteriv( target : GLenum, pname : GLenum ,
+                                           dmut params : &GLint );
+
+pub extern (C) def glBlendEquation( mode : GLenum  );
+
+pub extern (C) def glBlendColor( red : GLclampf , green : GLclampf ,
+                             blue : GLclampf , alpha : GLclampf  );
+
+pub extern (C) def glHistogram( target : GLenum, width : GLsizei,
+			    internalformat : GLenum, sink : GLboolean  );
+
+pub extern (C) def glResetHistogram( target : GLenum );
+
+pub extern (C) def glGetHistogram( target : GLenum, reset : GLboolean ,
+			       format : GLenum, type : GLenum ,
+			       dmut values : &GLvoid );
+
+pub extern (C) def glGetHistogramParameterfv( target : GLenum, pname : GLenum ,
+					  dmut params : &GLfloat );
+
+pub extern (C) def glGetHistogramParameteriv( target : GLenum, pname : GLenum ,
+					  dmut params : &GLint );
+
+pub extern (C) def glMinmax( target : GLenum, internalformat : GLenum,
+			 sink : GLboolean  );
+
+pub extern (C) def glResetMinmax( target : GLenum );
+
+pub extern (C) def glGetMinmax( target : GLenum, reset : GLboolean ,
+                            format : GLenum, types : GLenum ,
+                            dmut values : &GLvoid );
+
+pub extern (C) def glGetMinmaxParameterfv( target : GLenum, pname : GLenum ,
+				       dmut params : &GLfloat );
+
+pub extern (C) def glGetMinmaxParameteriv( target : GLenum, pname : GLenum ,
+				       params : &GLint );
+
+pub extern (C) def glConvolutionFilter1D( target : GLenum,
+	                              internalformat : GLenum, width : GLsizei, format : GLenum,  type : GLenum,
+	                              image : &GLvoid );
+
+pub extern (C) def glConvolutionFilter2D( target : GLenum,
+	                              internalformat : GLenum, width : GLsizei, height : GLsizei, format : GLenum,
+	                              type : GLenum , image : &GLvoid );
+
+pub extern (C) def glConvolutionParameterf( target : GLenum, pname : GLenum ,
+	                                params : GLfloat  );
+
+pub extern (C) def glConvolutionParameterfv( target : GLenum, pname : GLenum ,
+	                                 params : &GLfloat );
+
+pub extern (C) def glConvolutionParameteri( target : GLenum, pname : GLenum ,
+	                                params : GLint  );
+
+pub extern (C) def glConvolutionParameteriv( target : GLenum, pname : GLenum ,
+	                                 params : &GLint );
+
+pub extern (C) def glCopyConvolutionFilter1D( target : GLenum,
+	                                  internalformat : GLenum, x : GLint , y : GLint , width : GLsizei );
+
+pub extern (C) def glCopyConvolutionFilter2D( target : GLenum,
+	                                  internalformat : GLenum, x : GLint , y : GLint , width : GLsizei,
+	                                  height : GLsizei);
+
+pub extern (C) def glGetConvolutionFilter( target : GLenum, format : GLenum,
+	                               type : GLenum, dmut image : &GLvoid );
+
+pub extern (C) def glGetConvolutionParameterfv( target : GLenum,  pname : GLenum,
+	                                    dmut params : &GLfloat );
+
+pub extern (C) def glGetConvolutionParameteriv( target : GLenum, pname : GLenum ,
+	                                    dmut params : &GLint );
+
+pub extern (C) def glSeparableFilter2D( target : GLenum,
+	                            internalformat : GLenum, width : GLsizei, height : GLsizei, format : GLenum,
+	                            type : GLenum , row : &GLvoid, column : &GLvoid );
+
+pub extern (C) def glGetSeparableFilter( target : GLenum, format : GLenum,
+	                             type : GLenum, dmut row : &GLvoid, dmut column : &GLvoid, span : &GLvoid );
+
+
+/*
+ * GL_ARB_multitexture (ARB extension 1 and OpenGL 1.2.1)
+ */
+pub aka GL_ARB_multitexture = 1
+
+pub aka GL_TEXTURE0_ARB				= 0x84C0u32
+pub aka GL_TEXTURE1_ARB				= 0x84C1u32
+pub aka GL_TEXTURE2_ARB				= 0x84C2u32
+pub aka GL_TEXTURE3_ARB				= 0x84C3u32
+pub aka GL_TEXTURE4_ARB				= 0x84C4u32
+pub aka GL_TEXTURE5_ARB				= 0x84C5u32
+pub aka GL_TEXTURE6_ARB				= 0x84C6u32
+pub aka GL_TEXTURE7_ARB				= 0x84C7u32
+pub aka GL_TEXTURE8_ARB				= 0x84C8u32
+pub aka GL_TEXTURE9_ARB				= 0x84C9u32
+pub aka GL_TEXTURE10_ARB			= 0x84CAu32
+pub aka GL_TEXTURE11_ARB			= 0x84CBu32
+pub aka GL_TEXTURE12_ARB			= 0x84CCu32
+pub aka GL_TEXTURE13_ARB			= 0x84CDu32
+pub aka GL_TEXTURE14_ARB			= 0x84CEu32
+pub aka GL_TEXTURE15_ARB			= 0x84CFu32
+pub aka GL_TEXTURE16_ARB			= 0x84D0u32
+pub aka GL_TEXTURE17_ARB			= 0x84D1u32
+pub aka GL_TEXTURE18_ARB			= 0x84D2u32
+pub aka GL_TEXTURE19_ARB			= 0x84D3u32
+pub aka GL_TEXTURE20_ARB			= 0x84D4u32
+pub aka GL_TEXTURE21_ARB			= 0x84D5u32
+pub aka GL_TEXTURE22_ARB			= 0x84D6u32
+pub aka GL_TEXTURE23_ARB			= 0x84D7u32
+pub aka GL_TEXTURE24_ARB			= 0x84D8u32
+pub aka GL_TEXTURE25_ARB			= 0x84D9u32
+pub aka GL_TEXTURE26_ARB			= 0x84DAu32
+pub aka GL_TEXTURE27_ARB			= 0x84DBu32
+pub aka GL_TEXTURE28_ARB			= 0x84DCu32
+pub aka GL_TEXTURE29_ARB			= 0x84DDu32
+pub aka GL_TEXTURE30_ARB			= 0x84DEu32
+pub aka GL_TEXTURE31_ARB			= 0x84DFu32
+pub aka GL_ACTIVE_TEXTURE_ARB			= 0x84E0u32
+pub aka GL_CLIENT_ACTIVE_TEXTURE_ARB		= 0x84E1u32
+pub aka GL_MAX_TEXTURE_UNITS_ARB		= 0x84E2u32
+
+pub extern (C) def glActiveTextureARB(texture : GLenum);
+pub extern (C) def glClientActiveTextureARB(texture : GLenum);
+pub extern (C) def glMultiTexCoord1dARB(target : GLenum, s : GLdouble);
+pub extern (C) def glMultiTexCoord1dvARB(target : GLenum, v : &GLdouble);
+pub extern (C) def glMultiTexCoord1fARB(target : GLenum, s : GLfloat);
+pub extern (C) def glMultiTexCoord1fvARB(target : GLenum, v : &GLfloat);
+pub extern (C) def glMultiTexCoord1iARB(target : GLenum, s : GLint);
+pub extern (C) def glMultiTexCoord1ivARB(target : GLenum, v : &GLint);
+pub extern (C) def glMultiTexCoord1sARB(target : GLenum, s : GLshort);
+pub extern (C) def glMultiTexCoord1svARB(target : GLenum, v : &GLshort);
+pub extern (C) def glMultiTexCoord2dARB(target : GLenum, s : GLdouble, t : GLdouble);
+pub extern (C) def glMultiTexCoord2dvARB(target : GLenum, v : &GLdouble);
+pub extern (C) def glMultiTexCoord2fARB(target : GLenum, s : GLfloat, t : GLfloat);
+pub extern (C) def glMultiTexCoord2fvARB(target : GLenum, v : &GLfloat);
+pub extern (C) def glMultiTexCoord2iARB(target : GLenum, s : GLint, t : GLint);
+pub extern (C) def glMultiTexCoord2ivARB(target : GLenum, v : &GLint);
+pub extern (C) def glMultiTexCoord2sARB(target : GLenum, s : GLshort, t : GLshort);
+pub extern (C) def glMultiTexCoord2svARB(target : GLenum, v : &GLshort);
+pub extern (C) def glMultiTexCoord3dARB(target : GLenum, s : GLdouble, t : GLdouble, r : GLdouble);
+pub extern (C) def glMultiTexCoord3dvARB(target : GLenum, v : &GLdouble);
+pub extern (C) def glMultiTexCoord3fARB(target : GLenum, s : GLfloat, t : GLfloat, r : GLfloat);
+pub extern (C) def glMultiTexCoord3fvARB(target : GLenum, v : &GLfloat);
+pub extern (C) def glMultiTexCoord3iARB(target : GLenum, s : GLint, t : GLint, r : GLint);
+pub extern (C) def glMultiTexCoord3ivARB(target : GLenum, v : &GLint);
+pub extern (C) def glMultiTexCoord3sARB(target : GLenum, s : GLshort, t : GLshort, r : GLshort);
+pub extern (C) def glMultiTexCoord3svARB(target : GLenum, v : &GLshort);
+pub extern (C) def glMultiTexCoord4dARB(target : GLenum, s : GLdouble, t : GLdouble, r : GLdouble, q : GLdouble);
+pub extern (C) def glMultiTexCoord4dvARB(target : GLenum, v : &GLdouble);
+pub extern (C) def glMultiTexCoord4fARB(target : GLenum, s : GLfloat, t : GLfloat, r : GLfloat, q : GLfloat);
+pub extern (C) def glMultiTexCoord4fvARB(target : GLenum, v : &GLfloat);
+pub extern (C) def glMultiTexCoord4iARB(target : GLenum, s : GLint, t : GLint, r : GLint, q : GLint);
+pub extern (C) def glMultiTexCoord4ivARB(target : GLenum, v : &GLint);
+pub extern (C) def glMultiTexCoord4sARB(target : GLenum, s : GLshort, t : GLshort, r : GLshort, q : GLshort);
+pub extern (C) def glMultiTexCoord4svARB(target : GLenum, v : &GLshort);

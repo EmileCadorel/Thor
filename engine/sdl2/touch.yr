@@ -1,0 +1,52 @@
+mod sdl2::touch;
+
+pub aka SDL_TouchID = i64;
+pub aka SDL_FingerID = i64;
+
+pub enum
+| SDL_TOUCH_DEVICE_INVALID = -1
+| SDL_TOUCH_DEVICE_DIRECT = 0            /* touch screen with window-relative coordinates */
+| SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE = 1 /* trackpad with absolute device coordinates */
+| SDL_TOUCH_DEVICE_INDIRECT_RELATIVE = 2 /* trackpad with screen cursor-relative coordinates */
+ -> SDL_TouchDeviceType;
+
+pub struct 
+| id : SDL_FingerID
+| x : f32
+| y : f32
+| pressure : f32
+ -> SDL_Finger;
+
+/* Used as the device ID for mouse events simulated with touch input */
+pub aka SDL_TOUCH_MOUSEID = cast!u32 (-1);
+
+/* Used as the SDL_TouchID for touch events simulated with mouse input */
+pub aka SDL_MOUSE_TOUCHID = -1i64
+
+
+/* Function prototypes */
+
+/**
+ *  \brief Get the number of registered touch devices.
+ */
+pub extern (C) def SDL_GetNumTouchDevices()-> i32;
+
+/**
+ *  \brief Get the touch ID with the given index, or 0 if the index is invalid.
+ */
+pub extern (C) def SDL_GetTouchDevice(index : i32)-> SDL_TouchID;
+
+/**
+ * \brief Get the type of the given touch device.
+ */
+pub extern (C) def SDL_GetTouchDeviceType(touchID : SDL_TouchID)-> SDL_TouchDeviceType;
+
+/**
+ *  \brief Get the number of active fingers for a given touch device.
+ */
+pub extern (C) def SDL_GetNumTouchFingers(touchID : SDL_TouchID) -> i32;
+
+/**
+ *  \brief Get the finger object of the given touch, with the given index.
+ */
+pub extern (C) def SDL_GetTouchFinger(touchID : SDL_TouchID, index : i32)-> dmut &SDL_Finger;

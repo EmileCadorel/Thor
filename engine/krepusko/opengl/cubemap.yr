@@ -1,0 +1,144 @@
+mod krepusko::opengl::cubemap;
+import sdl2::_, std::fs::path;
+
+import krepusko::opengl::texture;
+
+pub class CubeMap {
+
+    /// the pointer to the GPU texture 
+    let mut _texture = 0u32;
+
+    /**
+     * Create a cube map from datas
+     * @params: 
+     *  - data: an array of 6 slice containing the data of the textures
+     *  - width: the width of the slices
+     *  - height: the height of the slices
+     *  - format: the format of the textures
+     */
+    pub self (data : [&(void)], w : [u32], h : [u32], format : [u32])
+        throws &TextureError
+    {
+        if (data.len != 6us) {
+
+        }
+        
+        glGenTextures (1, alias &self._texture);
+
+        glBindTexture (GL_TEXTURE_CUBE_MAP, self._texture);
+        glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, cast!i32 (GL_CLAMP_TO_EDGE));
+        glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, cast!i32 (GL_CLAMP_TO_EDGE));
+        glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, cast!i32 (GL_CLAMP_TO_EDGE));
+
+        glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, cast!i32 (GL_LINEAR));
+        glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, cast!i32 (GL_LINEAR));
+
+        for i in 0u32 .. 6u32 {
+            self.uploadData (i, data [i], w [i], h [i], format [i]);        
+        }
+        
+        glBindTexture (GL_TEXTURE_CUBE_MAP, 0u32);
+    } catch {
+        x : &TextureError => throw x;
+        _ : &OutOfArray =>   throw TextureError::new ("Need 6 textures to create a cubemap"s8);
+    }
+
+    /**
+     * Bind the texture to the current active texture
+     */
+    pub def bind (self) {
+        glBindTexture (GL_TEXTURE_CUBE_MAP, self._texture);
+    }
+
+    /**
+     * Unbind the texture 
+     */
+    pub def unbind (self) {
+        glBindTexture (GL_TEXTURE_CUBE_MAP, 0u32);
+    }
+
+    
+    impl Disposable {
+
+        /**
+         * Clear the content of the cubemap in the GPU memory
+         */
+        pub over dispose (mut self) {
+            if (self._texture != 0u32) {
+                glDeleteTextures (1, alias &self._texture);
+                self._texture = 0u32;
+            }
+        }
+    }
+
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }
+
+    /**
+     * Upload the data of a texture into the GPU
+     */
+    prv def uploadData (self, i : u32, data : &(void), w : u32, h : u32, format : u32)
+        throws &TextureError
+    {
+        match format {
+            SDL_PIXELFORMAT_RGBA32 => {
+                glTexImage2D (GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, cast!i32 (GL_RGBA), cast!i32 (w), cast!i32 (h), 0, GL_RGBA, GL_UNSIGNED_BYTE, cast!{&void} (data));
+            }
+            SDL_PIXELFORMAT_RGB24 => {
+                glTexImage2D (GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, cast!i32 (GL_RGB), cast!i32 (w), cast!i32 (h), 0, GL_RGB, GL_UNSIGNED_BYTE, cast!{&void} (data));
+            }
+            SDL_PIXELFORMAT_ARGB8888 => {
+                glTexImage2D (GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, cast!i32 (GL_RGBA), cast!i32 (w), cast!i32 (h), 0, GL_RGBA, GL_UNSIGNED_BYTE, cast!{&void} (data));
+            }
+            _ => {
+                import std::conv;
+                throw TextureError::new ("Unknown texture format : "s8 ~ format.to![c8] ());
+            }
+            
+        }
+    }
+  
+}
+
+/**
+ * Load a cube map texture from image files
+ * @params:
+ *  - file_names: an slice of 6 path to images
+ * @returns: a CubeMap containing the 6 iamges
+ * @throws: 
+ *  - &TextureError: if the loading failed
+ */
+pub def cubeMapFromFiles (file_names : [&Path])-> dmut &CubeMap
+    throws &TextureError
+{    
+    let mut datas : [mut &(void)] = [];
+    let dmut w : [u32]= [], dmut h : [u32] = [], dmut format : [u32] = [];
+    let dmut surf : [&SDL_Surface] = [];
+    
+    for i in 0u32 .. 6u32 {
+        let dmut s = IMG_Load (file_names [i].toStr ().ptr);
+        if (s is null) {
+            throw TextureError::new ("Failed to load texture : "s8 ~ file_names [i].toStr ());
+        }
+        
+        surf = alias (surf ~ [s]);
+        datas = alias (datas ~ [(*s).pixels]);
+        w = alias (w ~ [cast!u32 ((*s).w)]);
+        h = alias (h ~ [cast!u32 ((*s).h)]);
+        format = alias (format ~ [(*(*s).format).format]);
+    }
+
+    let dmut ret = CubeMap::new (datas, w, h, format);
+
+    for i in 0us .. surf.len {
+        SDL_FreeSurface (alias surf [i]);
+    }
+
+    alias ret
+} catch {
+    x : &TextureError => throw x;    
+    _ : &OutOfArray =>   throw TextureError::new ("Need 6 textures to create a cubemap"s8);
+    _ : &SegFault => throw TextureError::new ("Failed to load the textures (SDL2 error: seg fault)"s8);
+}

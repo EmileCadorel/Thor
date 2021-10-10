@@ -1,0 +1,401 @@
+mod krepusko::core::window;
+import std::io, std::conv;
+import sdl2::_;
+import std::config, std::config::conv;
+import krepusko::utils::option;
+
+/**
+ * Error thrown by the application when an error occur
+ */
+pub class WindowError over Exception {
+
+    pub let msg : [c8];
+    
+    pub self (msg : [c8]) with msg = msg {}
+
+    impl Streamable {
+
+        pub over toStream (self, dmut stream : &StringStream) {
+            self::super.toStream (alias stream);
+        }        
+        
+    }
+
+}
+
+pub class Window {
+
+    /// The width of the window
+    let mut _w : u32 = 0u32;
+
+    /// The height of the window
+    let mut _h : u32 = 0u32;
+
+    /// The name of the window
+    let mut _name : [c8] = ""s8;
+
+    /// The pointer to the sdl window
+    let dmut _sdlWindow : &SDL_Window = null;
+
+    /// The pointer to the sdl context
+    let dmut _glContext : &SDL_GLContext = null;
+
+    /// Flags to activate when entering 2d rendering
+    let mut _d2Flags : [u32] = [];
+
+    /// Flags to activate when entering 3d rendering
+    let mut _d3Flags : [u32] = [];
+
+    /// flag to pass to the clear function
+    let mut _clearInfos : u32 = 0u32;
+
+    /// Gamma correction
+    let mut _gamma : f32 = 1.0f;
+
+    /**
+     * Create an empty window that contains nothing
+     * @info: The window is not created until the call to the function configureOpenGL
+     */
+    pub self () {}
+
+    /**
+     * Change the dimension of the window
+     */
+    pub def setDimension (mut self, w : u32, h : u32) {
+        self._w = w;
+        self._h = h;
+        if (self._sdlWindow !is null) {
+            SDL_SetWindowSize (alias self._sdlWindow, cast!i32 (self._w), cast!i32 (self._h));
+        }
+    }
+
+    /**
+     * Change the name of the window
+     */
+    pub def setName (mut self, name : [c8]) {
+        self._name = name;
+        if (self._sdlWindow !is null) {
+            SDL_SetWindowTitle (alias self._sdlWindow, self._name.toStringZ ());
+        }
+    }
+
+    /**
+     * Configure the OpenGL context, and creates the window
+     */
+    pub def configureOpenGL (mut self, config : &Config)
+        throws &WindowError
+    {
+        if (SDL_Init (SDL_INIT_VIDEO) < 0) {
+            throw WindowError::new ("Failed to init video"s8);
+        }
+
+        if (SDL_Init (SDL_INIT_EVENTS) < 0) {
+            throw WindowError::new ("Failed to init events"s8);
+        }
+
+        if (TTF_Init () < 0) {
+            throw WindowError::new ("Failed to init ttf"s8);
+        }
+        
+        SDL_GL_SetAttribute (SDL_GLattr::SDL_GL_DOUBLEBUFFER, (config["nb-buffers"]?).toOr (2));
+        SDL_GL_SetAttribute (SDL_GLattr::SDL_GL_DEPTH_SIZE, (config["depth"]["size"]?).toOr (24));
+        SDL_GL_SetAttribute (SDL_GLattr::SDL_GL_MULTISAMPLESAMPLES, (config["msaa"]?).toOr (1));
+        SDL_GL_SetAttribute (SDL_GLattr::SDL_GL_CONTEXT_MAJOR_VERSION, (config["version"]?).toOr (4));
+        SDL_GL_SetAttribute (SDL_GLattr::SDL_GL_CONTEXT_MINOR_VERSION, (config["version"]?).toOr (4));
+        
+        SDL_GL_SetAttribute (SDL_GLattr::SDL_GL_CONTEXT_PROFILE_MASK, SDL_GLprofile::SDL_GL_CONTEXT_PROFILE_CORE);
+        
+
+        let flags = SDL_WindowFlags::SDL_WINDOW_INPUT_FOCUS | SDL_WindowFlags::SDL_WINDOW_MOUSE_FOCUS | SDL_WindowFlags::SDL_WINDOW_OPENGL;
+        self._sdlWindow = SDL_CreateWindow (self._name.ptr, 0, 0, cast!i32 (self._w), cast!i32 (self._h), flags);
+
+        if (self._sdlWindow is null) {
+            throw WindowError::new ("Failed to create window"s8);
+        }
+
+        self._glContext = SDL_GL_CreateContext (alias self._sdlWindow);
+        if (self._glContext is null) {
+            throw WindowError::new ("Failed to create OpenGL context"s8);
+        }
+
+        SDL_HideWindow (alias self._sdlWindow);
+        
+        self:.setDefaultOpenGLOptions (config);
+        
+    }
+
+    /**
+     * @returns: the id of the window
+     */
+    pub def getId (self) -> u32 {
+        return SDL_GetWindowID (self._sdlWindow);
+    }
+
+    /**
+     * Use the window for future rendering
+     * @info: reset the viewport
+     */
+    pub def use (mut self) {
+        glViewport (0, 0, cast!i32 (self._w), cast!i32 (self._h));
+    }
+    
+    /**
+     * Clear the content of the window
+     */
+    pub def clear (mut self) {
+        glClear (self._clearInfos);
+    }
+
+    /**
+     * Swap the rendering buffers
+     */
+    pub def swapBuffers (mut self) {
+        SDL_GL_SwapWindow (alias self._sdlWindow);
+    }
+
+    /**
+     * Show the window on the screen
+     */
+    pub def show (mut self) {
+        if (self._sdlWindow !is null) 
+            SDL_ShowWindow (alias self._sdlWindow);
+    }
+
+    /**
+     * Set the state of the window to 3D rendering
+     */
+    pub def setRender3D (mut self) {
+        for i in self._d2Flags {
+            glDisable (i);
+        }
+        for i in self._d3Flags {
+            glEnable (i);
+        }
+    }
+
+    /**
+     * Set the state of the window to 3D rendering
+     */
+    pub def setRender2D (mut self) {
+        for i in self._d3Flags {
+            glDisable (i);
+        }
+        for i in self._d2Flags {
+            glEnable (i);
+        }
+    }
+
+    /**
+     * Only render lines of the polygons
+     */
+    pub def setRenderLine (mut self) {
+        glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
+    }
+
+    /**
+     * Render the faces of the polygon
+     */
+    pub def setRenderFill (mut self) {
+        glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+    }
+
+    /**
+     * @returns: the width of the window
+     */
+    pub def getWidth (self)-> u32 {
+        self._w
+    }
+
+    /**
+     * @returns: the height of the window
+     */
+    pub def getHeight (self)-> u32 {
+        self._h
+    }
+
+    /**
+     * @returns: the gamma correction of the window
+     */
+    pub def getGamme (self)-> f32 {
+        self._gamma
+    }
+
+
+    impl Streamable {
+        pub over toStream (self, dmut stream : &StringStream) {
+            stream:.write (typeof (self)::typeid, "(", self._name, ",", self._w, ",", self._h, ")");
+        }
+    }
+    
+    impl Disposable {
+        
+        /**
+         * The window is disposable
+         * It contains pointers to the SDL_Window that must be freed
+         */
+        pub over dispose (mut self) {
+            if (self._sdlWindow !is null) {
+                SDL_DestroyWindow (alias self._sdlWindow);
+                self._sdlWindow = null;
+                
+                SDL_Quit ();
+                TTF_Quit ();
+            }
+        }
+    }
+
+    /**
+     * Call dispose
+     */
+    __dtor (mut self) {
+        self:.dispose ();
+    }
+
+
+    /***
+     * ========================================================================
+     * ========================================================================
+     * =========================            PRV           =====================
+     * ========================================================================
+     * ========================================================================
+     */
+
+    /**
+     * Set the default options of opengl to parameter the rendering
+     * - depth function
+     * - cull face
+     * - blend function
+     * - multisample 
+     * - vsync
+     * - gamma
+     * - others
+     */
+    def setDefaultOpenGLOptions (mut self, config : &Config) {
+        self._d2Flags = [GL_POLYGON_SMOOTH];
+
+        self:.setDepthTest (config);
+        self:.setCullFunc (config);
+        self:.setBlendFunc (config);
+        self:.setMultisample (config);
+    }
+
+    /**
+     * Set the depth test information from the configuration
+     */
+    def setDepthTest (mut self, config : &Config) {
+        match config ["depth"]? {
+            Ok (sub_conf : _) => {
+                glEnable (GL_DEPTH_TEST);
+                self._clearInfos = GL_DEPTH_TEST | GL_COLOR_BUFFER_BIT;
+                match (sub_conf ["test"]?).toOr ("less") {
+                    "less" => glDepthFunc (GL_LESS);
+                    "never" => glDepthFunc (GL_NEVER);
+                    "equal" => glDepthFunc (GL_EQUAL);
+                    "lequal" => glDepthFunc (GL_LEQUAL);
+                    "greater" => glDepthFunc (GL_GREATER);
+                    "gequal" => glDepthFunc (GL_GEQUAL);
+                    "always" => glDepthFunc (GL_ALWAYS);
+                    _ => glDepthFunc (GL_LESS);
+                }
+                self._d3Flags = self._d3Flags ~ [GL_DEPTH_TEST];
+            }
+            _ => {
+                glDisable (GL_DEPTH_TEST);
+                self._clearInfos = GL_COLOR_BUFFER_BIT;
+            }
+        }
+    }
+
+    /**
+     * Set the cull function
+     * @info: the culling is always clockwize
+     */
+    def setCullFunc (mut self, config : &Config) {
+        match config ["cull"]? {
+            Ok (sub_config : _) => {
+                glEnable (GL_CULL_FACE);
+                match (sub_config ["side"]?).toOr ("back") {
+                    "back" => glCullFace (GL_BACK);
+                    _ => glCullFace (GL_FRONT);
+                }
+                self._d3Flags ~= [GL_CULL_FACE];
+                glFrontFace (GL_CW);
+            }            
+            _ => {
+                glDisable (GL_CULL_FACE);
+            }
+        }
+    }
+
+    /**
+     * Set the blend function
+     */
+    def setBlendFunc (mut self, config : &Config) {
+        match config ["blend"]? {
+            Ok (sub_config : _) => {
+                glEnable (GL_BLEND);
+                def getBlendFactor (fac : [c32]) -> u32 {
+                    match fac {
+                        "one" => { GL_ONE }
+                        "zero" => { GL_ZERO }
+                        "src-color" => { GL_SRC_COLOR }
+                        "one-minus-src-color" => { GL_ONE_MINUS_SRC_COLOR }
+                        "dst-color" => { GL_DST_COLOR }
+                        "one-minus-dst-color" => { GL_ONE_MINUS_DST_COLOR }
+                        "src-alpha" => { GL_SRC_ALPHA }
+                        "one-minus-src-alpha" => { GL_ONE_MINUS_SRC_ALPHA }
+                        "dst-alpha" => { GL_DST_ALPHA }
+                        "one-minus-dst-alpha" => { GL_ONE_MINUS_DST_ALPHA }
+                        "constant-color" => { GL_CONSTANT_COLOR }
+                        "one-minus-constant-color" => { GL_ONE_MINUS_CONSTANT_COLOR }
+                        "constant-alpha" => { GL_CONSTANT_ALPHA }
+                        "one-minus-constant-alpha" => { GL_ONE_MINUS_CONSTANT_ALPHA }
+                        "src-alpha-saturate" => { GL_SRC_ALPHA_SATURATE }
+                        _ => { GL_ZERO }
+                    }                    
+                }
+
+                let s = (sub_config ["sfactor"]?).toOr ("src-alpha").getBlendFactor ();
+                let d = (sub_config ["dfactor"]?).toOr ("one-minus-src-alpha").getBlendFactor ();
+                glBlendFunc (s, d);
+            }
+            _ => {
+                glDisable (GL_BLEND);
+            }
+        }
+    }
+
+    /**
+     * Set multisampling 
+     * @warning: does not work in deferred shading
+     */
+    def setMultisample (mut self, config : &Config) {
+        match config ["msaa"]? {
+            Ok () => glEnable (GL_MULTISAMPLE);
+            _ => glDisable (GL_MULTISAMPLE);
+        } 
+    }
+    
+
+    /**
+     * Set vsync infos
+     */
+    def setVSync (mut self, config : &Config) {
+        match config ["vsync"]? {
+            Ok () => {SDL_GL_SetSwapInterval (0);}
+            _ =>  {SDL_GL_SetSwapInterval (1);}
+        }
+    }
+
+    def setGamma (mut self, config : &Config) {
+        match config ["gamma"]? {
+            Ok (x : _) => {
+                glEnable (GL_FRAMEBUFFER_SRGB);
+                self._gamma = (x?).toOr (1.0f);
+            }
+            _ => glDisable (GL_FRAMEBUFFER_SRGB);
+        }
+    }
+
+    
+}

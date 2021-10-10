@@ -1,0 +1,15 @@
+mod sdl2::rwops;
+
+
+pub struct -> SDL_RWops;
+
+
+/**
+ *  \name RWFrom functions
+ *
+ *  Functions to create SDL_RWops structures from various data streams.
+ */
+/* @{ */
+
+pub extern (C) def SDL_RWFromFile(file : &c8,
+                                          mode : &c8)-> dmut &SDL_RWops;

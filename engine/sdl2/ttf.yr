@@ -1,0 +1,210 @@
+mod sdl2::ttf;
+import sdl2::_;
+
+
+pub aka SDL_TTF_MAJOR_VERSION   = 2u32
+pub aka SDL_TTF_MINOR_VERSION   = 0u32
+pub aka SDL_TTF_PATCHLEVEL      = 15u32
+
+
+
+/* Backwards compatibility */
+pub aka TTF_MAJOR_VERSION   = SDL_TTF_MAJOR_VERSION
+pub aka TTF_MINOR_VERSION   = SDL_TTF_MINOR_VERSION
+pub aka TTF_PATCHLEVEL      = SDL_TTF_PATCHLEVEL
+
+
+
+/* This function gets the version of the dynamically linked SDL_ttf library.
+   it should NOT be used to fill a version structure, instead you should
+   use the SDL_TTF_VERSION() macro.
+ */
+pub extern (C) def TTF_Linked_Version()-> &SDL_version;
+
+/* ZERO WIDTH NO-BREAKSPACE (Unicode byte order mark) */
+pub aka UNICODE_BOM_NATIVE  = 0xFEFFu32
+pub aka UNICODE_BOM_SWAPPED = 0xFFFEu32
+
+/* This function tells the library whether UNICODE text is generally
+   byteswapped.  A UNICODE BOM character in a string will override
+   this setting for the remainder of that string.
+*/
+pub extern (C) def TTF_ByteSwappedUNICODE(swapped : i32);
+
+/* The internal structure containing font information */
+pub struct -> TTF_Font;
+
+/* Initialize the TTF engine - returns 0 if successful, -1 on error */
+pub extern (C) def TTF_Init()-> i32;
+
+/* Open a font file and create a font of the specified point size.
+ * Some .fon fonts will have several sizes embedded in the file, so the
+ * point size becomes the index of choosing which size.  If the value
+ * is too high, the last indexed size will be the default. */
+pub extern (C) def TTF_OpenFont(file : &c8, ptsize : i32)-> dmut &TTF_Font;
+pub extern (C) def TTF_OpenFontIndex(file : &c8, ptsize : i32, index : i64)-> dmut &TTF_Font;
+pub extern (C) def TTF_OpenFontRW(src : &SDL_RWops, freesrc : i32, ptsize : i32)-> dmut &TTF_Font;
+pub extern (C) def TTF_OpenFontIndexRW(src : &SDL_RWops, freesrc : i32, ptsize : i32, index : i64)-> dmut &TTF_Font;
+
+/* Set and retrieve the font style */
+pub aka TTF_STYLE_NORMAL        = 0x00u32
+pub aka TTF_STYLE_BOLD          = 0x01u32
+pub aka TTF_STYLE_ITALIC        = 0x02u32
+pub aka TTF_STYLE_UNDERLINE     = 0x04u32
+pub aka TTF_STYLE_STRIKETHROUGH = 0x08u32
+    
+pub extern (C) def TTF_GetFontStyle(font : &TTF_Font)-> i32;
+pub extern (C) def TTF_SetFontStyle(dmut font : &TTF_Font, style : i32);
+pub extern (C) def TTF_GetFontOutline(font : &TTF_Font)-> i32;
+pub extern (C) def TTF_SetFontOutline(dmut font : &TTF_Font, outline : i32);
+
+/* Set and retrieve FreeType hinter settings */
+pub aka TTF_HINTING_NORMAL    = 0
+pub aka TTF_HINTING_LIGHT     = 1
+pub aka TTF_HINTING_MONO      = 2
+pub aka TTF_HINTING_NONE      = 3
+pub extern (C) def TTF_GetFontHinting(font : &TTF_Font)-> i32;
+pub extern (C) def TTF_SetFontHinting(dmut font: &TTF_Font, hinting : i32);
+
+/* Get the total height of the font - usually equal to point size */
+pub extern (C) def TTF_FontHeight(font : &TTF_Font)-> i32;
+
+/* Get the offset from the baseline to the top of the font
+   This is a positive value, relative to the baseline.
+ */
+pub extern (C) def TTF_FontAscent(font : &TTF_Font)-> i32;
+
+/* Get the offset from the baseline to the bottom of the font
+   This is a negative value, relative to the baseline.
+ */
+pub extern (C) def TTF_FontDescent(font : &TTF_Font)-> i32;
+
+/* Get the recommended spacing between lines of text for this font */
+pub extern (C) def  TTF_FontLineSkip(font : &TTF_Font)-> i32;
+
+/* Get/Set whether or not kerning is allowed for this font */
+pub extern (C) def  TTF_GetFontKerning(font : &TTF_Font)-> i32;
+pub extern (C) def  TTF_SetFontKerning(dmut font : &TTF_Font, allowed : i32);
+
+/* Get the number of faces of the font */
+pub extern (C) def TTF_FontFaces(font : &TTF_Font)-> i64;
+
+/* Get the font face attributes, if any */
+pub extern (C) def  TTF_FontFaceIsFixedWidth(font : &TTF_Font)-> i32;
+pub extern (C) def TTF_FontFaceFamilyName(font : &TTF_Font)-> &c8;
+pub extern (C) def TTF_FontFaceStyleName(font : &TTF_Font)-> &c8;
+
+/* Check wether a glyph is provided by the font or not */
+pub extern (C) def  TTF_GlyphIsProvided(font : &TTF_Font, ch : u16)-> i32;
+
+/* Get the metrics (dimensions) of a glyph
+   To understand what these metrics mean, here is a useful link:
+    http://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html
+ */
+pub extern (C) def  TTF_GlyphMetrics(dmut font : &TTF_Font, ch : u16,
+                                     dmut  minx: &i32, dmut maxx : &i32,
+                                     dmut  miny: &i32, dmut maxy : &i32, dmut advance : &i32)-> i32;
+
+/* Get the dimensions of a rendered string of text */
+pub extern (C) def  TTF_SizeText(dmut font : &TTF_Font, text : &c8, dmut w : &i32, dmut h : &i32)-> i32;
+pub extern (C) def  TTF_SizeUTF8(dmut font : &TTF_Font, text : &c8, dmut w : &i32, dmut h : &i32)-> i32;
+pub extern (C) def  TTF_SizeUNICODE(dmut font : &TTF_Font, text : &u16, dmut w : &i32, dmut h : &i32)-> i32;
+
+/* Create an 8-bit palettized surface and render the given text at
+   fast quality with the given font and color.  The 0 pixel is the
+   colorkey, giving a transparent background, and the 1 pixel is set
+   to the text color.
+   This function returns the new surface, or NULL if there was an error.
+*/
+pub extern (C) def TTF_RenderText_Solid(dmut font : &TTF_Font,
+                text : &c8, fg : SDL_Color)-> dmut &SDL_Surface;
+pub extern (C) def TTF_RenderUTF8_Solid(dmut font : &TTF_Font,
+                text : &c8, fg : SDL_Color)-> dmut &SDL_Surface;
+pub extern (C) def TTF_RenderUNICODE_Solid(dmut font : &TTF_Font,
+                text : &u16, fg : SDL_Color)-> dmut &SDL_Surface;
+
+/* Create an 8-bit palettized surface and render the given glyph at
+   fast quality with the given font and color.  The 0 pixel is the
+   colorkey, giving a transparent background, and the 1 pixel is set
+   to the text color.  The glyph is rendered without any padding or
+   centering in the X direction, and aligned normally in the Y direction.
+   This function returns the new surface, or NULL if there was an error.
+*/
+pub extern (C) def TTF_RenderGlyph_Solid(dmut font : &TTF_Font,
+                    ch : u16, fg : SDL_Color )-> dmut &SDL_Surface;
+
+/* Create an 8-bit palettized surface and render the given text at
+   high quality with the given font and colors.  The 0 pixel is background,
+   while other pixels have varying degrees of the foreground color.
+   This function returns the new surface, or NULL if there was an error.
+*/
+pub extern (C) def TTF_RenderText_Shaded(dmut font : &TTF_Font,
+                text: &c8,  fg : SDL_Color,  bg : SDL_Color)-> dmut &SDL_Surface;
+pub extern (C) def TTF_RenderUTF8_Shaded(dmut font : &TTF_Font,
+                text : &c8, fg : SDL_Color, bg : SDL_Color)-> dmut &SDL_Surface;
+pub extern (C) def TTF_RenderUNICODE_Shaded(dmut font : &TTF_Font,
+                text : u16, fg : SDL_Color, bg : SDL_Color)-> dmut &SDL_Surface;
+
+/* Create an 8-bit palettized surface and render the given glyph at
+   high quality with the given font and colors.  The 0 pixel is background,
+   while other pixels have varying degrees of the foreground color.
+   The glyph is rendered without any padding or centering in the X
+   direction, and aligned normally in the Y direction.
+   This function returns the new surface, or NULL if there was an error.
+*/
+pub extern (C) def TTF_RenderGlyph_Shaded(dmut font : &TTF_Font,
+                ch : u16, fg : SDL_Color, bg : SDL_Color)-> dmut &SDL_Surface;
+
+/* Create a 32-bit ARGB surface and render the given text at high quality,
+   using alpha blending to dither the font with the given color.
+   This function returns the new surface, or NULL if there was an error.
+*/
+pub extern (C) def TTF_RenderText_Blended(dmut font : &TTF_Font,
+                text : &c8, fg : SDL_Color )-> dmut &SDL_Surface;
+pub extern (C) def TTF_RenderUTF8_Blended(dmut font : &TTF_Font,
+                text : &c8, fg : SDL_Color)-> dmut &SDL_Surface;
+pub extern (C) def TTF_RenderUNICODE_Blended(dmut font : &TTF_Font,
+                text : &u16, fg : SDL_Color)-> dmut &SDL_Surface;
+
+
+/* Create a 32-bit ARGB surface and render the given text at high quality,
+   using alpha blending to dither the font with the given color.
+   Text is wrapped to multiple lines on line endings and on word boundaries
+   if it extends beyond wrapLength in pixels.
+   This function returns the new surface, or NULL if there was an error.
+*/
+pub extern (C) def TTF_RenderText_Blended_Wrapped(dmut font : &TTF_Font,
+                                                  text : &c8, fg : SDL_Color , wrapLength : u32)-> dmut &SDL_Surface;
+pub extern (C) def TTF_RenderUTF8_Blended_Wrapped(dmut font : &TTF_Font,
+                                                  text : &c8, fg : SDL_Color , wrapLength : u32)-> dmut &SDL_Surface;
+pub extern (C) def TTF_RenderUNICODE_Blended_Wrapped(dmut font : &TTF_Font,
+                                                     text : &u16, fg : SDL_Color, wrapLength : u32)-> dmut &SDL_Surface;
+
+/* Create a 32-bit ARGB surface and render the given glyph at high quality,
+   using alpha blending to dither the font with the given color.
+   The glyph is rendered without any padding or centering in the X
+   direction, and aligned normally in the Y direction.
+   This function returns the new surface, or NULL if there was an error.
+*/
+pub extern (C) def TTF_RenderGlyph_Blended(dmut font : &TTF_Font,
+                                           ch : u16, fg : SDL_Color )-> dmut &SDL_Surface;
+
+/* Close an opened font file */
+pub extern (C) def  TTF_CloseFont(dmut font : &TTF_Font);
+
+/* De-initialize the TTF engine */
+pub extern (C) def  TTF_Quit();
+
+/* Check if the TTF engine is initialized */
+pub extern (C) def  TTF_WasInit()-> i32;
+
+/* Get the kerning size of two glyphs indices */
+/* DEPRECATED: this function requires FreeType font indexes, not glyphs,
+   by accident, which we don't expose through this API, so it could give
+   wildly incorrect results, especially with non-ASCII values.
+   Going forward, please use TTF_GetFontKerningSizeGlyphs() instead, which
+   does what you probably expected this function to do. */
+pub extern (C) def TTF_GetFontKerningSize(dmut font : &TTF_Font, prev_index : i32, index : i32) -> i32;
+
+/* Get the kerning size of two glyphs */
+pub extern (C) def TTF_GetFontKerningSizeGlyphs(dmut font : &TTF_Font, previous_ch : u16,  ch : u16)-> i32;

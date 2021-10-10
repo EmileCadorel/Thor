@@ -1,0 +1,363 @@
+mod krepusko::core::application;
+
+import sdl2::timer;
+import std::fs::path, std::fs::_;
+import std::io, std::conv;
+import std::config::toml, std::config, std::config::conv;
+import krepusko::utils::_;
+import krepusko::core::window;
+import krepusko::core::input;
+import krepusko::concurrency::timer;
+import krepusko::core::activity;
+
+/**
+ * Error thrown by the application when an error occur
+ */
+pub class ApplicationError over Exception {
+
+    pub let msg : [c8];
+    
+    pub self (msg : [c8]) with msg = msg {}
+
+    impl Streamable {
+
+        pub over toStream (self, dmut stream : &StringStream) {
+            self::super.toStream (alias stream);
+        }
+        
+    }
+
+}
+
+
+pub class Application {
+
+    /// The window used to render the application
+    let dmut _window = Window::new ();    
+
+    /// The timer to cap the frame rendering
+    let dmut _frameTimer = Timer::new ();
+
+    /// The cumulated time
+    let dmut _secondTimer = Timer::new ();
+
+    /// The list of input manager for each activities
+    let dmut _inputs : [&InputManager] = [];
+
+    /// while true, the app is not killed
+    let mut _isRunning : bool = true;
+
+    /// the duration of a frame in ms
+    let mut _frameDuration : u32 = 0u32;
+
+    /// The number of frame in the current second
+    let mut _nbFrame : u32 = 0u32;
+    
+    /// The number of frame rendered during the last second
+    let mut _lastNbFrame : u32 = 0u32;
+
+    /// The list of activities that controlling the application
+    let dmut _activities : [&Activity] = [];
+      
+    
+    /**
+     * Spawn an application with a given configuration file
+     * @throws: 
+     *    - &Application: if the application cannot be created with the given configuration
+     */
+    pub self (path : &Path)
+        throws &ApplicationError, &WindowError
+    {     
+        let conf = self.getTomlContent (path);
+        
+        self:.configureWindow (conf);
+    }
+
+    
+
+
+    /***
+     * ========================================================================
+     * ========================================================================
+     * =========================          main            =====================
+     * ========================================================================
+     * ========================================================================
+     */
+
+    
+    /**
+     * Launch the application 
+     * @throws: 
+     *   - &ApplicationError: if there is no activity to run
+     */
+    pub def run (mut self)
+        throws &ApplicationError
+    {
+        self._window:.show ();
+        while self._isRunning {
+            {                
+                self:.waitFrame ();
+                self._inputs [$ - 1us]:.pollEvents ();
+                
+                self._window:.clear ();
+                
+                self:.callActivity ();
+                
+                self._window:.swapBuffers ();
+            } catch {
+                //_ : &InterruptedException => {}
+                _ : &OutOfArray => throw ApplicationError::new ("no activity to run"s8); 
+            }
+        }        
+    }
+
+    /**
+     * Call the activity update and draw routine
+     * @info: also call the rendering of the scene and of the GUI
+     */
+    prv def callActivity (mut self)
+        throws &OutOfArray
+    {        
+        self._activities [$-1us]:.onUpdate ();
+        self._window:.setRender3D ();
+
+        self._activities [$-1us]:.on3dDraw ();
+
+        // self._scenes [$ - 1us]:.draw ();
+
+        self._window:.setRender2D ();
+        self._activities [$-1us]:.on2dDraw ();
+
+        //self._widgets [$ - 1us]:.draw ();        
+    }
+    
+    /**
+     * Wait until the next frame
+     * @info: update the frame count
+     */
+    prv def waitFrame (mut self) {
+        self._nbFrame += 1u32;
+
+        if (self._secondTimer.timeSinceStart () >= 1000u32) {
+            self._secondTimer:.reset ();
+            self._lastNbFrame = self._nbFrame;
+            self._nbFrame = 0u32;
+        }
+
+        let tick = self._frameTimer.timeSinceStart ();
+        if (tick < self._frameDuration) {
+            SDL_Delay (self._frameDuration - tick);
+        }
+
+        self._frameTimer:.reset ();
+    }
+
+    /**
+     * @returns: the number of frame rendered in the last second
+     */
+    pub def getFrameCount (self)-> u32 {
+        self._lastNbFrame
+    }
+
+    /***
+     * ========================================================================
+     * ========================================================================
+     * =========================        activity          =====================
+     * ========================================================================
+     * ========================================================================
+     */
+
+
+    pub def openActivity {T over &Activity} (mut self) {
+        if self._activities.len != 0us
+            self._activities [$ - 1us]:.onPause ()?;
+
+        self._inputs = alias (self._inputs ~ [InputManager::new ()]);
+        //self:.configureWidgets ();
+        //self:.configureScene ();
+
+        let dmut act : &Activity = T::new (alias self);
+        self._activities = alias (self._activities ~ [alias act]);
+    }
+
+
+    pub def openActivity {T over &Activity, P...} (mut self, p : P) {
+        if self._activities.len != 0us
+            self._activities [$ - 1us]:.onPause ()?;
+
+        self._inputs = alias (self._inputs ~ [InputManager::new ()]);
+        //self:.configureWidgets ();
+        //self:.configureScene ();
+
+        // let dmut act : &Activity = ;
+        self._activities = alias (self._activities ~ [cast!{&Activity} (T::new (alias self, expand p))]);
+    }
+
+    pub def getInputManager (mut self) -> dmut &InputManager
+    {
+        alias self._inputs [$ - 1us]
+    } catch {
+        _ : &OutOfArray => InputManager::new ()
+    }
+
+    
+    pub def getWindow (mut self)-> dmut &Window {
+        alias self._window
+    }
+
+
+    pub def getInputManager (self) -> &InputManager
+    {
+        self._inputs [$ - 1us]
+    } catch {
+        _ : &OutOfArray => InputManager::new ()
+    }
+
+    
+    pub def getWindow (self)-> &Window {
+        self._window
+    }
+    
+
+    pub def closeActivity (mut self) {
+        {
+            if self._activities.len != 0us {
+                self._activities [$ - 1us]:.dispose ();
+                self._activities = self._activities [0us .. $ - 1us];
+                self._inputs = self._inputs [0us .. $ - 1us];
+            }
+        } catch {
+            _ : &OutOfArray => {}
+        }
+
+        {
+            if self._activities.len == 0us {
+                self._isRunning = false;
+                self._inputs = alias (self._inputs ~ [InputManager::new ()]);
+                self._activities = alias (self._activities ~ [cast!{&Activity} (EmptyActivity::new (alias self))]);
+            } else {
+                self._activities [$ - 1us]:.onResume ();
+            }
+        } catch {
+            _ : &OutOfArray => {}
+        }        
+    }
+    
+    /***
+     * ========================================================================
+     * ========================================================================
+     * =========================          free            =====================
+     * ========================================================================
+     * ========================================================================
+     */
+    
+    
+    impl core::dispose::Disposable {
+
+        /**
+         * The application contains reference to unmanaged pointers (such as the window)
+         * Thus it must be disposed
+         */
+        pub over dispose (mut self) {
+            self._window:.dispose ();           
+        }
+        
+    }
+
+    impl Streamable;
+
+    /**
+     * Call dispose
+     */
+    __dtor (mut self) {
+        self:.dispose ();
+    }
+
+    
+    /***
+     * ========================================================================
+     * ========================================================================
+     * =========================            PRV           =====================
+     * ========================================================================
+     * ========================================================================
+     */
+
+    
+    /**
+     * Parse the configuration file, and create the configuration
+     * @params: 
+     *   - path: the file path of the configuration file
+     * @throws: 
+     *   - &ApplicationError: if unable to load the configuration
+     */
+    prv def getTomlContent (self, path : &Path) -> &Config
+        throws &ApplicationError
+    {        
+        {
+            let complete_path = utils::fs::getAbsoluteLocation (path);
+            utils::fs::getTomlContent (complete_path)
+        } catch {
+            _ : &FsError => {
+                throw ApplicationError::new ("File not found : "s8 ~ path.toStr ());
+            }
+            s : &SyntaxError => {
+                throw ApplicationError::new ("Configuration format : "s8 ~ s.msg.to![c8]() ~ ":("s8 ~ s.line.to![c8] () ~ ","s8 ~ s.col.to![c8] () ~ ")"s8);
+            }
+        }
+
+    }
+
+    
+    /***
+     * ========================================================================
+     * ========================================================================
+     * =========================       configuration      =====================
+     * ========================================================================
+     * ========================================================================
+     */
+    
+
+    /**
+     * Configure the window of the application
+     */
+    prv def configureWindow (mut self, conf : &Config)
+        throws &WindowError, &ApplicationError
+    {
+        match conf ["window"]? {
+            Ok (subConf : _) => {
+                let w = match subConf ["width"]? {
+                    Ok (_w : _) => { _w.to!u32 () } catch { _ => throw ApplicationError::new ("Malformed 'window::width' field in configuration"s8); }
+                    _ => throw ApplicationError::new ("Missing 'window::width' field in configuration"s8);                
+                }
+
+                let h = match subConf ["height"]? {
+                    Ok (_h : _) => { _h.to!u32 () } catch { _ => throw ApplicationError::new ("Malformed 'window::height' field in configuration"s8); }
+                    _ => throw ApplicationError::new ("Missing 'window::width' field in configuration"s8);                
+                }
+                
+                self._window:.setDimension (w, h);
+
+                let name = match subConf ["name"]? {
+                    Ok (_n : _) => { _n.to![c8] () } catch { _ => throw ApplicationError::new ("Malformed 'window::name' field in configuration"s8); }
+                    _ => throw ApplicationError::new ("Missing 'window::name' field in configuration"s8);                
+                }
+                self._window:.setName (name);                
+            }
+            Err () => {
+                throw ApplicationError::new ("Missing 'window' field in configuration"s8);                
+            }
+        }
+
+        match conf ["opengl"]? {
+            Ok (subConf : _) =>
+                self._window:.configureOpenGL (subConf);
+            Err () => {
+                throw ApplicationError::new ("Missing 'opengl' field in configuration"s8);                
+            }
+        }        
+    }
+
+        
+
+    
+}

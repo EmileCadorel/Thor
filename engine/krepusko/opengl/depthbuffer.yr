@@ -1,0 +1,109 @@
+mod krepusko::opengl::depthbuffer;
+import sdl2::opengl, sdl2::opengl_ext;
+
+/**
+ * A depthbuffer is a spacial case of gbuffer
+ * In krepusko there are separated for clarity, but does approximately the same job
+ * However, depthbuffer is associated to only one gtexture that is created by the depthbuffer directly, and contains only depth component
+ */
+pub class DepthBuffer {
+
+    let mut _fbo = 0u32;
+
+    let mut _tex = 0u32;
+
+    let mut _w = 0u32;
+    
+    let mut _h = 0u32;
+
+    /**
+     * Create an empty depth buffer
+     */
+    pub self () {}
+
+    /**
+     * Create a depth buffer of size w * h
+     */
+    pub self (w : u32, h : u32) with 
+        _w = w, _h = h
+    {
+        glGenFramebuffers (1, alias &self._fbo);
+        glGenTextures (1, alias &self._tex);
+
+        glBindTexture (GL_TEXTURE_2D, self._tex);
+        glTexImage2D (GL_TEXTURE_2D, 0, cast!i32 (GL_DEPTH_COMPONENT32F), cast!i32 (self._w), cast!i32 (self._h), 0, GL_DEPTH_COMPONENT, GL_FLOAT, null);
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, cast!i32 (GL_NEAREST));
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, cast!i32 (GL_NEAREST));
+
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, cast!i32 (GL_CLAMP_TO_BORDER));
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, cast!i32 (GL_CLAMP_TO_BORDER));
+
+        let borderColor = [1.0f, 1.0f, 1.0f, 1.0f];
+        glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor.ptr);
+
+        glBindFramebuffer (GL_FRAMEBUFFER, self._fbo);
+        glFramebufferTexture2D (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, self._tex, 0);
+        glDrawBuffer (GL_NONE);
+        glReadBuffer (GL_NONE);
+        glBindFramebuffer (GL_FRAMEBUFFER, 0u32);
+    }
+    
+    /**
+     * Use this buffer for future rendering
+     */
+    pub def use (self) {
+        glViewport (0, 0, cast!i32 (self._w), cast!i32 (self._h));
+        glBindFramebuffer (GL_FRAMEBUFFER, self._fbo);
+        glClear (GL_DEPTH_BUFFER_BIT);
+    }
+
+    /**
+     * Stop using this buffer for rendering
+     */
+    pub def unuse (self) {
+        glBindFramebuffer (GL_FRAMEBUFFER, 0u32);
+    }    
+
+    /**
+     * Bind the texture of the frame buffer to the current texture
+     * @example: 
+     * ================
+     * glActiveTexure (GL_TEXTURE_0);
+     * glUniform1i (glGetUniformLocation (program, "shadowMap"s8.ptr), 0);
+     * depth.bindTexture ();
+     * ================
+     */
+    pub def bindTexture (self) {
+        glBindTexture (GL_TEXTURE_2D, self._tex);
+    }
+
+    /**
+     * Unbind the texture 
+     */
+    pub def unbindTexture (self) {
+        glBindTexture (GL_TEXTURE_2D, 0u32);
+    }
+    
+    impl Disposable {
+
+        /**
+         * Free the buffer and texture 
+         */
+        pub over dispose (mut self) {
+            if (self._fbo != 0u32) {
+                glDeleteFramebuffers (1, alias &self._fbo);
+                glDeleteTextures (1, alias &self._tex);
+                self._fbo = 0u32;
+                self._tex = 0u32;
+            }
+            self._w = 0u32;
+            self._h = 0u32;
+        }
+    }
+
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }
+
+}

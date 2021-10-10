@@ -1,0 +1,3 @@
+mod sdl2::stdinc;
+
+pub aka SDL_FOURCC {A : u8, B : u8, C : u8, D : u8} = (cast!u32 (A) << 0u32) | (cast!u32 (B) << 8u8) | (cast!u32 (C) << 16u8) | (cast!u32 (D) << 24u8);

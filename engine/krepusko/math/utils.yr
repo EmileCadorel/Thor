@@ -1,0 +1,3 @@
+mod krepusko::math::utils;
+
+pub extern (C) def sqrt (f : f32)-> f32;

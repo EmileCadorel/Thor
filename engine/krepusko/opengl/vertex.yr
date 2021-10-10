@@ -1,0 +1,18 @@
+mod krepusko::opengl::vertex;
+import krepusko::math::vector;
+
+pub struct if (isOnlyVectors!{T} ())
+| datas : (T)
+ -> Vertex {T...};
+
+
+def isOnlyVectors {F} () -> bool {
+    is!F{U of f32} || is!F{U of vec2} || is!F{U of vec3} || is!F{U of vec4} ||
+        is!F{U of i32} || is!F{U of ivec2} || is!F{U of ivec3} || is!F{U of ivec4} ||
+        is!F{U of u32} || is!F{U of uvec2} || is!F{U of uvec3} || is!F{U of uvec4}
+
+}
+
+def isOnlyVectors {F, T...} ()-> bool {
+    isOnlyVectors!{F} () && isOnlyVectors!{T} ()
+}

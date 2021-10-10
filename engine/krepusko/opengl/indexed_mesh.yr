@@ -1,0 +1,83 @@
+mod krepusko::opengl::indexed_mesh;
+import krepusko::opengl::buffers;
+
+/**
+ * An indexed mesh containing buffers, that can be drawn using a shader
+ */
+pub class IndexedMesh {V of Vertex!{U}, U...} {
+
+    let mut _vao = VertexArrayObject::new ();
+
+    let mut _vbo = VertexBufferObject!{V}::new ();
+
+    let mut _ibo = IndexBufferObject::new ();
+
+    /**
+     * Create an empty mesh that contains nothing
+     */
+    pub self () {}
+
+    /**
+     * Create a mesh from a list of points
+     * And a list of triangles
+     */
+    pub self (verts : [V], indices : [i32]) {
+        self._vao:.generate ();
+        self._vbo:.generate ();
+        self._ibo:.generate ();
+
+        self._vbo:.setLocalVertices (verts);
+        self._ibo:.setLocalIndices (indices);
+
+        self._vao.bind ();
+        self._vbo.bind ();
+        self._ibo.bind ();
+
+        self._vbo:.uploadAndClearLocal ();
+        self._ibo:.uploadAndClearLocal ();
+
+        self._vao.unbind ();
+        self._vbo.unbind ();
+        self._ibo.unbind ();
+    }
+
+    /**
+     * Draw the mesh using a shader
+     */
+    pub def draw (self, shader : &Shader) {
+        self._vao.bind ();
+        self._vbo.bind ();
+        self._ibo.bind ();
+
+        shader.bindAttributes (sizeof (V));
+        glDrawElements (GL_TRIANGLES, cast!i32 (self._ibo.size ()), GL_UNSIGNED_INT, 0);
+        shader.unbindAttributes ();
+
+        self._ibo.unbind ();
+        self._vbo.unbind ();
+        self._vao.unbind ();        
+    }
+
+    /**
+     * @returns: true if the mesh contains no points
+     */
+    pub def isEmpty (self)-> bool {
+        self._vao.isEmpty ()
+    }
+
+
+    impl Disposable {
+
+
+        pub over dispose (mut self) {
+            self._vao:.dispose ();
+            self._vbo:.dispose ();
+            self._ibo:.dispose ();
+        }
+    }
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }
+    
+}

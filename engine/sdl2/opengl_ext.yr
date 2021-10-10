@@ -1,0 +1,1908 @@
+mod sdl2::opengl_ext
+import sdl2::opengl;
+    
+pub aka GL_GLEXT_VERSION = 20140521
+
+/* Generated C header for:
+ * API: gl
+ * Profile: compatibility
+ * Versions considered: .*
+ * Versions emitted: 1\.[2-9]|[234]\.[0-9]
+ * Default extensions included: gl
+ * Additional extensions included: _nomatch_^
+ * Extensions removed: _nomatch_^
+ */
+
+
+pub aka GL_VERSION_1_2 = 1u32
+pub aka GL_UNSIGNED_BYTE_3_3_2            = 0x8032u32
+pub aka GL_UNSIGNED_SHORT_4_4_4_4         = 0x8033u32
+pub aka GL_UNSIGNED_SHORT_5_5_5_1         = 0x8034u32
+pub aka GL_UNSIGNED_INT_8_8_8_8           = 0x8035u32
+pub aka GL_UNSIGNED_INT_10_10_10_2        = 0x8036u32
+pub aka GL_TEXTURE_BINDING_3D             = 0x806Au32
+pub aka GL_PACK_SKIP_IMAGES               = 0x806Bu32
+pub aka GL_PACK_IMAGE_HEIGHT              = 0x806Cu32
+pub aka GL_UNPACK_SKIP_IMAGES             = 0x806Du32
+pub aka GL_UNPACK_IMAGE_HEIGHT            = 0x806Eu32
+pub aka GL_TEXTURE_3D                     = 0x806Fu32
+pub aka GL_PROXY_TEXTURE_3D               = 0x8070u32
+pub aka GL_TEXTURE_DEPTH                  = 0x8071u32
+pub aka GL_TEXTURE_WRAP_R                 = 0x8072u32
+pub aka GL_MAX_3D_TEXTURE_SIZE            = 0x8073u32
+pub aka GL_UNSIGNED_BYTE_2_3_3_REV        = 0x8362u32
+pub aka GL_UNSIGNED_SHORT_5_6_5           = 0x8363u32
+pub aka GL_UNSIGNED_SHORT_5_6_5_REV       = 0x8364u32
+pub aka GL_UNSIGNED_SHORT_4_4_4_4_REV     = 0x8365u32
+pub aka GL_UNSIGNED_SHORT_1_5_5_5_REV     = 0x8366u32
+pub aka GL_UNSIGNED_INT_8_8_8_8_REV       = 0x8367u32
+pub aka GL_UNSIGNED_INT_2_10_10_10_REV    = 0x8368u32
+pub aka GL_BGR                            = 0x80E0u32
+pub aka GL_BGRA                           = 0x80E1u32
+pub aka GL_MAX_ELEMENTS_VERTICES          = 0x80E8u32
+pub aka GL_MAX_ELEMENTS_INDICES           = 0x80E9u32
+pub aka GL_CLAMP_TO_EDGE                  = 0x812Fu32
+pub aka GL_TEXTURE_MIN_LOD                = 0x813Au32
+pub aka GL_TEXTURE_MAX_LOD                = 0x813Bu32
+pub aka GL_TEXTURE_BASE_LEVEL             = 0x813Cu32
+pub aka GL_TEXTURE_MAX_LEVEL              = 0x813Du32
+pub aka GL_SMOOTH_POINT_SIZE_RANGE        = 0x0B12u32
+pub aka GL_SMOOTH_POINT_SIZE_GRANULARITY  = 0x0B13u32
+pub aka GL_SMOOTH_LINE_WIDTH_RANGE        = 0x0B22u32
+pub aka GL_SMOOTH_LINE_WIDTH_GRANULARITY  = 0x0B23u32
+pub aka GL_ALIASED_LINE_WIDTH_RANGE       = 0x846Eu32
+pub aka GL_RESCALE_NORMAL                 = 0x803Au32
+pub aka GL_LIGHT_MODEL_COLOR_CONTROL      = 0x81F8u32
+pub aka GL_SINGLE_COLOR                   = 0x81F9u32
+pub aka GL_SEPARATE_SPECULAR_COLOR        = 0x81FAu32
+pub aka GL_ALIASED_POINT_SIZE_RANGE       = 0x846Du32
+
+pub extern (C) def glDrawRangeElements (mode : GLenum, start : GLuint, end : GLuint, count : GLsizei, type : GLenum, indices : &void);
+pub extern (C) def glTexImage3D (target : GLenum, level : GLint, internalformat : GLint, width : GLsizei, height : GLsizei, depth : GLsizei, border : GLint, format : GLenum, type : GLenum, pixels : &void);
+pub extern (C) def glTexSubImage3D (target : GLenum, level : GLint, xoffset : GLint, yoffset : GLint, zoffset : GLint, width : GLsizei, height : GLsizei, depth : GLsizei, format : GLenum, type : GLenum, pixels : &void);
+pub extern (C) def glCopyTexSubImage3D (target : GLenum, level : GLint, xoffset : GLint, yoffset : GLint, zoffset : GLint, x : GLint, y : GLint, width : GLsizei, height : GLsizei);
+
+
+
+pub aka GL_VERSION_1_3                        = 1u32
+pub aka GL_TEXTURE0                       = 0x84C0u32
+pub aka GL_TEXTURE1                       = 0x84C1u32
+pub aka GL_TEXTURE2                       = 0x84C2u32
+pub aka GL_TEXTURE3                       = 0x84C3u32
+pub aka GL_TEXTURE4                       = 0x84C4u32
+pub aka GL_TEXTURE5                       = 0x84C5u32
+pub aka GL_TEXTURE6                       = 0x84C6u32
+pub aka GL_TEXTURE7                       = 0x84C7u32
+pub aka GL_TEXTURE8                       = 0x84C8u32
+pub aka GL_TEXTURE9                       = 0x84C9u32
+pub aka GL_TEXTURE10                      = 0x84CAu32
+pub aka GL_TEXTURE11                      = 0x84CBu32
+pub aka GL_TEXTURE12                      = 0x84CCu32
+pub aka GL_TEXTURE13                      = 0x84CDu32
+pub aka GL_TEXTURE14                      = 0x84CEu32
+pub aka GL_TEXTURE15                      = 0x84CFu32
+pub aka GL_TEXTURE16                      = 0x84D0u32
+pub aka GL_TEXTURE17                      = 0x84D1u32
+pub aka GL_TEXTURE18                      = 0x84D2u32
+pub aka GL_TEXTURE19                      = 0x84D3u32
+pub aka GL_TEXTURE20                      = 0x84D4u32
+pub aka GL_TEXTURE21                      = 0x84D5u32
+pub aka GL_TEXTURE22                      = 0x84D6u32
+pub aka GL_TEXTURE23                      = 0x84D7u32
+pub aka GL_TEXTURE24                      = 0x84D8u32
+pub aka GL_TEXTURE25                      = 0x84D9u32
+pub aka GL_TEXTURE26                      = 0x84DAu32
+pub aka GL_TEXTURE27                      = 0x84DBu32
+pub aka GL_TEXTURE28                      = 0x84DCu32
+pub aka GL_TEXTURE29                      = 0x84DDu32
+pub aka GL_TEXTURE30                      = 0x84DEu32
+pub aka GL_TEXTURE31                      = 0x84DFu32
+pub aka GL_ACTIVE_TEXTURE                 = 0x84E0u32
+pub aka GL_MULTISAMPLE                    = 0x809Du32
+pub aka GL_SAMPLE_ALPHA_TO_COVERAGE       = 0x809Eu32
+pub aka GL_SAMPLE_ALPHA_TO_ONE            = 0x809Fu32
+pub aka GL_SAMPLE_COVERAGE                = 0x80A0u32
+pub aka GL_SAMPLE_BUFFERS                 = 0x80A8u32
+pub aka GL_SAMPLES                        = 0x80A9u32
+pub aka GL_SAMPLE_COVERAGE_VALUE          = 0x80AAu32
+pub aka GL_SAMPLE_COVERAGE_INVERT         = 0x80ABu32
+pub aka GL_TEXTURE_CUBE_MAP               = 0x8513u32
+pub aka GL_TEXTURE_BINDING_CUBE_MAP       = 0x8514u32
+pub aka GL_TEXTURE_CUBE_MAP_POSITIVE_X    = 0x8515u32
+pub aka GL_TEXTURE_CUBE_MAP_NEGATIVE_X    = 0x8516u32
+pub aka GL_TEXTURE_CUBE_MAP_POSITIVE_Y    = 0x8517u32
+pub aka GL_TEXTURE_CUBE_MAP_NEGATIVE_Y    = 0x8518u32
+pub aka GL_TEXTURE_CUBE_MAP_POSITIVE_Z    = 0x8519u32
+pub aka GL_TEXTURE_CUBE_MAP_NEGATIVE_Z    = 0x851Au32
+pub aka GL_PROXY_TEXTURE_CUBE_MAP         = 0x851Bu32
+pub aka GL_MAX_CUBE_MAP_TEXTURE_SIZE      = 0x851Cu32
+pub aka GL_COMPRESSED_RGB                 = 0x84EDu32
+pub aka GL_COMPRESSED_RGBA                = 0x84EEu32
+pub aka GL_TEXTURE_COMPRESSION_HINT       = 0x84EFu32
+pub aka GL_TEXTURE_COMPRESSED_IMAGE_SIZE  = 0x86A0u32
+pub aka GL_TEXTURE_COMPRESSED             = 0x86A1u32
+pub aka GL_NUM_COMPRESSED_TEXTURE_FORMATS = 0x86A2u32
+pub aka GL_COMPRESSED_TEXTURE_FORMATS     = 0x86A3u32
+pub aka GL_CLAMP_TO_BORDER                = 0x812Du32
+pub aka GL_CLIENT_ACTIVE_TEXTURE          = 0x84E1u32
+pub aka GL_MAX_TEXTURE_UNITS              = 0x84E2u32
+pub aka GL_TRANSPOSE_MODELVIEW_MATRIX     = 0x84E3u32
+pub aka GL_TRANSPOSE_PROJECTION_MATRIX    = 0x84E4u32
+pub aka GL_TRANSPOSE_TEXTURE_MATRIX       = 0x84E5u32
+pub aka GL_TRANSPOSE_COLOR_MATRIX         = 0x84E6u32
+pub aka GL_MULTISAMPLE_BIT                = 0x20000000u32
+pub aka GL_NORMAL_MAP                     = 0x8511u32
+pub aka GL_REFLECTION_MAP                 = 0x8512u32
+pub aka GL_COMPRESSED_ALPHA               = 0x84E9u32
+pub aka GL_COMPRESSED_LUMINANCE           = 0x84EAu32
+pub aka GL_COMPRESSED_LUMINANCE_ALPHA     = 0x84EBu32
+pub aka GL_COMPRESSED_INTENSITY           = 0x84ECu32
+pub aka GL_COMBINE                        = 0x8570u32
+pub aka GL_COMBINE_RGB                    = 0x8571u32
+pub aka GL_COMBINE_ALPHA                  = 0x8572u32
+pub aka GL_SOURCE0_RGB                    = 0x8580u32
+pub aka GL_SOURCE1_RGB                    = 0x8581u32
+pub aka GL_SOURCE2_RGB                    = 0x8582u32
+pub aka GL_SOURCE0_ALPHA                  = 0x8588u32
+pub aka GL_SOURCE1_ALPHA                  = 0x8589u32
+pub aka GL_SOURCE2_ALPHA                  = 0x858Au32
+pub aka GL_OPERAND0_RGB                   = 0x8590u32
+pub aka GL_OPERAND1_RGB                   = 0x8591u32
+pub aka GL_OPERAND2_RGB                   = 0x8592u32
+pub aka GL_OPERAND0_ALPHA                 = 0x8598u32
+pub aka GL_OPERAND1_ALPHA                 = 0x8599u32
+pub aka GL_OPERAND2_ALPHA                 = 0x859Au32
+pub aka GL_RGB_SCALE                      = 0x8573u32
+pub aka GL_ADD_SIGNED                     = 0x8574u32
+pub aka GL_INTERPOLATE                    = 0x8575u32
+pub aka GL_SUBTRACT                       = 0x84E7u32
+pub aka GL_CONSTANT                       = 0x8576u32
+pub aka GL_PRIMARY_COLOR                  = 0x8577u32
+pub aka GL_PREVIOUS                       = 0x8578u32
+pub aka GL_DOT3_RGB                       = 0x86AEu32
+pub aka GL_DOT3_RGBA                      = 0x86AFu32
+
+//__version(GL_GLEXT_PROTOTYPES) {
+pub extern (C) def glActiveTexture (texture : GLenum);
+pub extern (C) def glSampleCoverage (value : GLfloat, invert : GLboolean);
+pub extern (C) def glCompressedTexImage3D (target : GLenum, level : GLint, internalformat : GLenum, width : GLsizei, height : GLsizei, depth : GLsizei, border : GLint, imageSize : GLsizei, data : &void);
+pub extern (C) def glCompressedTexImage2D (target : GLenum, level : GLint, internalformat : GLenum, width : GLsizei, height : GLsizei, border : GLint, imageSize : GLsizei, data : &void);
+pub extern (C) def glCompressedTexImage1D (target : GLenum, level : GLint, internalformat : GLenum, width : GLsizei, border : GLint, imageSize : GLsizei, data : &void);
+pub extern (C) def glCompressedTexSubImage3D (target : GLenum, level : GLint, xoffset : GLint, yoffset : GLint, zoffset : GLint, width : GLsizei, height : GLsizei, depth : GLsizei, format : GLenum, imageSize : GLsizei, data : &void);
+pub extern (C) def glCompressedTexSubImage2D (target : GLenum, level : GLint, xoffset : GLint, yoffset : GLint, width : GLsizei, height : GLsizei, format : GLenum, imageSize : GLsizei, data : &void);
+pub extern (C) def glCompressedTexSubImage1D (target : GLenum, level : GLint, xoffset : GLint, width : GLsizei, format : GLenum, imageSize : GLsizei, data : &void);
+pub extern (C) def glGetCompressedTexImage (target : GLenum, level : GLint, dmut img : &void);
+pub extern (C) def glClientActiveTexture (texture : GLenum);
+pub extern (C) def glMultiTexCoord1d (target : GLenum, s : GLdouble);
+pub extern (C) def glMultiTexCoord1dv (target : GLenum, v : &GLdouble);
+pub extern (C) def glMultiTexCoord1f (target : GLenum, s : GLfloat);
+pub extern (C) def glMultiTexCoord1fv (target : GLenum, v : &GLfloat);
+pub extern (C) def glMultiTexCoord1i (target : GLenum, s : GLint);
+pub extern (C) def glMultiTexCoord1iv (target : GLenum, v : &GLint);
+pub extern (C) def glMultiTexCoord1s (target : GLenum, s : GLshort);
+pub extern (C) def glMultiTexCoord1sv (target : GLenum, v : &GLshort);
+pub extern (C) def glMultiTexCoord2d (target : GLenum, s : GLdouble, t : GLdouble);
+pub extern (C) def glMultiTexCoord2dv (target : GLenum, v : &GLdouble);
+pub extern (C) def glMultiTexCoord2f (target : GLenum, s : GLfloat, t : GLfloat);
+pub extern (C) def glMultiTexCoord2fv (target : GLenum, v : &GLfloat);
+pub extern (C) def glMultiTexCoord2i (target : GLenum, s : GLint, t : GLint);
+pub extern (C) def glMultiTexCoord2iv (target : GLenum, v : &GLint);
+pub extern (C) def glMultiTexCoord2s (target : GLenum, s : GLshort, t : GLshort);
+pub extern (C) def glMultiTexCoord2sv (target : GLenum, v : &GLshort);
+pub extern (C) def glMultiTexCoord3d (target : GLenum, s : GLdouble, t : GLdouble, r : GLdouble);
+pub extern (C) def glMultiTexCoord3dv (target : GLenum, v : &GLdouble);
+pub extern (C) def glMultiTexCoord3f (target : GLenum, s : GLfloat, t : GLfloat, r : GLfloat);
+pub extern (C) def glMultiTexCoord3fv (target : GLenum, v : &GLfloat);
+pub extern (C) def glMultiTexCoord3i (target : GLenum, s : GLint, t : GLint, r : GLint);
+pub extern (C) def glMultiTexCoord3iv (target : GLenum, v : &GLint);
+pub extern (C) def glMultiTexCoord3s (target : GLenum, s : GLshort, t : GLshort, r : GLshort);
+pub extern (C) def glMultiTexCoord3sv (target : GLenum, v : &GLshort);
+pub extern (C) def glMultiTexCoord4d (target : GLenum, s : GLdouble, t : GLdouble, r : GLdouble, q : GLdouble);
+pub extern (C) def glMultiTexCoord4dv (target : GLenum, v : &GLdouble);
+pub extern (C) def glMultiTexCoord4f (target : GLenum, s : GLfloat, t : GLfloat, r : GLfloat, q : GLfloat);
+pub extern (C) def glMultiTexCoord4fv (target : GLenum, v : &GLfloat);
+pub extern (C) def glMultiTexCoord4i (target : GLenum, s : GLint, t : GLint, r : GLint, q : GLint);
+pub extern (C) def glMultiTexCoord4iv (target : GLenum, v : &GLint);
+pub extern (C) def glMultiTexCoord4s (target : GLenum, s : GLshort, t : GLshort, r : GLshort, q : GLshort);
+pub extern (C) def glMultiTexCoord4sv (target : GLenum, v : &GLshort);
+pub extern (C) def glLoadTransposeMatrixf (m : &GLfloat);
+pub extern (C) def glLoadTransposeMatrixd (m : &GLdouble);
+pub extern (C) def glMultTransposeMatrixf (m : &GLfloat);
+pub extern (C) def glMultTransposeMatrixd (m : &GLdouble);
+//      }
+
+
+pub aka GL_VERSION_1_4 = 1u32
+pub aka GL_BLEND_DST_RGB                  = 0x80C8u32
+pub aka GL_BLEND_SRC_RGB                  = 0x80C9u32
+pub aka GL_BLEND_DST_ALPHA                = 0x80CAu32
+pub aka GL_BLEND_SRC_ALPHA                = 0x80CBu32
+pub aka GL_POINT_FADE_THRESHOLD_SIZE      = 0x8128u32
+pub aka GL_DEPTH_COMPONENT16              = 0x81A5u32
+pub aka GL_DEPTH_COMPONENT24              = 0x81A6u32
+pub aka GL_DEPTH_COMPONENT32              = 0x81A7u32
+pub aka GL_MIRRORED_REPEAT                = 0x8370u32
+pub aka GL_MAX_TEXTURE_LOD_BIAS           = 0x84FDu32
+pub aka GL_TEXTURE_LOD_BIAS               = 0x8501u32
+pub aka GL_INCR_WRAP                      = 0x8507u32
+pub aka GL_DECR_WRAP                      = 0x8508u32
+pub aka GL_TEXTURE_DEPTH_SIZE             = 0x884Au32
+pub aka GL_TEXTURE_COMPARE_MODE           = 0x884Cu32
+pub aka GL_TEXTURE_COMPARE_FUNC           = 0x884Du32
+pub aka GL_POINT_SIZE_MIN                 = 0x8126u32
+pub aka GL_POINT_SIZE_MAX                 = 0x8127u32
+pub aka GL_POINT_DISTANCE_ATTENUATION     = 0x8129u32
+pub aka GL_GENERATE_MIPMAP                = 0x8191u32
+pub aka GL_GENERATE_MIPMAP_HINT           = 0x8192u32
+pub aka GL_FOG_COORDINATE_SOURCE          = 0x8450u32
+pub aka GL_FOG_COORDINATE                 = 0x8451u32
+pub aka GL_FRAGMENT_DEPTH                 = 0x8452u32
+pub aka GL_CURRENT_FOG_COORDINATE         = 0x8453u32
+pub aka GL_FOG_COORDINATE_ARRAY_TYPE      = 0x8454u32
+pub aka GL_FOG_COORDINATE_ARRAY_STRIDE    = 0x8455u32
+pub aka GL_FOG_COORDINATE_ARRAY_POINTER   = 0x8456u32
+pub aka GL_FOG_COORDINATE_ARRAY           = 0x8457u32
+pub aka GL_COLOR_SUM                      = 0x8458u32
+pub aka GL_CURRENT_SECONDARY_COLOR        = 0x8459u32
+pub aka GL_SECONDARY_COLOR_ARRAY_SIZE     = 0x845Au32
+pub aka GL_SECONDARY_COLOR_ARRAY_TYPE     = 0x845Bu32
+pub aka GL_SECONDARY_COLOR_ARRAY_STRIDE   = 0x845Cu32
+pub aka GL_SECONDARY_COLOR_ARRAY_POINTER  = 0x845Du32
+pub aka GL_SECONDARY_COLOR_ARRAY          = 0x845Eu32
+pub aka GL_TEXTURE_FILTER_CONTROL         = 0x8500u32
+pub aka GL_DEPTH_TEXTURE_MODE             = 0x884Bu32
+pub aka GL_COMPARE_R_TO_TEXTURE           = 0x884Eu32
+pub aka GL_FUNC_ADD                       = 0x8006u32
+pub aka GL_FUNC_SUBTRACT                  = 0x800Au32
+pub aka GL_FUNC_REVERSE_SUBTRACT          = 0x800Bu32
+pub aka GL_MIN                            = 0x8007u32
+pub aka GL_MAX                            = 0x8008u32
+pub aka GL_CONSTANT_COLOR                 = 0x8001u32
+pub aka GL_ONE_MINUS_CONSTANT_COLOR       = 0x8002u32
+pub aka GL_CONSTANT_ALPHA                 = 0x8003u32
+pub aka GL_ONE_MINUS_CONSTANT_ALPHA       = 0x8004u32
+    
+
+pub extern (C) def glBlendFuncSeparate (sfactorRGB : GLenum, dfactorRGB : GLenum, sfactorAlpha : GLenum, dfactorAlpha : GLenum);
+pub extern (C) def glMultiDrawArrays (mode : GLenum, first : &GLint, count : &GLsizei, drawcount : GLsizei);
+pub extern (C) def glMultiDrawElements (mode : GLenum, count : &GLsizei, type : GLenum, indices : &(&void), drawcount : GLsizei);
+pub extern (C) def glPointParameterf (pname : GLenum, param : GLfloat);
+pub extern (C) def glPointParameterfv (pname : GLenum, params : &GLfloat);
+pub extern (C) def glPointParameteri (pname : GLenum, param : GLint);
+pub extern (C) def glPointParameteriv (pname : GLenum, params : &GLint);
+pub extern (C) def glFogCoordf (coord : GLfloat);
+pub extern (C) def glFogCoordfv (coord : &GLfloat);
+pub extern (C) def glFogCoordd (coord : GLdouble);
+pub extern (C) def glFogCoorddv (coord : &GLdouble);
+pub extern (C) def glFogCoordPointer (type : GLenum, stride : GLsizei, pointer : &void);
+pub extern (C) def glSecondaryColor3b (red : GLbyte, green : GLbyte, blue : GLbyte);
+pub extern (C) def glSecondaryColor3bv (v : &GLbyte);
+pub extern (C) def glSecondaryColor3d (red : GLdouble, green : GLdouble, blue : GLdouble);
+pub extern (C) def glSecondaryColor3dv (v : &GLdouble);
+pub extern (C) def glSecondaryColor3f (red : GLfloat, green : GLfloat, blue : GLfloat);
+pub extern (C) def glSecondaryColor3fv (v : &GLfloat);
+pub extern (C) def glSecondaryColor3i (red : GLint, green : GLint, blue : GLint);
+pub extern (C) def glSecondaryColor3iv (v : &GLint);
+pub extern (C) def glSecondaryColor3s (red : GLshort, green : GLshort, blue : GLshort);
+pub extern (C) def glSecondaryColor3sv (v : &GLshort);
+pub extern (C) def glSecondaryColor3ub (red : GLubyte, green : GLubyte, blue : GLubyte);
+pub extern (C) def glSecondaryColor3ubv (v : &GLubyte);
+pub extern (C) def glSecondaryColor3ui (red : GLuint, green : GLuint, blue : GLuint);
+pub extern (C) def glSecondaryColor3uiv (v : &GLuint);
+pub extern (C) def glSecondaryColor3us (red : GLushort, green : GLushort, blue : GLushort);
+pub extern (C) def glSecondaryColor3usv (v : &GLushort);
+pub extern (C) def glSecondaryColorPointer (size : GLint, type : GLenum, stride : GLsizei, pointer : &void);
+pub extern (C) def glWindowPos2d (x : GLdouble, y : GLdouble);
+pub extern (C) def glWindowPos2dv (v : &GLdouble);
+pub extern (C) def glWindowPos2f (x : GLfloat, y : GLfloat);
+pub extern (C) def glWindowPos2fv (v : &GLfloat);
+pub extern (C) def glWindowPos2i (x : GLint, y : GLint);
+pub extern (C) def glWindowPos2iv (v : &GLint);
+pub extern (C) def glWindowPos2s (x : GLshort, y : GLshort);
+pub extern (C) def glWindowPos2sv (v : &GLshort);
+pub extern (C) def glWindowPos3d (x : GLdouble, y : GLdouble, z : GLdouble);
+pub extern (C) def glWindowPos3dv (v : &GLdouble);
+pub extern (C) def glWindowPos3f (x : GLfloat, y : GLfloat, z : GLfloat);
+pub extern (C) def glWindowPos3fv (v : &GLfloat);
+pub extern (C) def glWindowPos3i (x : GLint, y : GLint, z : GLint);
+pub extern (C) def glWindowPos3iv (v : &GLint);
+pub extern (C) def glWindowPos3s (x : GLshort, y : GLshort, z : GLshort);
+pub extern (C) def glWindowPos3sv (v : &GLshort);
+pub extern (C) def glBlendColor (red : GLfloat, green : GLfloat, blue : GLfloat, alpha : GLfloat);
+pub extern (C) def glBlendEquation (mode : GLenum);
+
+pub aka  GLsizeiptr = usize;
+pub aka  GLintptr = usize;
+
+pub aka GL_BUFFER_SIZE                    = 0x8764u32
+pub aka GL_BUFFER_USAGE                   = 0x8765u32
+pub aka GL_QUERY_COUNTER_BITS             = 0x8864u32
+pub aka GL_CURRENT_QUERY                  = 0x8865u32
+pub aka GL_QUERY_RESULT                   = 0x8866u32
+pub aka GL_QUERY_RESULT_AVAILABLE         = 0x8867u32
+pub aka GL_ARRAY_BUFFER                   = 0x8892u32
+pub aka GL_ELEMENT_ARRAY_BUFFER           = 0x8893u32
+pub aka GL_ARRAY_BUFFER_BINDING           = 0x8894u32
+pub aka GL_ELEMENT_ARRAY_BUFFER_BINDING   = 0x8895u32
+pub aka GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING = 0x889Fu32
+pub aka GL_READ_ONLY                      = 0x88B8u32
+pub aka GL_WRITE_ONLY                     = 0x88B9u32
+pub aka GL_READ_WRITE                     = 0x88BAu32
+pub aka GL_BUFFER_ACCESS                  = 0x88BBu32
+pub aka GL_BUFFER_MAPPED                  = 0x88BCu32
+pub aka GL_BUFFER_MAP_POINTER             = 0x88BDu32
+pub aka GL_STREAM_DRAW                    = 0x88E0u32
+pub aka GL_STREAM_READ                    = 0x88E1u32
+pub aka GL_STREAM_COPY                    = 0x88E2u32
+pub aka GL_STATIC_DRAW                    = 0x88E4u32
+pub aka GL_STATIC_READ                    = 0x88E5u32
+pub aka GL_STATIC_COPY                    = 0x88E6u32
+pub aka GL_DYNAMIC_DRAW                   = 0x88E8u32
+pub aka GL_DYNAMIC_READ                   = 0x88E9u32
+pub aka GL_DYNAMIC_COPY                   = 0x88EAu32
+pub aka GL_SAMPLES_PASSED                 = 0x8914u32
+pub aka GL_SRC1_ALPHA                     = 0x8589u32
+pub aka GL_VERTEX_ARRAY_BUFFER_BINDING    = 0x8896u32
+pub aka GL_NORMAL_ARRAY_BUFFER_BINDING    = 0x8897u32
+pub aka GL_COLOR_ARRAY_BUFFER_BINDING     = 0x8898u32
+pub aka GL_INDEX_ARRAY_BUFFER_BINDING     = 0x8899u32
+pub aka GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING = 0x889Au32
+pub aka GL_EDGE_FLAG_ARRAY_BUFFER_BINDING = 0x889Bu32
+pub aka GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING = 0x889Cu32
+pub aka GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING = 0x889Du32
+pub aka GL_WEIGHT_ARRAY_BUFFER_BINDING    = 0x889Eu32
+pub aka GL_FOG_COORD_SRC                  = 0x8450u32
+pub aka GL_FOG_COORD                      = 0x8451u32
+pub aka GL_CURRENT_FOG_COORD              = 0x8453u32
+pub aka GL_FOG_COORD_ARRAY_TYPE           = 0x8454u32
+pub aka GL_FOG_COORD_ARRAY_STRIDE         = 0x8455u32
+pub aka GL_FOG_COORD_ARRAY_POINTER        = 0x8456u32
+pub aka GL_FOG_COORD_ARRAY                = 0x8457u32
+pub aka GL_FOG_COORD_ARRAY_BUFFER_BINDING = 0x889Du32
+pub aka GL_SRC0_RGB                       = 0x8580u32
+pub aka GL_SRC1_RGB                       = 0x8581u32
+pub aka GL_SRC2_RGB                       = 0x8582u32
+pub aka GL_SRC0_ALPHA                     = 0x8588u32
+pub aka GL_SRC2_ALPHA                     = 0x858Au32
+    
+//__version (GL_GLEXT_PROTOTYPES) {
+pub extern (C) def glGenQueries (n : GLsizei, dmut ids : &GLuint);
+pub extern (C) def glDeleteQueries (n : GLsizei, ids : &GLuint);
+pub extern (C) def  glIsQuery (id : GLuint)-> GLboolean;
+pub extern (C) def glBeginQuery (target : GLenum, id : GLuint);
+pub extern (C) def glEndQuery (target : GLenum);
+pub extern (C) def glGetQueryiv (target : GLenum, pname : GLenum,  dmut params : &GLint);
+pub extern (C) def glGetQueryObjectiv (id : GLuint, pname : GLenum,  dmut params : &GLint);
+pub extern (C) def glGetQueryObjectuiv (id : GLuint, pname : GLenum,  dmut params : &GLuint);
+pub extern (C) def glBindBuffer (target : GLenum, buffer : GLuint);
+pub extern (C) def glDeleteBuffers (n : GLsizei, buffers : &GLuint);
+pub extern (C) def glGenBuffers (n : GLsizei,  dmut buffers : &GLuint);
+pub extern (C) def glIsBuffer (buffer : GLuint)-> GLboolean;
+pub extern (C) def glBufferData (target : GLenum, sizeptr : GLsizei, data : &void, usage : GLenum);
+pub extern (C) def glBufferSubData (target : GLenum, offset : GLintptr, sizeptr : GLsizei, data : &void);
+pub extern (C) def glGetBufferSubData (target : GLenum, offset : GLintptr, sizeptr : GLsizei, dmut data : &void);
+pub extern (C) def glMapBuffer (target : GLenum, access : GLenum)-> &void;
+pub extern (C) def glUnmapBuffer (target : GLenum)-> GLboolean;
+pub extern (C) def glGetBufferParameteriv (target : GLenum, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGetBufferPointerv (target : GLenum, pname : GLenum, dmut params : &(&void));
+//}
+
+
+
+pub aka GL_VERSION_2_0 = 1u32
+pub aka GLchar= c8;
+pub aka GL_BLEND_EQUATION_RGB             = 0x8009u32
+pub aka GL_VERTEX_ATTRIB_ARRAY_ENABLED    = 0x8622u32
+pub aka GL_VERTEX_ATTRIB_ARRAY_SIZE       = 0x8623u32
+pub aka GL_VERTEX_ATTRIB_ARRAY_STRIDE     = 0x8624u32
+pub aka GL_VERTEX_ATTRIB_ARRAY_TYPE       = 0x8625u32
+pub aka GL_CURRENT_VERTEX_ATTRIB          = 0x8626u32
+pub aka GL_VERTEX_PROGRAM_POINT_SIZE      = 0x8642u32
+pub aka GL_VERTEX_ATTRIB_ARRAY_POINTER    = 0x8645u32
+pub aka GL_STENCIL_BACK_FUNC              = 0x8800u32
+pub aka GL_STENCIL_BACK_FAIL              = 0x8801u32
+pub aka GL_STENCIL_BACK_PASS_DEPTH_FAIL   = 0x8802u32
+pub aka GL_STENCIL_BACK_PASS_DEPTH_PASS   = 0x8803u32
+pub aka GL_MAX_DRAW_BUFFERS               = 0x8824u32
+pub aka GL_DRAW_BUFFER0                   = 0x8825u32
+pub aka GL_DRAW_BUFFER1                   = 0x8826u32
+pub aka GL_DRAW_BUFFER2                   = 0x8827u32
+pub aka GL_DRAW_BUFFER3                   = 0x8828u32
+pub aka GL_DRAW_BUFFER4                   = 0x8829u32
+pub aka GL_DRAW_BUFFER5                   = 0x882Au32
+pub aka GL_DRAW_BUFFER6                   = 0x882Bu32
+pub aka GL_DRAW_BUFFER7                   = 0x882Cu32
+pub aka GL_DRAW_BUFFER8                   = 0x882Du32
+pub aka GL_DRAW_BUFFER9                   = 0x882Eu32
+pub aka GL_DRAW_BUFFER10                  = 0x882Fu32
+pub aka GL_DRAW_BUFFER11                  = 0x8830u32
+pub aka GL_DRAW_BUFFER12                  = 0x8831u32
+pub aka GL_DRAW_BUFFER13                  = 0x8832u32
+pub aka GL_DRAW_BUFFER14                  = 0x8833u32
+pub aka GL_DRAW_BUFFER15                  = 0x8834u32
+pub aka GL_BLEND_EQUATION_ALPHA           = 0x883Du32
+pub aka GL_MAX_VERTEX_ATTRIBS             = 0x8869u32
+pub aka GL_VERTEX_ATTRIB_ARRAY_NORMALIZED = 0x886Au32
+pub aka GL_MAX_TEXTURE_IMAGE_UNITS        = 0x8872u32
+pub aka GL_FRAGMENT_SHADER                = 0x8B30u32
+pub aka GL_VERTEX_SHADER                  = 0x8B31u32
+pub aka GL_MAX_FRAGMENT_UNIFORM_COMPONENTS = 0x8B49u32
+pub aka GL_MAX_VERTEX_UNIFORM_COMPONENTS  = 0x8B4Au32
+pub aka GL_MAX_VARYING_FLOATS             = 0x8B4Bu32
+pub aka GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS = 0x8B4Cu32
+pub aka GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS = 0x8B4Du32
+pub aka GL_SHADER_TYPE                    = 0x8B4Fu32
+pub aka GL_FLOAT_VEC2                     = 0x8B50u32
+pub aka GL_FLOAT_VEC3                     = 0x8B51u32
+pub aka GL_FLOAT_VEC4                     = 0x8B52u32
+pub aka GL_INT_VEC2                       = 0x8B53u32
+pub aka GL_INT_VEC3                       = 0x8B54u32
+pub aka GL_INT_VEC4                       = 0x8B55u32
+pub aka GL_BOOL                           = 0x8B56u32
+pub aka GL_BOOL_VEC2                      = 0x8B57u32
+pub aka GL_BOOL_VEC3                      = 0x8B58u32
+pub aka GL_BOOL_VEC4                      = 0x8B59u32
+pub aka GL_FLOAT_MAT2                     = 0x8B5Au32
+pub aka GL_FLOAT_MAT3                     = 0x8B5Bu32
+pub aka GL_FLOAT_MAT4                     = 0x8B5Cu32
+pub aka GL_SAMPLER_1D                     = 0x8B5Du32
+pub aka GL_SAMPLER_2D                     = 0x8B5Eu32
+pub aka GL_SAMPLER_3D                     = 0x8B5Fu32
+pub aka GL_SAMPLER_CUBE                   = 0x8B60u32
+pub aka GL_SAMPLER_1D_SHADOW              = 0x8B61u32
+pub aka GL_SAMPLER_2D_SHADOW              = 0x8B62u32
+pub aka GL_DELETE_STATUS                  = 0x8B80u32
+pub aka GL_COMPILE_STATUS                 = 0x8B81u32
+pub aka GL_LINK_STATUS                    = 0x8B82u32
+pub aka GL_VALIDATE_STATUS                = 0x8B83u32
+pub aka GL_INFO_LOG_LENGTH                = 0x8B84u32
+pub aka GL_ATTACHED_SHADERS               = 0x8B85u32
+pub aka GL_ACTIVE_UNIFORMS                = 0x8B86u32
+pub aka GL_ACTIVE_UNIFORM_MAX_LENGTH      = 0x8B87u32
+pub aka GL_SHADER_SOURCE_LENGTH           = 0x8B88u32
+pub aka GL_ACTIVE_ATTRIBUTES              = 0x8B89u32
+pub aka GL_ACTIVE_ATTRIBUTE_MAX_LENGTH    = 0x8B8Au32
+pub aka GL_FRAGMENT_SHADER_DERIVATIVE_HINT = 0x8B8Bu32
+pub aka GL_SHADING_LANGUAGE_VERSION       = 0x8B8Cu32
+pub aka GL_CURRENT_PROGRAM                = 0x8B8Du32
+pub aka GL_POINT_SPRITE_COORD_ORIGIN      = 0x8CA0u32
+pub aka GL_LOWER_LEFT                     = 0x8CA1u32
+pub aka GL_UPPER_LEFT                     = 0x8CA2u32
+pub aka GL_STENCIL_BACK_REF               = 0x8CA3u32
+pub aka GL_STENCIL_BACK_VALUE_MASK        = 0x8CA4u32
+pub aka GL_STENCIL_BACK_WRITEMASK         = 0x8CA5u32
+pub aka GL_VERTEX_PROGRAM_TWO_SIDE        = 0x8643u32
+pub aka GL_POINT_SPRITE                   = 0x8861u32
+pub aka GL_COORD_REPLACE                  = 0x8862u32
+pub aka GL_MAX_TEXTURE_COORDS             = 0x8871u32
+
+//__version (GL_GLEXT_PROTOTYPES)
+pub extern (C) def glBlendEquationSeparate (modeRGB : GLenum, modeAlpha : GLenum);
+pub extern (C) def glDrawBuffers (n : GLsizei, bufs : &GLenum);
+pub extern (C) def glStencilOpSeparate (face : GLenum, sfail : GLenum, dpfail : GLenum, dppass : GLenum);
+pub extern (C) def glStencilFuncSeparate (face : GLenum, func : GLenum, ref_: GLint, mask : GLuint);
+pub extern (C) def glStencilMaskSeparate (face : GLenum, mask : GLuint);
+pub extern (C) def glAttachShader (program : GLuint, shader : GLuint);
+pub extern (C) def glBindAttribLocation (program : GLuint, index : GLuint, name : &GLchar);
+pub extern (C) def glCompileShader (shader : GLuint);
+pub extern (C) def glCreateProgram ()-> GLuint;
+pub extern (C) def glCreateShader (type : GLenum)-> GLuint;
+pub extern (C) def glDeleteProgram (program : GLuint);
+pub extern (C) def glDeleteShader (shader : GLuint);
+pub extern (C) def glDetachShader (program : GLuint, shader : GLuint);
+pub extern (C) def glDisableVertexAttribArray (index : GLuint);
+pub extern (C) def glEnableVertexAttribArray (index : GLuint);
+pub extern (C) def glGetActiveAttrib (program : GLuint, index : GLuint, bufSize : GLsizei,  dmut length : &GLsizei, dmut size : &GLint, dmut type : &GLenum, dmut name : &GLchar);
+pub extern (C) def glGetActiveUniform (program : GLuint, index : GLuint, bufSize : GLsizei,  dmut length : &GLsizei, dmut size : &GLint, dmut type : &GLenum, dmut name : &GLchar);
+pub extern (C) def glGetAttachedShaders (program : GLuint, maxCount : GLsizei, dmut count : &GLsizei, dmut shaders : &GLuint);
+pub extern (C) def glGetAttribLocation (program : GLuint, name : &GLchar)-> GLuint;
+pub extern (C) def glGetProgramiv (program : GLuint, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGetProgramInfoLog (program : GLuint, bufSize : GLsizei, dmut length : &GLsizei, dmut infoLog : &GLchar);
+pub extern (C) def glGetShaderiv (shader : GLuint, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGetShaderInfoLog (shader : GLuint, bufSize : GLsizei, dmut length : &GLsizei, dmut infoLog : &GLchar);
+pub extern (C) def glGetShaderSource (shader : GLuint, bufSize : GLsizei, dmut length : &GLsizei, dmut source : &GLchar);
+pub extern (C) def glGetUniformLocation (program : GLuint, name : &GLchar)-> GLint;
+pub extern (C) def glGetUniformfv (program : GLuint, location : GLint, dmut params : &GLfloat);
+pub extern (C) def glGetUniformiv (program : GLuint, location : GLint, dmut params : &GLint);
+pub extern (C) def glGetVertexAttribdv (index : GLuint, pname : GLenum, dmut params : &GLdouble);
+pub extern (C) def glGetVertexAttribfv (index : GLuint, pname : GLenum, dmut params : &GLfloat);
+pub extern (C) def glGetVertexAttribiv (index : GLuint, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGetVertexAttribPointerv (index : GLuint, pname : GLenum, dmut pointer : &(&void));
+pub extern (C) def glIsProgram (program : GLuint)-> GLboolean;
+pub extern (C) def glIsShader (shader : GLuint)-> GLboolean;
+pub extern (C) def glLinkProgram (program : GLuint);
+pub extern (C) def glShaderSource (shader : GLuint, count : GLsizei, string : &(&GLchar), length : &GLint);
+pub extern (C) def glUseProgram (program : GLuint);
+pub extern (C) def glUniform1f (location : GLint, v0 : GLfloat);
+pub extern (C) def glUniform2f (location : GLint, v0 : GLfloat, v1 : GLfloat);
+pub extern (C) def glUniform3f (location : GLint, v0 : GLfloat, v1 : GLfloat, v2 : GLfloat);
+pub extern (C) def glUniform4f (location : GLint, v0 : GLfloat, v1 : GLfloat, v2 : GLfloat, v3 : GLfloat);
+pub extern (C) def glUniform1i (location : GLint, v0 : GLint);
+pub extern (C) def glUniform2i (location : GLint, v0 : GLint, v1 : GLint);
+pub extern (C) def glUniform3i (location : GLint, v0 : GLint, v1 : GLint, v2 : GLint);
+pub extern (C) def glUniform4i (location : GLint, v0 : GLint, v1 : GLint, v2 : GLint, v3 : GLint);
+pub extern (C) def glUniform1fv (location : GLint, count : GLsizei, value : &GLfloat);
+pub extern (C) def glUniform2fv (location : GLint, count : GLsizei, value : &GLfloat);
+pub extern (C) def glUniform3fv (location : GLint, count : GLsizei, value : &GLfloat);
+pub extern (C) def glUniform4fv (location : GLint, count : GLsizei, value : &GLfloat);
+pub extern (C) def glUniform1iv (location : GLint, count : GLsizei, value : &GLint);
+pub extern (C) def glUniform2iv (location : GLint, count : GLsizei, value : &GLint);
+pub extern (C) def glUniform3iv (location : GLint, count : GLsizei, value : &GLint);
+pub extern (C) def glUniform4iv (location : GLint, count : GLsizei, value : &GLint);
+pub extern (C) def glUniformMatrix2fv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glUniformMatrix3fv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glUniformMatrix4fv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glUniform1fv (location : GLint, count : GLsizei, value : &void);
+pub extern (C) def glUniform2fv (location : GLint, count : GLsizei, value : &void);
+pub extern (C) def glUniform3fv (location : GLint, count : GLsizei, value : &void);
+pub extern (C) def glUniform4fv (location : GLint, count : GLsizei, value : &void);
+pub extern (C) def glUniform1iv (location : GLint, count : GLsizei, value : &void);
+pub extern (C) def glUniform2iv (location : GLint, count : GLsizei, value : &void);
+pub extern (C) def glUniform3iv (location : GLint, count : GLsizei, value : &void);
+pub extern (C) def glUniform4iv (location : GLint, count : GLsizei, value : &void);
+pub extern (C) def glUniformMatrix2fv (location : GLint, count : GLsizei, transpose : GLboolean, value : &void);
+pub extern (C) def glUniformMatrix3fv (location : GLint, count : GLsizei, transpose : GLboolean, value : &void);
+pub extern (C) def glUniformMatrix4fv (location : GLint, count : GLsizei, transpose : GLboolean, value : &void);
+pub extern (C) def glValidateProgram (program : GLuint);
+pub extern (C) def glVertexAttrib1d (index : GLuint, x : GLdouble);
+pub extern (C) def glVertexAttrib1dv (index : GLuint, v : &GLdouble);
+pub extern (C) def glVertexAttrib1f (index : GLuint, x : GLfloat);
+pub extern (C) def glVertexAttrib1fv (index : GLuint, v : &GLfloat);
+pub extern (C) def glVertexAttrib1s (index : GLuint, x : GLshort);
+pub extern (C) def glVertexAttrib1sv (index : GLuint, v : &GLshort);
+pub extern (C) def glVertexAttrib2d (index : GLuint, x : GLdouble, y : GLdouble);
+pub extern (C) def glVertexAttrib2dv (index : GLuint, v : &GLdouble);
+pub extern (C) def glVertexAttrib2f (index : GLuint, x : GLfloat, y : GLfloat);
+pub extern (C) def glVertexAttrib2fv (index : GLuint, v : &GLfloat);
+pub extern (C) def glVertexAttrib2s (index : GLuint, x : GLshort, y : GLshort);
+pub extern (C) def glVertexAttrib2sv (index : GLuint, v : &GLshort);
+pub extern (C) def glVertexAttrib3d (index : GLuint, x : GLdouble, y : GLdouble, z : GLdouble);
+pub extern (C) def glVertexAttrib3dv (index : GLuint, v : &GLdouble);
+pub extern (C) def glVertexAttrib3f (index : GLuint, x : GLfloat, y : GLfloat, z : GLfloat);
+pub extern (C) def glVertexAttrib3fv (index : GLuint, v : &GLfloat);
+pub extern (C) def glVertexAttrib3s (index : GLuint, x : GLshort, y : GLshort, z : GLshort);
+pub extern (C) def glVertexAttrib3sv (index : GLuint, v : &GLshort);
+pub extern (C) def glVertexAttrib4Nbv (index : GLuint, v : &GLbyte);
+pub extern (C) def glVertexAttrib4Niv (index : GLuint, v : &GLint);
+pub extern (C) def glVertexAttrib4Nsv (index : GLuint, v : &GLshort);
+pub extern (C) def glVertexAttrib4Nub (index : GLuint, x : GLubyte, y : GLubyte, z : GLubyte, w : GLubyte);
+pub extern (C) def glVertexAttrib4Nubv (index : GLuint, v : &GLubyte);
+pub extern (C) def glVertexAttrib4Nuiv (index : GLuint, v : &GLuint);
+pub extern (C) def glVertexAttrib4Nusv (index : GLuint, v : &GLushort);
+pub extern (C) def glVertexAttrib4bv (index : GLuint, v : &GLbyte);
+pub extern (C) def glVertexAttrib4d (index : GLuint, x : GLdouble, y : GLdouble, z : GLdouble, w : GLdouble);
+pub extern (C) def glVertexAttrib4dv (index : GLuint, v : &GLdouble);
+pub extern (C) def glVertexAttrib4f (index : GLuint, x : GLfloat, y : GLfloat, z : GLfloat, w : GLfloat);
+pub extern (C) def glVertexAttrib4fv (index : GLuint, v : &GLfloat);
+pub extern (C) def glVertexAttrib4iv (index : GLuint, v : &GLint);
+pub extern (C) def glVertexAttrib4s (index : GLuint, x : GLshort, y : GLshort, z : GLshort, w : GLshort);
+pub extern (C) def glVertexAttrib4sv (index : GLuint, v : &GLshort);
+pub extern (C) def glVertexAttrib4ubv (index : GLuint, v : &GLubyte);
+pub extern (C) def glVertexAttrib4uiv (index : GLuint, v : &GLuint);
+pub extern (C) def glVertexAttrib4usv (index : GLuint, v : &GLushort);
+pub extern (C) def glVertexAttribPointer (index : GLuint, size : GLint, type : GLenum, normalized : GLboolean, stride : GLsizei, pointer : &void);
+//}
+
+
+pub aka GL_VERSION_2_1  = 1u32
+pub aka GL_PIXEL_PACK_BUFFER              = 0x88EBu32
+pub aka GL_PIXEL_UNPACK_BUFFER            = 0x88ECu32
+pub aka GL_PIXEL_PACK_BUFFER_BINDING      = 0x88EDu32
+pub aka GL_PIXEL_UNPACK_BUFFER_BINDING    = 0x88EFu32
+pub aka GL_FLOAT_MAT2x3                   = 0x8B65u32
+pub aka GL_FLOAT_MAT2x4                   = 0x8B66u32
+pub aka GL_FLOAT_MAT3x2                   = 0x8B67u32
+pub aka GL_FLOAT_MAT3x4                   = 0x8B68u32
+pub aka GL_FLOAT_MAT4x2                   = 0x8B69u32
+pub aka GL_FLOAT_MAT4x3                   = 0x8B6Au32
+pub aka GL_SRGB                           = 0x8C40u32
+pub aka GL_SRGB8                          = 0x8C41u32
+pub aka GL_SRGB_ALPHA                     = 0x8C42u32
+pub aka GL_SRGB8_ALPHA8                   = 0x8C43u32
+pub aka GL_COMPRESSED_SRGB                = 0x8C48u32
+pub aka GL_COMPRESSED_SRGB_ALPHA          = 0x8C49u32
+pub aka GL_CURRENT_RASTER_SECONDARY_COLOR = 0x845Fu32
+pub aka GL_SLUMINANCE_ALPHA               = 0x8C44u32
+pub aka GL_SLUMINANCE8_ALPHA8             = 0x8C45u32
+pub aka GL_SLUMINANCE                     = 0x8C46u32
+pub aka GL_SLUMINANCE8                    = 0x8C47u32
+pub aka GL_COMPRESSED_SLUMINANCE          = 0x8C4Au32
+pub aka GL_COMPRESSED_SLUMINANCE_ALPHA    = 0x8C4Bu32
+
+
+//__version (GL_GLEXT_PROTOTYPES)
+pub extern (C) def glUniformMatrix2x3fv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glUniformMatrix3x2fv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glUniformMatrix2x4fv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glUniformMatrix4x2fv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glUniformMatrix3x4fv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glUniformMatrix4x3fv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+//}
+
+
+pub aka GL_VERSION_3_0  = 1u32;
+pub aka GLhalf = u16;
+pub aka GL_COMPARE_REF_TO_TEXTURE         = 0x884Eu32
+pub aka GL_CLIP_DISTANCE0                 = 0x3000u32
+pub aka GL_CLIP_DISTANCE1                 = 0x3001u32
+pub aka GL_CLIP_DISTANCE2                 = 0x3002u32
+pub aka GL_CLIP_DISTANCE3                 = 0x3003u32
+pub aka GL_CLIP_DISTANCE4                 = 0x3004u32
+pub aka GL_CLIP_DISTANCE5                 = 0x3005u32
+pub aka GL_CLIP_DISTANCE6                 = 0x3006u32
+pub aka GL_CLIP_DISTANCE7                 = 0x3007u32
+pub aka GL_MAX_CLIP_DISTANCES             = 0x0D32u32
+pub aka GL_MAJOR_VERSION                  = 0x821Bu32
+pub aka GL_MINOR_VERSION                  = 0x821Cu32
+pub aka GL_NUM_EXTENSIONS                 = 0x821Du32
+pub aka GL_CONTEXT_FLAGS                  = 0x821Eu32
+pub aka GL_COMPRESSED_RED                 = 0x8225u32
+pub aka GL_COMPRESSED_RG                  = 0x8226u32
+pub aka GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT = 0x00000001u32
+pub aka GL_RGBA32F                        = 0x8814u32
+pub aka GL_RGB32F                         = 0x8815u32
+pub aka GL_RGBA16F                        = 0x881Au32
+pub aka GL_RGB16F                         = 0x881Bu32
+pub aka GL_VERTEX_ATTRIB_ARRAY_INTEGER    = 0x88FDu32
+pub aka GL_MAX_ARRAY_TEXTURE_LAYERS       = 0x88FFu32
+pub aka GL_MIN_PROGRAM_TEXEL_OFFSET       = 0x8904u32
+pub aka GL_MAX_PROGRAM_TEXEL_OFFSET       = 0x8905u32
+pub aka GL_CLAMP_READ_COLOR               = 0x891Cu32
+pub aka GL_FIXED_ONLY                     = 0x891Du32
+pub aka GL_MAX_VARYING_COMPONENTS         = 0x8B4Bu32
+pub aka GL_TEXTURE_1D_ARRAY               = 0x8C18u32
+pub aka GL_PROXY_TEXTURE_1D_ARRAY         = 0x8C19u32
+pub aka GL_TEXTURE_2D_ARRAY               = 0x8C1Au32
+pub aka GL_PROXY_TEXTURE_2D_ARRAY         = 0x8C1Bu32
+pub aka GL_TEXTURE_BINDING_1D_ARRAY       = 0x8C1Cu32
+pub aka GL_TEXTURE_BINDING_2D_ARRAY       = 0x8C1Du32
+pub aka GL_R11F_G11F_B10F                 = 0x8C3Au32
+pub aka GL_UNSIGNED_INT_10F_11F_11F_REV   = 0x8C3Bu32
+pub aka GL_RGB9_E5                        = 0x8C3Du32
+pub aka GL_UNSIGNED_INT_5_9_9_9_REV       = 0x8C3Eu32
+pub aka GL_TEXTURE_SHARED_SIZE            = 0x8C3Fu32
+pub aka GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH = 0x8C76u32
+pub aka GL_TRANSFORM_FEEDBACK_BUFFER_MODE = 0x8C7Fu32
+pub aka GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS = 0x8C80u32
+pub aka GL_TRANSFORM_FEEDBACK_VARYINGS    = 0x8C83u32
+pub aka GL_TRANSFORM_FEEDBACK_BUFFER_START = 0x8C84u32
+pub aka GL_TRANSFORM_FEEDBACK_BUFFER_SIZE = 0x8C85u32
+pub aka GL_PRIMITIVES_GENERATED           = 0x8C87u32
+pub aka GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN = 0x8C88u32
+pub aka GL_RASTERIZER_DISCARD             = 0x8C89u32
+pub aka GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS = 0x8C8Au32
+pub aka GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS = 0x8C8Bu32
+pub aka GL_INTERLEAVED_ATTRIBS            = 0x8C8Cu32
+pub aka GL_SEPARATE_ATTRIBS               = 0x8C8Du32
+pub aka GL_TRANSFORM_FEEDBACK_BUFFER      = 0x8C8Eu32
+pub aka GL_TRANSFORM_FEEDBACK_BUFFER_BINDING = 0x8C8Fu32
+pub aka GL_RGBA32UI                       = 0x8D70u32
+pub aka GL_RGB32UI                        = 0x8D71u32
+pub aka GL_RGBA16UI                       = 0x8D76u32
+pub aka GL_RGB16UI                        = 0x8D77u32
+pub aka GL_RGBA8UI                        = 0x8D7Cu32
+pub aka GL_RGB8UI                         = 0x8D7Du32
+pub aka GL_RGBA32I                        = 0x8D82u32
+pub aka GL_RGB32I                         = 0x8D83u32
+pub aka GL_RGBA16I                        = 0x8D88u32
+pub aka GL_RGB16I                         = 0x8D89u32
+pub aka GL_RGBA8I                         = 0x8D8Eu32
+pub aka GL_RGB8I                          = 0x8D8Fu32
+pub aka GL_RED_INTEGER                    = 0x8D94u32
+pub aka GL_GREEN_INTEGER                  = 0x8D95u32
+pub aka GL_BLUE_INTEGER                   = 0x8D96u32
+pub aka GL_RGB_INTEGER                    = 0x8D98u32
+pub aka GL_RGBA_INTEGER                   = 0x8D99u32
+pub aka GL_BGR_INTEGER                    = 0x8D9Au32
+pub aka GL_BGRA_INTEGER                   = 0x8D9Bu32
+pub aka GL_SAMPLER_1D_ARRAY               = 0x8DC0u32
+pub aka GL_SAMPLER_2D_ARRAY               = 0x8DC1u32
+pub aka GL_SAMPLER_1D_ARRAY_SHADOW        = 0x8DC3u32
+pub aka GL_SAMPLER_2D_ARRAY_SHADOW        = 0x8DC4u32
+pub aka GL_SAMPLER_CUBE_SHADOW            = 0x8DC5u32
+pub aka GL_UNSIGNED_INT_VEC2              = 0x8DC6u32
+pub aka GL_UNSIGNED_INT_VEC3              = 0x8DC7u32
+pub aka GL_UNSIGNED_INT_VEC4              = 0x8DC8u32
+pub aka GL_INT_SAMPLER_1D                 = 0x8DC9u32
+pub aka GL_INT_SAMPLER_2D                 = 0x8DCAu32
+pub aka GL_INT_SAMPLER_3D                 = 0x8DCBu32
+pub aka GL_INT_SAMPLER_CUBE               = 0x8DCCu32
+pub aka GL_INT_SAMPLER_1D_ARRAY           = 0x8DCEu32
+pub aka GL_INT_SAMPLER_2D_ARRAY           = 0x8DCFu32
+pub aka GL_UNSIGNED_INT_SAMPLER_1D        = 0x8DD1u32
+pub aka GL_UNSIGNED_INT_SAMPLER_2D        = 0x8DD2u32
+pub aka GL_UNSIGNED_INT_SAMPLER_3D        = 0x8DD3u32
+pub aka GL_UNSIGNED_INT_SAMPLER_CUBE      = 0x8DD4u32
+pub aka GL_UNSIGNED_INT_SAMPLER_1D_ARRAY  = 0x8DD6u32
+pub aka GL_UNSIGNED_INT_SAMPLER_2D_ARRAY  = 0x8DD7u32
+pub aka GL_QUERY_WAIT                     = 0x8E13u32
+pub aka GL_QUERY_NO_WAIT                  = 0x8E14u32
+pub aka GL_QUERY_BY_REGION_WAIT           = 0x8E15u32
+pub aka GL_QUERY_BY_REGION_NO_WAIT        = 0x8E16u32
+pub aka GL_BUFFER_ACCESS_FLAGS            = 0x911Fu32
+pub aka GL_BUFFER_MAP_LENGTH              = 0x9120u32
+pub aka GL_BUFFER_MAP_OFFSET              = 0x9121u32
+pub aka GL_DEPTH_COMPONENT32F             = 0x8CACu32
+pub aka GL_DEPTH32F_STENCIL8              = 0x8CADu32
+pub aka GL_FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DADu32
+pub aka GL_INVALID_FRAMEBUFFER_OPERATION  = 0x0506u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING = 0x8210u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE = 0x8211u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE = 0x8212u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE = 0x8213u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE = 0x8214u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE = 0x8215u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE = 0x8216u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE = 0x8217u32
+pub aka GL_FRAMEBUFFER_DEFAULT            = 0x8218u32
+pub aka GL_FRAMEBUFFER_UNDEFINED          = 0x8219u32
+pub aka GL_DEPTH_STENCIL_ATTACHMENT       = 0x821Au32
+pub aka GL_MAX_RENDERBUFFER_SIZE          = 0x84E8u32
+pub aka GL_DEPTH_STENCIL                  = 0x84F9u32
+pub aka GL_UNSIGNED_INT_24_8              = 0x84FAu32
+pub aka GL_DEPTH24_STENCIL8               = 0x88F0u32
+pub aka GL_TEXTURE_STENCIL_SIZE           = 0x88F1u32
+pub aka GL_TEXTURE_RED_TYPE               = 0x8C10u32
+pub aka GL_TEXTURE_GREEN_TYPE             = 0x8C11u32
+pub aka GL_TEXTURE_BLUE_TYPE              = 0x8C12u32
+pub aka GL_TEXTURE_ALPHA_TYPE             = 0x8C13u32
+pub aka GL_TEXTURE_DEPTH_TYPE             = 0x8C16u32
+pub aka GL_UNSIGNED_NORMALIZED            = 0x8C17u32
+pub aka GL_FRAMEBUFFER_BINDING            = 0x8CA6u32
+pub aka GL_DRAW_FRAMEBUFFER_BINDING       = 0x8CA6u32
+pub aka GL_RENDERBUFFER_BINDING           = 0x8CA7u32
+pub aka GL_READ_FRAMEBUFFER               = 0x8CA8u32
+pub aka GL_DRAW_FRAMEBUFFER               = 0x8CA9u32
+pub aka GL_READ_FRAMEBUFFER_BINDING       = 0x8CAAu32
+pub aka GL_RENDERBUFFER_SAMPLES           = 0x8CABu32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE = 0x8CD0u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME = 0x8CD1u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL = 0x8CD2u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE = 0x8CD3u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER = 0x8CD4u32
+pub aka GL_FRAMEBUFFER_COMPLETE           = 0x8CD5u32
+pub aka GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT = 0x8CD6u32
+pub aka GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT = 0x8CD7u32
+pub aka GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER = 0x8CDBu32
+pub aka GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER = 0x8CDCu32
+pub aka GL_FRAMEBUFFER_UNSUPPORTED        = 0x8CDDu32
+pub aka GL_MAX_COLOR_ATTACHMENTS          = 0x8CDFu32
+pub aka GL_COLOR_ATTACHMENT0              = 0x8CE0u32
+pub aka GL_COLOR_ATTACHMENT1              = 0x8CE1u32
+pub aka GL_COLOR_ATTACHMENT2              = 0x8CE2u32
+pub aka GL_COLOR_ATTACHMENT3              = 0x8CE3u32
+pub aka GL_COLOR_ATTACHMENT4              = 0x8CE4u32
+pub aka GL_COLOR_ATTACHMENT5              = 0x8CE5u32
+pub aka GL_COLOR_ATTACHMENT6              = 0x8CE6u32
+pub aka GL_COLOR_ATTACHMENT7              = 0x8CE7u32
+pub aka GL_COLOR_ATTACHMENT8              = 0x8CE8u32
+pub aka GL_COLOR_ATTACHMENT9              = 0x8CE9u32
+pub aka GL_COLOR_ATTACHMENT10             = 0x8CEAu32
+pub aka GL_COLOR_ATTACHMENT11             = 0x8CEBu32
+pub aka GL_COLOR_ATTACHMENT12             = 0x8CECu32
+pub aka GL_COLOR_ATTACHMENT13             = 0x8CEDu32
+pub aka GL_COLOR_ATTACHMENT14             = 0x8CEEu32
+pub aka GL_COLOR_ATTACHMENT15             = 0x8CEFu32
+pub aka GL_DEPTH_ATTACHMENT               = 0x8D00u32
+pub aka GL_STENCIL_ATTACHMENT             = 0x8D20u32
+pub aka GL_FRAMEBUFFER                    = 0x8D40u32
+pub aka GL_RENDERBUFFER                   = 0x8D41u32
+pub aka GL_RENDERBUFFER_WIDTH             = 0x8D42u32
+pub aka GL_RENDERBUFFER_HEIGHT            = 0x8D43u32
+pub aka GL_RENDERBUFFER_INTERNAL_FORMAT   = 0x8D44u32
+pub aka GL_STENCIL_INDEX1                 = 0x8D46u32
+pub aka GL_STENCIL_INDEX4                 = 0x8D47u32
+pub aka GL_STENCIL_INDEX8                 = 0x8D48u32
+pub aka GL_STENCIL_INDEX16                = 0x8D49u32
+pub aka GL_RENDERBUFFER_RED_SIZE          = 0x8D50u32
+pub aka GL_RENDERBUFFER_GREEN_SIZE        = 0x8D51u32
+pub aka GL_RENDERBUFFER_BLUE_SIZE         = 0x8D52u32
+pub aka GL_RENDERBUFFER_ALPHA_SIZE        = 0x8D53u32
+pub aka GL_RENDERBUFFER_DEPTH_SIZE        = 0x8D54u32
+pub aka GL_RENDERBUFFER_STENCIL_SIZE      = 0x8D55u32
+pub aka GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE = 0x8D56u32
+pub aka GL_MAX_SAMPLES                    = 0x8D57u32
+pub aka GL_INDEX                          = 0x8222u32
+pub aka GL_TEXTURE_LUMINANCE_TYPE         = 0x8C14u32
+pub aka GL_TEXTURE_INTENSITY_TYPE         = 0x8C15u32
+pub aka GL_FRAMEBUFFER_SRGB               = 0x8DB9u32
+pub aka GL_HALF_FLOAT                     = 0x140Bu32
+pub aka GL_MAP_READ_BIT                   = 0x0001u32
+pub aka GL_MAP_WRITE_BIT                  = 0x0002u32
+pub aka GL_MAP_INVALIDATE_RANGE_BIT       = 0x0004u32
+pub aka GL_MAP_INVALIDATE_BUFFER_BIT      = 0x0008u32
+pub aka GL_MAP_FLUSH_EXPLICIT_BIT         = 0x0010u32
+pub aka GL_MAP_UNSYNCHRONIZED_BIT         = 0x0020u32
+pub aka GL_COMPRESSED_RED_RGTC1           = 0x8DBBu32
+pub aka GL_COMPRESSED_SIGNED_RED_RGTC1    = 0x8DBCu32
+pub aka GL_COMPRESSED_RG_RGTC2            = 0x8DBDu32
+pub aka GL_COMPRESSED_SIGNED_RG_RGTC2     = 0x8DBEu32
+pub aka GL_RG                             = 0x8227u32
+pub aka GL_RG_INTEGER                     = 0x8228u32
+pub aka GL_R8                             = 0x8229u32
+pub aka GL_R16                            = 0x822Au32
+pub aka GL_RG8                            = 0x822Bu32
+pub aka GL_RG16                           = 0x822Cu32
+pub aka GL_R16F                           = 0x822Du32
+pub aka GL_R32F                           = 0x822Eu32
+pub aka GL_RG16F                          = 0x822Fu32
+pub aka GL_RG32F                          = 0x8230u32
+pub aka GL_R8I                            = 0x8231u32
+pub aka GL_R8UI                           = 0x8232u32
+pub aka GL_R16I                           = 0x8233u32
+pub aka GL_R16UI                          = 0x8234u32
+pub aka GL_R32I                           = 0x8235u32
+pub aka GL_R32UI                          = 0x8236u32
+pub aka GL_RG8I                           = 0x8237u32
+pub aka GL_RG8UI                          = 0x8238u32
+pub aka GL_RG16I                          = 0x8239u32
+pub aka GL_RG16UI                         = 0x823Au32
+pub aka GL_RG32I                          = 0x823Bu32
+pub aka GL_RG32UI                         = 0x823Cu32
+pub aka GL_VERTEX_ARRAY_BINDING           = 0x85B5u32
+pub aka GL_CLAMP_VERTEX_COLOR             = 0x891Au32
+pub aka GL_CLAMP_FRAGMENT_COLOR           = 0x891Bu32
+pub aka GL_ALPHA_INTEGER                  = 0x8D97u32
+
+//__version (GL_GLEXT_PROTOTYPES)
+pub extern (C) def glColorMaski (index : GLuint, r : GLboolean, g : GLboolean, b : GLboolean, a : GLboolean);
+pub extern (C) def glGetBooleani_v (target : GLenum, index : GLuint, dmut data : &GLboolean);
+pub extern (C) def glGetIntegeri_v (target : GLenum, index : GLuint, dmut data : &GLint);
+pub extern (C) def glEnablei (target : GLenum, index : GLuint);
+pub extern (C) def glDisablei (target : GLenum, index : GLuint);
+pub extern (C) def glIsEnabledi (target : GLenum, index : GLuint)-> GLboolean;
+pub extern (C) def glBeginTransformFeedback (primitiveMode : GLenum);
+pub extern (C) def glEndTransformFeedback ();
+pub extern (C) def glBindBufferRange (target : GLenum, index : GLuint, buffer : GLuint, offset : GLintptr, sizeptr : GLsizei);
+pub extern (C) def glBindBufferBase (target : GLenum, index : GLuint, buffer : GLuint);
+pub extern (C) def glTransformFeedbackVaryings (program : GLuint, count : GLsizei, varyings : &(&GLchar), bufferMode : GLenum);
+pub extern (C) def glGetTransformFeedbackVarying (program : GLuint, index : GLuint, bufSize : GLsizei, dmut length : &GLsizei, dmut size : &GLsizei, dmut type : &GLenum, dmut name : &GLchar);
+pub extern (C) def glClampColor (target : GLenum, clamp : GLenum);
+pub extern (C) def glBeginConditionalRender (id : GLuint, mode : GLenum);
+pub extern (C) def glEndConditionalRender ();
+pub extern (C) def glVertexAttribIPointer (index : GLuint, size : GLint, type : GLenum, stride : GLsizei, pointer : &void);
+pub extern (C) def glGetVertexAttribIiv (index : GLuint, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGetVertexAttribIuiv (index : GLuint, pname : GLenum, dmut params : &GLuint);
+pub extern (C) def glVertexAttribI1i (index : GLuint, x : GLint);
+pub extern (C) def glVertexAttribI2i (index : GLuint, x : GLint, y : GLint);
+pub extern (C) def glVertexAttribI3i (index : GLuint, x : GLint, y : GLint, z : GLint);
+pub extern (C) def glVertexAttribI4i (index : GLuint, x : GLint, y : GLint, z : GLint, w : GLint);
+pub extern (C) def glVertexAttribI1ui (index : GLuint, x : GLuint);
+pub extern (C) def glVertexAttribI2ui (index : GLuint, x : GLuint, y : GLuint);
+pub extern (C) def glVertexAttribI3ui (index : GLuint, x : GLuint, y : GLuint, z : GLuint);
+pub extern (C) def glVertexAttribI4ui (index : GLuint, x : GLuint, y : GLuint, z : GLuint, w : GLuint);
+pub extern (C) def glVertexAttribI1iv (index : GLuint, v : &GLint);
+pub extern (C) def glVertexAttribI2iv (index : GLuint, v : &GLint);
+pub extern (C) def glVertexAttribI3iv (index : GLuint, v : &GLint);
+pub extern (C) def glVertexAttribI4iv (index : GLuint, v : &GLint);
+pub extern (C) def glVertexAttribI1uiv (index : GLuint, v : &GLuint);
+pub extern (C) def glVertexAttribI2uiv (index : GLuint, v : &GLuint);
+pub extern (C) def glVertexAttribI3uiv (index : GLuint, v : &GLuint);
+pub extern (C) def glVertexAttribI4uiv (index : GLuint, v : &GLuint);
+pub extern (C) def glVertexAttribI4bv (index : GLuint, v : &GLbyte);
+pub extern (C) def glVertexAttribI4sv (index : GLuint, v : &GLshort);
+pub extern (C) def glVertexAttribI4ubv (index : GLuint, v : &GLubyte);
+pub extern (C) def glVertexAttribI4usv (index : GLuint, v : &GLushort);
+pub extern (C) def glGetUniformuiv (program : GLuint, location : GLint, dmut params : &GLuint);
+pub extern (C) def glBindFragDataLocation (program : GLuint, color : GLuint, name : &GLchar);
+pub extern (C) def glGetFragDataLocation (program : GLuint, name : &GLchar)-> GLint;
+pub extern (C) def glUniform1ui (location : GLint, v0 : GLuint);
+pub extern (C) def glUniform2ui (location : GLint, v0 : GLuint, v1 : GLuint);
+pub extern (C) def glUniform3ui (location : GLint, v0 : GLuint, v1 : GLuint, v2 : GLuint);
+pub extern (C) def glUniform4ui (location : GLint, v0 : GLuint, v1 : GLuint, v2 : GLuint, v3 : GLuint);
+pub extern (C) def glUniform1uiv (location : GLint, count : GLsizei, value : &GLuint);
+pub extern (C) def glUniform2uiv (location : GLint, count : GLsizei, value : &GLuint);
+pub extern (C) def glUniform3uiv (location : GLint, count : GLsizei, value : &GLuint);
+pub extern (C) def glUniform4uiv (location : GLint, count : GLsizei, value : &GLuint);
+pub extern (C) def glTexParameterIiv (target : GLenum, pname : GLenum, params : &GLint);
+pub extern (C) def glTexParameterIuiv (target : GLenum, pname : GLenum, params : &GLuint);
+pub extern (C) def glGetTexParameterIiv (target : GLenum, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGetTexParameterIuiv (target : GLenum, pname : GLenum, dmut params : &GLuint);
+pub extern (C) def glClearBufferiv (buffer : GLenum, drawbuffer : GLint, value : &GLint);
+pub extern (C) def glClearBufferuiv (buffer : GLenum, drawbuffer : GLint, value : &GLuint);
+pub extern (C) def glClearBufferfv (buffer : GLenum, drawbuffer : GLint, value : &GLfloat);
+pub extern (C) def glClearBufferfi (buffer : GLenum, drawbuffer : GLint, depth : GLfloat, stencil : GLint);
+pub extern (C) def glGetStringi (name : GLenum, index : GLuint)-> &GLubyte;
+pub extern (C) def glIsRenderbuffer (renderbuffer : GLuint)-> GLboolean;
+pub extern (C) def glBindRenderbuffer (target : GLenum, renderbuffer : GLuint);
+pub extern (C) def glDeleteRenderbuffers (n : GLsizei, renderbuffers : &GLuint);
+pub extern (C) def glGenRenderbuffers (n : GLsizei, dmut renderbuffers : &GLuint);
+pub extern (C) def glRenderbufferStorage (target : GLenum, internalformat : GLenum, width : GLsizei, height : GLsizei);
+pub extern (C) def glGetRenderbufferParameteriv (target : GLenum, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glIsFramebuffer (framebuffer : GLuint)-> GLboolean;
+pub extern (C) def glBindFramebuffer (target : GLenum, framebuffer : GLuint);
+pub extern (C) def glDeleteFramebuffers (n : GLsizei, framebuffers : &GLuint);
+pub extern (C) def glGenFramebuffers (n : GLsizei, dmut framebuffers : &GLuint);
+pub extern (C) def glCheckFramebufferStatus (target : GLenum)-> GLenum;
+pub extern (C) def glFramebufferTexture1D (target : GLenum, attachment : GLenum, textarget : GLenum, texture : GLuint, level : GLint);
+pub extern (C) def glFramebufferTexture2D (target : GLenum, attachment : GLenum, textarget : GLenum, texture : GLuint, level : GLint);
+pub extern (C) def glFramebufferTexture3D (target : GLenum, attachment : GLenum, textarget : GLenum, texture : GLuint, level : GLint, zoffset : GLint);
+pub extern (C) def glFramebufferRenderbuffer (target : GLenum, attachment : GLenum, renderbuffertarget : GLenum, renderbuffer : GLuint);
+pub extern (C) def glGetFramebufferAttachmentParameteriv (target : GLenum, attachment : GLenum, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGenerateMipmap (target : GLenum);
+pub extern (C) def glBlitFramebuffer (srcX0 : GLint, srcY0 : GLint, srcX1 : GLint, srcY1 : GLint, dstX0 : GLint, dstY0 : GLint, dstX1 : GLint, dstY1 : GLint, mask : GLbitfield, filter : GLenum);
+pub extern (C) def glRenderbufferStorageMultisample (target : GLenum, samples : GLsizei, internalformat : GLenum, width : GLsizei, height : GLsizei);
+pub extern (C) def glFramebufferTextureLayer (target : GLenum, attachment : GLenum, texture : GLuint, level : GLint, layer : GLint);
+pub extern (C) def glMapBufferRange (target : GLenum, offset : GLintptr, lengthptr : GLsizei, access : GLbitfield)-> &void;
+pub extern (C) def glFlushMappedBufferRange (target : GLenum, offset : GLintptr, lengthptr : GLsizei);
+pub extern (C) def glBindVertexArray (array : GLuint);
+pub extern (C) def glDeleteVertexArrays (n : GLsizei, arrays : &GLuint);
+pub extern (C) def glGenVertexArrays (n : GLsizei, dmut arrays : &GLuint);
+pub extern (C) def glIsVertexArray (array : GLuint)-> GLboolean;
+//}
+
+
+pub aka GL_VERSION_3_1 = 1u32
+pub aka GL_SAMPLER_2D_RECT                = 0x8B63u32
+pub aka GL_SAMPLER_2D_RECT_SHADOW         = 0x8B64u32
+pub aka GL_SAMPLER_BUFFER                 = 0x8DC2u32
+pub aka GL_INT_SAMPLER_2D_RECT            = 0x8DCDu32
+pub aka GL_INT_SAMPLER_BUFFER             = 0x8DD0u32
+pub aka GL_UNSIGNED_INT_SAMPLER_2D_RECT   = 0x8DD5u32
+pub aka GL_UNSIGNED_INT_SAMPLER_BUFFER    = 0x8DD8u32
+pub aka GL_TEXTURE_BUFFER                 = 0x8C2Au32
+pub aka GL_MAX_TEXTURE_BUFFER_SIZE        = 0x8C2Bu32
+pub aka GL_TEXTURE_BINDING_BUFFER         = 0x8C2Cu32
+pub aka GL_TEXTURE_BUFFER_DATA_STORE_BINDING = 0x8C2Du32
+pub aka GL_TEXTURE_RECTANGLE              = 0x84F5u32
+pub aka GL_TEXTURE_BINDING_RECTANGLE      = 0x84F6u32
+pub aka GL_PROXY_TEXTURE_RECTANGLE        = 0x84F7u32
+pub aka GL_MAX_RECTANGLE_TEXTURE_SIZE     = 0x84F8u32
+pub aka GL_R8_SNORM                       = 0x8F94u32
+pub aka GL_RG8_SNORM                      = 0x8F95u32
+pub aka GL_RGB8_SNORM                     = 0x8F96u32
+pub aka GL_RGBA8_SNORM                    = 0x8F97u32
+pub aka GL_R16_SNORM                      = 0x8F98u32
+pub aka GL_RG16_SNORM                     = 0x8F99u32
+pub aka GL_RGB16_SNORM                    = 0x8F9Au32
+pub aka GL_RGBA16_SNORM                   = 0x8F9Bu32
+pub aka GL_SIGNED_NORMALIZED              = 0x8F9Cu32
+pub aka GL_PRIMITIVE_RESTART              = 0x8F9Du32
+pub aka GL_PRIMITIVE_RESTART_INDEX        = 0x8F9Eu32
+pub aka GL_COPY_READ_BUFFER               = 0x8F36u32
+pub aka GL_COPY_WRITE_BUFFER              = 0x8F37u32
+pub aka GL_UNIFORM_BUFFER                 = 0x8A11u32
+pub aka GL_UNIFORM_BUFFER_BINDING         = 0x8A28u32
+pub aka GL_UNIFORM_BUFFER_START           = 0x8A29u32
+pub aka GL_UNIFORM_BUFFER_SIZE            = 0x8A2Au32
+pub aka GL_MAX_VERTEX_UNIFORM_BLOCKS      = 0x8A2Bu32
+pub aka GL_MAX_FRAGMENT_UNIFORM_BLOCKS    = 0x8A2Du32
+pub aka GL_MAX_COMBINED_UNIFORM_BLOCKS    = 0x8A2Eu32
+pub aka GL_MAX_UNIFORM_BUFFER_BINDINGS    = 0x8A2Fu32
+pub aka GL_MAX_UNIFORM_BLOCK_SIZE         = 0x8A30u32
+pub aka GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS = 0x8A31u32
+pub aka GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS = 0x8A33u32
+pub aka GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT = 0x8A34u32
+pub aka GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH = 0x8A35u32
+pub aka GL_ACTIVE_UNIFORM_BLOCKS          = 0x8A36u32
+pub aka GL_UNIFORM_TYPE                   = 0x8A37u32
+pub aka GL_UNIFORM_SIZE                   = 0x8A38u32
+pub aka GL_UNIFORM_NAME_LENGTH            = 0x8A39u32
+pub aka GL_UNIFORM_BLOCK_INDEX            = 0x8A3Au32
+pub aka GL_UNIFORM_OFFSET                 = 0x8A3Bu32
+pub aka GL_UNIFORM_ARRAY_STRIDE           = 0x8A3Cu32
+pub aka GL_UNIFORM_MATRIX_STRIDE          = 0x8A3Du32
+pub aka GL_UNIFORM_IS_ROW_MAJOR           = 0x8A3Eu32
+pub aka GL_UNIFORM_BLOCK_BINDING          = 0x8A3Fu32
+pub aka GL_UNIFORM_BLOCK_DATA_SIZE        = 0x8A40u32
+pub aka GL_UNIFORM_BLOCK_NAME_LENGTH      = 0x8A41u32
+pub aka GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS  = 0x8A42u32
+pub aka GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES = 0x8A43u32
+pub aka GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER = 0x8A44u32
+pub aka GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER = 0x8A46u32
+pub aka GL_INVALID_INDEX                  = 0xFFFFFFFFu32
+    
+//__version (GL_GLEXT_PROTOTYPES) {
+pub extern (C) def glDrawArraysInstanced (mode : GLenum, first : GLint, count : GLsizei, instancecount : GLsizei);
+pub extern (C) def glDrawElementsInstanced (mode : GLenum, count : GLsizei, type : GLenum, indices : &void, instancecount : GLsizei);
+pub extern (C) def glTexBuffer (target : GLenum, internalformat : GLenum, buffer : GLuint);
+pub extern (C) def glPrimitiveRestartIndex (index : GLuint);
+pub extern (C) def glCopyBufferSubData (readTarget : GLenum, writeTarget : GLenum, readOffset : GLintptr, writeOffset : GLintptr, sizeptr : GLsizei);
+pub extern (C) def glGetUniformIndices (program : GLuint, uniformCount : GLsizei, uniformNames : &GLchar, dmut uniformIndices : &GLuint);
+pub extern (C) def glGetActiveUniformsiv (program : GLuint, uniformCount : GLsizei, uniformIndices : &GLuint, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGetActiveUniformName (program : GLuint, uniformIndex : GLuint, bufSize : GLsizei, dmut length : &GLsizei, dmut uniformName : &GLchar);
+pub extern (C) def glGetUniformBlockIndex (program : GLuint, uniformBlockName : &GLchar)-> GLuint;
+pub extern (C) def glGetActiveUniformBlockiv (program : GLuint, uniformBlockIndex : GLuint, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGetActiveUniformBlockName (program : GLuint, uniformBlockIndex : GLuint, bufSize : GLsizei, dmut length : &GLsizei, dmut uniformBlockName : &GLchar);
+pub extern (C) def glUniformBlockBinding (program : GLuint, uniformBlockIndex : GLuint, uniformBlockBinding : GLuint);
+//}
+
+pub aka GL_VERSION_3_2 = 1u32;
+pub aka GLuint64 = u64;
+pub aka GLint64 = i64;
+pub struct -> GLsync;
+
+pub aka GL_CONTEXT_CORE_PROFILE_BIT       = 0x00000001u32
+pub aka GL_CONTEXT_COMPATIBILITY_PROFILE_BIT = 0x00000002u32
+pub aka GL_LINES_ADJACENCY                = 0x000Au32
+pub aka GL_LINE_STRIP_ADJACENCY           = 0x000Bu32
+pub aka GL_TRIANGLES_ADJACENCY            = 0x000Cu32
+pub aka GL_TRIANGLE_STRIP_ADJACENCY       = 0x000Du32
+pub aka GL_PROGRAM_POINT_SIZE             = 0x8642u32
+pub aka GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS = 0x8C29u32
+pub aka GL_FRAMEBUFFER_ATTACHMENT_LAYERED = 0x8DA7u32
+pub aka GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS = 0x8DA8u32
+pub aka GL_GEOMETRY_SHADER                = 0x8DD9u32
+pub aka GL_GEOMETRY_VERTICES_OUT          = 0x8916u32
+pub aka GL_GEOMETRY_INPUT_TYPE            = 0x8917u32
+pub aka GL_GEOMETRY_OUTPUT_TYPE           = 0x8918u32
+pub aka GL_MAX_GEOMETRY_UNIFORM_COMPONENTS = 0x8DDFu32
+pub aka GL_MAX_GEOMETRY_OUTPUT_VERTICES   = 0x8DE0u32
+pub aka GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS = 0x8DE1u32
+pub aka GL_MAX_VERTEX_OUTPUT_COMPONENTS   = 0x9122u32
+pub aka GL_MAX_GEOMETRY_INPUT_COMPONENTS  = 0x9123u32
+pub aka GL_MAX_GEOMETRY_OUTPUT_COMPONENTS = 0x9124u32
+pub aka GL_MAX_FRAGMENT_INPUT_COMPONENTS  = 0x9125u32
+pub aka GL_CONTEXT_PROFILE_MASK           = 0x9126u32
+pub aka GL_DEPTH_CLAMP                    = 0x864Fu32
+pub aka GL_QUADS_FOLLOW_PROVOKING_VERTEX_CONVENTION = 0x8E4Cu32
+pub aka GL_FIRST_VERTEX_CONVENTION        = 0x8E4Du32
+pub aka GL_LAST_VERTEX_CONVENTION         = 0x8E4Eu32
+pub aka GL_PROVOKING_VERTEX               = 0x8E4Fu32
+pub aka GL_TEXTURE_CUBE_MAP_SEAMLESS      = 0x884Fu32
+pub aka GL_MAX_SERVER_WAIT_TIMEOUT        = 0x9111u32
+pub aka GL_OBJECT_TYPE                    = 0x9112u32
+pub aka GL_SYNC_CONDITION                 = 0x9113u32
+pub aka GL_SYNC_STATUS                    = 0x9114u32
+pub aka GL_SYNC_FLAGS                     = 0x9115u32
+pub aka GL_SYNC_FENCE                     = 0x9116u32
+pub aka GL_SYNC_GPU_COMMANDS_COMPLETE     = 0x9117u32
+pub aka GL_UNSIGNALED                     = 0x9118u32
+pub aka GL_SIGNALED                       = 0x9119u32
+pub aka GL_ALREADY_SIGNALED               = 0x911Au32
+pub aka GL_TIMEOUT_EXPIRED                = 0x911Bu32
+pub aka GL_CONDITION_SATISFIED            = 0x911Cu32
+pub aka GL_WAIT_FAILED                    = 0x911Du32
+pub aka GL_TIMEOUT_IGNORED                = 0xFFFFFFFFFFFFFFFFu64
+pub aka GL_SYNC_FLUSH_COMMANDS_BIT        = 0x00000001u32
+pub aka GL_SAMPLE_POSITION                = 0x8E50u32
+pub aka GL_SAMPLE_MASK                    = 0x8E51u32
+pub aka GL_SAMPLE_MASK_VALUE              = 0x8E52u32
+pub aka GL_MAX_SAMPLE_MASK_WORDS          = 0x8E59u32
+pub aka GL_TEXTURE_2D_MULTISAMPLE         = 0x9100u32
+pub aka GL_PROXY_TEXTURE_2D_MULTISAMPLE   = 0x9101u32
+pub aka GL_TEXTURE_2D_MULTISAMPLE_ARRAY   = 0x9102u32
+pub aka GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY = 0x9103u32
+pub aka GL_TEXTURE_BINDING_2D_MULTISAMPLE = 0x9104u32
+pub aka GL_TEXTURE_BINDING_2D_MULTISAMPLE_ARRAY = 0x9105u32
+pub aka GL_TEXTURE_SAMPLES                = 0x9106u32
+pub aka GL_TEXTURE_FIXED_SAMPLE_LOCATIONS = 0x9107u32
+pub aka GL_SAMPLER_2D_MULTISAMPLE         = 0x9108u32
+pub aka GL_INT_SAMPLER_2D_MULTISAMPLE     = 0x9109u32
+pub aka GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE = 0x910Au32
+pub aka GL_SAMPLER_2D_MULTISAMPLE_ARRAY   = 0x910Bu32
+pub aka GL_INT_SAMPLER_2D_MULTISAMPLE_ARRAY = 0x910Cu32
+pub aka GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY = 0x910Du32
+pub aka GL_MAX_COLOR_TEXTURE_SAMPLES      = 0x910Eu32
+pub aka GL_MAX_DEPTH_TEXTURE_SAMPLES      = 0x910Fu32
+pub aka GL_MAX_INTEGER_SAMPLES            = 0x9110u32
+    
+//__version (GL_GLEXT_PROTOTYPES) {
+pub extern (C) def glDrawElementsBaseVertex (mode : GLenum, count : GLsizei, type : GLenum, indices : &void, basevertex : GLint);
+pub extern (C) def glDrawRangeElementsBaseVertex (mode : GLenum, start : GLuint, end : GLuint, count : GLsizei, type : GLenum, indices : &void, basevertex : GLint);
+pub extern (C) def glDrawElementsInstancedBaseVertex (mode : GLenum, count : GLsizei, type : GLenum, indices : &void, instancecount : GLsizei, basevertex : GLint);
+pub extern (C) def glMultiDrawElementsBaseVertex (mode : GLenum, count : &GLsizei, type : GLenum, indices : &(&void), drawcount : GLsizei, basevertex : &GLint);
+pub extern (C) def glProvokingVertex (mode : GLenum);
+pub extern (C) def glFenceSync (condition : GLenum, flags : GLbitfield)-> &GLsync;
+pub extern (C) def glIsSync (sync : GLsync)-> GLboolean;
+pub extern (C) def glDeleteSync (sync : GLsync);
+pub extern (C) def glClientWaitSync (sync : GLsync, flags : GLbitfield, timeout: GLuint64)-> GLenum;
+pub extern (C) def glWaitSync (sync : GLsync, flags : GLbitfield, timeout : GLuint64);
+pub extern (C) def glGetInteger64v (pname : GLenum, dmut data : &GLint64);
+pub extern (C) def glGetSynciv (sync : GLsync, pname : GLenum, bufSize : GLsizei, dmut length : &GLsizei, dmut values : &GLint);
+pub extern (C) def glGetInteger64i_v (target : GLenum, index : GLuint, dmut data : &GLint64);
+pub extern (C) def glGetBufferParameteri64v (target : GLenum, pname : GLenum, dmut params : &GLint64);
+pub extern (C) def glFramebufferTexture (target : GLenum, attachment : GLenum, texture : GLuint, level : GLint);
+pub extern (C) def glTexImage2DMultisample (target : GLenum, samples : GLsizei, internalformat : GLenum, width : GLsizei, height : GLsizei, fixedsamplelocations : GLboolean);
+pub extern (C) def glTexImage3DMultisample (target : GLenum, samples : GLsizei, internalformat : GLenum, width : GLsizei, height : GLsizei, depth : GLsizei, fixedsamplelocations : GLboolean);
+pub extern (C) def glGetMultisamplefv (pname : GLenum, index : GLuint, dmut val : &GLfloat);
+pub extern (C) def glSampleMaski (maskNumber : GLuint, mask : GLbitfield);
+//}
+
+
+pub aka GL_VERSION_3_3 = 1
+pub aka GL_VERTEX_ATTRIB_ARRAY_DIVISOR    = 0x88FEu32
+pub aka GL_SRC1_COLOR                     = 0x88F9u32
+pub aka GL_ONE_MINUS_SRC1_COLOR           = 0x88FAu32
+pub aka GL_ONE_MINUS_SRC1_ALPHA           = 0x88FBu32
+pub aka GL_MAX_DUAL_SOURCE_DRAW_BUFFERS   = 0x88FCu32
+pub aka GL_ANY_SAMPLES_PASSED             = 0x8C2Fu32
+pub aka GL_SAMPLER_BINDING                = 0x8919u32
+pub aka GL_RGB10_A2UI                     = 0x906Fu32
+pub aka GL_TEXTURE_SWIZZLE_R              = 0x8E42u32
+pub aka GL_TEXTURE_SWIZZLE_G              = 0x8E43u32
+pub aka GL_TEXTURE_SWIZZLE_B              = 0x8E44u32
+pub aka GL_TEXTURE_SWIZZLE_A              = 0x8E45u32
+pub aka GL_TEXTURE_SWIZZLE_RGBA           = 0x8E46u32
+pub aka GL_TIME_ELAPSED                   = 0x88BFu32
+pub aka GL_TIMESTAMP                      = 0x8E28u32
+pub aka GL_INT_2_10_10_10_REV             = 0x8D9Fu32
+
+//__version (GL_GLEXT_PROTOTYPES) {
+pub extern (C) def glBindFragDataLocationIndexed (program : GLuint, colorNumber : GLuint, index : GLuint, name : &GLchar);
+pub extern (C) def glGetFragDataIndex (program : GLuint, name : &GLchar)-> GLint;
+pub extern (C) def glGenSamplers (count : GLsizei, dmut samplers : &GLuint);
+pub extern (C) def glDeleteSamplers (count : GLsizei, samplers : &GLuint);
+pub extern (C) def glIsSampler (sampler : GLuint)-> GLboolean;
+pub extern (C) def glBindSampler (unit : GLuint, sampler : GLuint);
+pub extern (C) def glSamplerParameteri (sampler : GLuint, pname : GLenum, param : GLint);
+pub extern (C) def glSamplerParameteriv (sampler : GLuint, pname : GLenum, param : &GLint);
+pub extern (C) def glSamplerParameterf (sampler : GLuint, pname : GLenum, param : GLfloat);
+pub extern (C) def glSamplerParameterfv (sampler : GLuint, pname : GLenum, param : &GLfloat);
+pub extern (C) def glSamplerParameterIiv (sampler : GLuint, pname : GLenum, param : &GLint);
+pub extern (C) def glSamplerParameterIuiv (sampler : GLuint, pname : GLenum, param : &GLuint);
+pub extern (C) def glGetSamplerParameteriv (sampler : GLuint, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGetSamplerParameterIiv (sampler : GLuint, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGetSamplerParameterfv (sampler : GLuint, pname : GLenum, dmut params : &GLfloat);
+pub extern (C) def glGetSamplerParameterIuiv (sampler : GLuint, pname : GLenum, dmut params : &GLuint);
+pub extern (C) def glQueryCounter (id : GLuint, target : GLenum);
+pub extern (C) def glGetQueryObjecti64v (id : GLuint, pname : GLenum, dmut params : &GLint64);
+pub extern (C) def glGetQueryObjectui64v (id : GLuint, pname : GLenum, dmut params : &GLuint64);
+pub extern (C) def glVertexAttribDivisor (index : GLuint, divisor : GLuint);
+pub extern (C) def glVertexAttribP1ui (index : GLuint, type : GLenum, normalized : GLboolean, value : GLuint);
+pub extern (C) def glVertexAttribP1uiv (index : GLuint, type : GLenum, normalized : GLboolean, value : &GLuint);
+pub extern (C) def glVertexAttribP2ui (index : GLuint, type : GLenum, normalized : GLboolean, value : GLuint);
+pub extern (C) def glVertexAttribP2uiv (index : GLuint, type : GLenum, normalized : GLboolean, value : &GLuint);
+pub extern (C) def glVertexAttribP3ui (index : GLuint, type : GLenum, normalized : GLboolean, value : GLuint);
+pub extern (C) def glVertexAttribP3uiv (index : GLuint, type : GLenum, normalized : GLboolean, value : &GLuint);
+pub extern (C) def glVertexAttribP4ui (index : GLuint, type : GLenum, normalized : GLboolean, value : GLuint);
+pub extern (C) def glVertexAttribP4uiv (index : GLuint, type : GLenum, normalized : GLboolean, value : &GLuint);
+pub extern (C) def glVertexP2ui (type : GLenum, value : GLuint);
+pub extern (C) def glVertexP2uiv (type : GLenum, value : &GLuint);
+pub extern (C) def glVertexP3ui (type : GLenum, value : GLuint);
+pub extern (C) def glVertexP3uiv (type : GLenum, value : &GLuint);
+pub extern (C) def glVertexP4ui (type : GLenum, value : GLuint);
+pub extern (C) def glVertexP4uiv (type : GLenum, value : &GLuint);
+pub extern (C) def glTexCoordP1ui (type : GLenum, coords : GLuint);
+pub extern (C) def glTexCoordP1uiv (type : GLenum, coords : &GLuint);
+pub extern (C) def glTexCoordP2ui (type : GLenum, coords : GLuint);
+pub extern (C) def glTexCoordP2uiv (type : GLenum, coords : &GLuint);
+pub extern (C) def glTexCoordP3ui (type : GLenum, coords : GLuint);
+pub extern (C) def glTexCoordP3uiv (type : GLenum, coords : &GLuint);
+pub extern (C) def glTexCoordP4ui (type : GLenum, coords : GLuint);
+pub extern (C) def glTexCoordP4uiv (type : GLenum, coords : &GLuint);
+pub extern (C) def glMultiTexCoordP1ui (texture : GLenum, type : GLenum, coords : GLuint);
+pub extern (C) def glMultiTexCoordP1uiv (texture : GLenum, type : GLenum, coords : &GLuint);
+pub extern (C) def glMultiTexCoordP2ui (texture : GLenum, type : GLenum, coords : GLuint);
+pub extern (C) def glMultiTexCoordP2uiv (texture : GLenum, type : GLenum, coords : &GLuint);
+pub extern (C) def glMultiTexCoordP3ui (texture : GLenum, type : GLenum, coords : GLuint);
+pub extern (C) def glMultiTexCoordP3uiv (texture : GLenum, type : GLenum, coords : &GLuint);
+pub extern (C) def glMultiTexCoordP4ui (texture : GLenum, type : GLenum, coords : GLuint);
+pub extern (C) def glMultiTexCoordP4uiv (texture : GLenum, type : GLenum, coords : &GLuint);
+pub extern (C) def glNormalP3ui (type : GLenum, coords : GLuint);
+pub extern (C) def glNormalP3uiv (type : GLenum, coords : &GLuint);
+pub extern (C) def glColorP3ui (type : GLenum, color : GLuint);
+pub extern (C) def glColorP3uiv (type : GLenum, color : &GLuint);
+pub extern (C) def glColorP4ui (type : GLenum, color : GLuint);
+pub extern (C) def glColorP4uiv (type : GLenum, color : &GLuint);
+pub extern (C) def glSecondaryColorP3ui (type : GLenum, color : GLuint);
+pub extern (C) def glSecondaryColorP3uiv (type : GLenum, color : &GLuint);
+//}
+
+
+pub aka GL_VERSION_4_0 = 1u32;
+pub aka GL_SAMPLE_SHADING                 = 0x8C36u32
+pub aka GL_MIN_SAMPLE_SHADING_VALUE       = 0x8C37u32
+pub aka GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET = 0x8E5Eu32
+pub aka GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET = 0x8E5Fu32
+pub aka GL_TEXTURE_CUBE_MAP_ARRAY         = 0x9009u32
+pub aka GL_TEXTURE_BINDING_CUBE_MAP_ARRAY = 0x900Au32
+pub aka GL_PROXY_TEXTURE_CUBE_MAP_ARRAY   = 0x900Bu32
+pub aka GL_SAMPLER_CUBE_MAP_ARRAY         = 0x900Cu32
+pub aka GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW  = 0x900Du32
+pub aka GL_INT_SAMPLER_CUBE_MAP_ARRAY     = 0x900Eu32
+pub aka GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY = 0x900Fu32
+pub aka GL_DRAW_INDIRECT_BUFFER           = 0x8F3Fu32
+pub aka GL_DRAW_INDIRECT_BUFFER_BINDING   = 0x8F43u32
+pub aka GL_GEOMETRY_SHADER_INVOCATIONS    = 0x887Fu32
+pub aka GL_MAX_GEOMETRY_SHADER_INVOCATIONS = 0x8E5Au32
+pub aka GL_MIN_FRAGMENT_INTERPOLATION_OFFSET = 0x8E5Bu32
+pub aka GL_MAX_FRAGMENT_INTERPOLATION_OFFSET = 0x8E5Cu32
+pub aka GL_FRAGMENT_INTERPOLATION_OFFSET_BITS = 0x8E5Du32
+pub aka GL_MAX_VERTEX_STREAMS             = 0x8E71u32
+pub aka GL_DOUBLE_VEC2                    = 0x8FFCu32
+pub aka GL_DOUBLE_VEC3                    = 0x8FFDu32
+pub aka GL_DOUBLE_VEC4                    = 0x8FFEu32
+pub aka GL_DOUBLE_MAT2                    = 0x8F46u32
+pub aka GL_DOUBLE_MAT3                    = 0x8F47u32
+pub aka GL_DOUBLE_MAT4                    = 0x8F48u32
+pub aka GL_DOUBLE_MAT2x3                  = 0x8F49u32
+pub aka GL_DOUBLE_MAT2x4                  = 0x8F4Au32
+pub aka GL_DOUBLE_MAT3x2                  = 0x8F4Bu32
+pub aka GL_DOUBLE_MAT3x4                  = 0x8F4Cu32
+pub aka GL_DOUBLE_MAT4x2                  = 0x8F4Du32
+pub aka GL_DOUBLE_MAT4x3                  = 0x8F4Eu32
+pub aka GL_ACTIVE_SUBROUTINES             = 0x8DE5u32
+pub aka GL_ACTIVE_SUBROUTINE_UNIFORMS     = 0x8DE6u32
+pub aka GL_ACTIVE_SUBROUTINE_UNIFORM_LOCATIONS = 0x8E47u32
+pub aka GL_ACTIVE_SUBROUTINE_MAX_LENGTH   = 0x8E48u32
+pub aka GL_ACTIVE_SUBROUTINE_UNIFORM_MAX_LENGTH = 0x8E49u32
+pub aka GL_MAX_SUBROUTINES                = 0x8DE7u32
+pub aka GL_MAX_SUBROUTINE_UNIFORM_LOCATIONS = 0x8DE8u32
+pub aka GL_NUM_COMPATIBLE_SUBROUTINES     = 0x8E4Au32
+pub aka GL_COMPATIBLE_SUBROUTINES         = 0x8E4Bu32
+pub aka GL_PATCHES                        = 0x000Eu32
+pub aka GL_PATCH_VERTICES                 = 0x8E72u32
+pub aka GL_PATCH_DEFAULT_INNER_LEVEL      = 0x8E73u32
+pub aka GL_PATCH_DEFAULT_OUTER_LEVEL      = 0x8E74u32
+pub aka GL_TESS_CONTROL_OUTPUT_VERTICES   = 0x8E75u32
+pub aka GL_TESS_GEN_MODE                  = 0x8E76u32
+pub aka GL_TESS_GEN_SPACING               = 0x8E77u32
+pub aka GL_TESS_GEN_VERTEX_ORDER          = 0x8E78u32
+pub aka GL_TESS_GEN_POINT_MODE            = 0x8E79u32
+pub aka GL_ISOLINES                       = 0x8E7Au32
+pub aka GL_FRACTIONAL_ODD                 = 0x8E7Bu32
+pub aka GL_FRACTIONAL_EVEN                = 0x8E7Cu32
+pub aka GL_MAX_PATCH_VERTICES             = 0x8E7Du32
+pub aka GL_MAX_TESS_GEN_LEVEL             = 0x8E7Eu32
+pub aka GL_MAX_TESS_CONTROL_UNIFORM_COMPONENTS = 0x8E7Fu32
+pub aka GL_MAX_TESS_EVALUATION_UNIFORM_COMPONENTS = 0x8E80u32
+pub aka GL_MAX_TESS_CONTROL_TEXTURE_IMAGE_UNITS = 0x8E81u32
+pub aka GL_MAX_TESS_EVALUATION_TEXTURE_IMAGE_UNITS = 0x8E82u32
+pub aka GL_MAX_TESS_CONTROL_OUTPUT_COMPONENTS = 0x8E83u32
+pub aka GL_MAX_TESS_PATCH_COMPONENTS      = 0x8E84u32
+pub aka GL_MAX_TESS_CONTROL_TOTAL_OUTPUT_COMPONENTS = 0x8E85u32
+pub aka GL_MAX_TESS_EVALUATION_OUTPUT_COMPONENTS = 0x8E86u32
+pub aka GL_MAX_TESS_CONTROL_UNIFORM_BLOCKS = 0x8E89u32
+pub aka GL_MAX_TESS_EVALUATION_UNIFORM_BLOCKS = 0x8E8Au32
+pub aka GL_MAX_TESS_CONTROL_INPUT_COMPONENTS = 0x886Cu32
+pub aka GL_MAX_TESS_EVALUATION_INPUT_COMPONENTS = 0x886Du32
+pub aka GL_MAX_COMBINED_TESS_CONTROL_UNIFORM_COMPONENTS = 0x8E1Eu32
+pub aka GL_MAX_COMBINED_TESS_EVALUATION_UNIFORM_COMPONENTS = 0x8E1Fu32
+pub aka GL_UNIFORM_BLOCK_REFERENCED_BY_TESS_CONTROL_SHADER = 0x84F0u32
+pub aka GL_UNIFORM_BLOCK_REFERENCED_BY_TESS_EVALUATION_SHADER = 0x84F1u32
+pub aka GL_TESS_EVALUATION_SHADER         = 0x8E87u32
+pub aka GL_TESS_CONTROL_SHADER            = 0x8E88u32
+pub aka GL_TRANSFORM_FEEDBACK             = 0x8E22u32
+pub aka GL_TRANSFORM_FEEDBACK_BUFFER_PAUSED = 0x8E23u32
+pub aka GL_TRANSFORM_FEEDBACK_BUFFER_ACTIVE = 0x8E24u32
+pub aka GL_TRANSFORM_FEEDBACK_BINDING     = 0x8E25u32
+pub aka GL_MAX_TRANSFORM_FEEDBACK_BUFFERS = 0x8E70u32
+
+// __version (GL_GLEXT_PROTOTYPES) {
+pub extern (C) def glMinSampleShading (value : GLfloat);
+pub extern (C) def glBlendEquationi (buf : GLuint, mode : GLenum);
+pub extern (C) def glBlendEquationSeparatei (buf : GLuint, modeRGB : GLenum, modeAlpha : GLenum);
+pub extern (C) def glBlendFunci (buf : GLuint, src : GLenum, dst : GLenum);
+pub extern (C) def glBlendFuncSeparatei (buf : GLuint, srcRGB : GLenum, dstRGB : GLenum, srcAlpha : GLenum, dstAlpha : GLenum);
+pub extern (C) def glDrawArraysIndirect (mode : GLenum, indirect : &void);
+pub extern (C) def glDrawElementsIndirect (mode : GLenum, type : GLenum, indirect : &void);
+pub extern (C) def glUniform1d (location : GLint, x : GLdouble);
+pub extern (C) def glUniform2d (location : GLint, x : GLdouble, y : GLdouble);
+pub extern (C) def glUniform3d (location : GLint, x : GLdouble, y : GLdouble, z : GLdouble);
+pub extern (C) def glUniform4d (location : GLint, x : GLdouble, y : GLdouble, z : GLdouble, w : GLdouble);
+pub extern (C) def glUniform1dv (location : GLint, count : GLsizei, value : &GLdouble);
+pub extern (C) def glUniform2dv (location : GLint, count : GLsizei, value : &GLdouble);
+pub extern (C) def glUniform3dv (location : GLint, count : GLsizei, value : &GLdouble);
+pub extern (C) def glUniform4dv (location : GLint, count : GLsizei, value : &GLdouble);
+pub extern (C) def glUniformMatrix2dv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glUniformMatrix3dv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glUniformMatrix4dv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glUniformMatrix2x3dv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glUniformMatrix2x4dv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glUniformMatrix3x2dv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glUniformMatrix3x4dv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glUniformMatrix4x2dv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glUniformMatrix4x3dv (location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glGetUniformdv (program : GLuint, location : GLint, dmut params : &GLdouble);
+pub extern (C) def glGetSubroutineUniformLocation (program : GLuint, shadertype : GLenum, name : &GLchar)-> GLint;
+pub extern (C) def glGetSubroutineIndex (program : GLuint, shadertype : GLenum, name : &GLchar)-> GLuint;
+pub extern (C) def glGetActiveSubroutineUniformiv (program : GLuint, shadertype : GLenum, index : GLuint, pname : GLenum, dmut values : &GLint);
+pub extern (C) def glGetActiveSubroutineUniformName (program : GLuint, shadertype : GLenum, index : GLuint, bufsize : GLsizei, dmut length : &GLsizei, dmut name : &GLchar);
+pub extern (C) def glGetActiveSubroutineName (program : GLuint, shadertype : GLenum, index : GLuint, bufsize : GLsizei, dmut length : &GLsizei, dmut name : &GLchar);
+pub extern (C) def glUniformSubroutinesuiv (shadertype : GLenum, count : GLsizei, indices : &GLuint);
+pub extern (C) def glGetUniformSubroutineuiv (shadertype : GLenum, location : GLint, dmut params : &GLuint);
+pub extern (C) def glGetProgramStageiv (program : GLuint, shadertype : GLenum, pname : GLenum, dmut values : &GLint);
+pub extern (C) def glPatchParameteri (pname : GLenum, value : GLint);
+pub extern (C) def glPatchParameterfv (pname : GLenum, values : &GLfloat);
+pub extern (C) def glBindTransformFeedback (target : GLenum, id : GLuint);
+pub extern (C) def glDeleteTransformFeedbacks (n : GLsizei, ids : &GLuint);
+pub extern (C) def glGenTransformFeedbacks (n : GLsizei, dmut ids : &GLuint);
+pub extern (C) def glIsTransformFeedback (id : GLuint)-> GLboolean;
+pub extern (C) def glPauseTransformFeedback ();
+pub extern (C) def glResumeTransformFeedback ();
+pub extern (C) def glDrawTransformFeedback (mode : GLenum, id : GLuint);
+pub extern (C) def glDrawTransformFeedbackStream (mode : GLenum, id : GLuint, stream : GLuint);
+pub extern (C) def glBeginQueryIndexed (target : GLenum, index : GLuint, id : GLuint);
+pub extern (C) def glEndQueryIndexed (target : GLenum, index : GLuint);
+pub extern (C) def glGetQueryIndexediv (target : GLenum, index : GLuint, pname : GLenum, dmut params : &GLint);
+//}
+
+
+
+pub aka GL_VERSION_4_1 = 1u32;
+pub aka GL_FIXED                          = 0x140Cu32
+pub aka GL_IMPLEMENTATION_COLOR_READ_TYPE = 0x8B9Au32
+pub aka GL_IMPLEMENTATION_COLOR_READ_FORMAT = 0x8B9Bu32
+pub aka GL_LOW_FLOAT                      = 0x8DF0u32
+pub aka GL_MEDIUM_FLOAT                   = 0x8DF1u32
+pub aka GL_HIGH_FLOAT                     = 0x8DF2u32
+pub aka GL_LOW_INT                        = 0x8DF3u32
+pub aka GL_MEDIUM_INT                     = 0x8DF4u32
+pub aka GL_HIGH_INT                       = 0x8DF5u32
+pub aka GL_SHADER_COMPILER                = 0x8DFAu32
+pub aka GL_SHADER_BINARY_FORMATS          = 0x8DF8u32
+pub aka GL_NUM_SHADER_BINARY_FORMATS      = 0x8DF9u32
+pub aka GL_MAX_VERTEX_UNIFORM_VECTORS     = 0x8DFBu32
+pub aka GL_MAX_VARYING_VECTORS            = 0x8DFCu32
+pub aka GL_MAX_FRAGMENT_UNIFORM_VECTORS   = 0x8DFDu32
+pub aka GL_RGB565                         = 0x8D62u32
+pub aka GL_PROGRAM_BINARY_RETRIEVABLE_HINT = 0x8257u32
+pub aka GL_PROGRAM_BINARY_LENGTH          = 0x8741u32
+pub aka GL_NUM_PROGRAM_BINARY_FORMATS     = 0x87FEu32
+pub aka GL_PROGRAM_BINARY_FORMATS         = 0x87FFu32
+pub aka GL_VERTEX_SHADER_BIT              = 0x00000001u32
+pub aka GL_FRAGMENT_SHADER_BIT            = 0x00000002u32
+pub aka GL_GEOMETRY_SHADER_BIT            = 0x00000004u32
+pub aka GL_TESS_CONTROL_SHADER_BIT        = 0x00000008u32
+pub aka GL_TESS_EVALUATION_SHADER_BIT     = 0x00000010u32
+pub aka GL_ALL_SHADER_BITS                = 0xFFFFFFFFu32
+pub aka GL_PROGRAM_SEPARABLE              = 0x8258u32
+pub aka GL_ACTIVE_PROGRAM                 = 0x8259u32
+pub aka GL_PROGRAM_PIPELINE_BINDING       = 0x825Au32
+pub aka GL_MAX_VIEWPORTS                  = 0x825Bu32
+pub aka GL_VIEWPORT_SUBPIXEL_BITS         = 0x825Cu32
+pub aka GL_VIEWPORT_BOUNDS_RANGE          = 0x825Du32
+pub aka GL_LAYER_PROVOKING_VERTEX         = 0x825Eu32
+pub aka GL_VIEWPORT_INDEX_PROVOKING_VERTEX = 0x825Fu32
+pub aka GL_UNDEFINED_VERTEX               = 0x8260u32
+
+//__version  (GL_GLEXT_PROTOTYPES) {
+pub extern (C) def glReleaseShaderCompiler ();
+pub extern (C) def glShaderBinary (count : GLsizei, shaders : &GLuint, binaryformat : GLenum, binary : &void, length : GLsizei);
+pub extern (C) def glGetShaderPrecisionFormat (shadertype : GLenum, precisiontype : GLenum, dmut range : &GLint, dmut precision : &GLint);
+pub extern (C) def glDepthRangef (n : GLfloat, f : GLfloat);
+pub extern (C) def glClearDepthf (d : GLfloat);
+pub extern (C) def glGetProgramBinary (program : GLuint, bufSize : GLsizei, dmut length : &GLsizei, dmut binaryFormat : &GLenum, dmut binary : &void);
+pub extern (C) def glProgramBinary (program : GLuint, binaryFormat : GLenum, binary : &void, length : GLsizei);
+pub extern (C) def glProgramParameteri (program : GLuint, pname : GLenum, value : GLint);
+pub extern (C) def glUseProgramStages (pipeline : GLuint, stages : GLbitfield, program : GLuint);
+pub extern (C) def glActiveShaderProgram (pipeline : GLuint, program : GLuint);
+pub extern (C) def glCreateShaderProgramv (type : GLenum, count : GLsizei, strings : &(&GLchar))-> GLuint;
+pub extern (C) def glBindProgramPipeline (pipeline : GLuint);
+pub extern (C) def glDeleteProgramPipelines (n : GLsizei, pipelines : &GLuint);
+pub extern (C) def glGenProgramPipelines (n : GLsizei, dmut pipelines : &GLuint);
+pub extern (C) def glIsProgramPipeline (pipeline : GLuint)-> GLboolean;
+pub extern (C) def glGetProgramPipelineiv (pipeline : GLuint, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glProgramUniform1i (program : GLuint, location : GLint, v0 : GLint);
+pub extern (C) def glProgramUniform1iv (program : GLuint, location : GLint, count : GLsizei, value : &GLint);
+pub extern (C) def glProgramUniform1f (program : GLuint, location : GLint, v0 : GLfloat);
+pub extern (C) def glProgramUniform1fv (program : GLuint, location : GLint, count : GLsizei, value : &GLfloat);
+pub extern (C) def glProgramUniform1d (program : GLuint, location : GLint, v0 : GLdouble);
+pub extern (C) def glProgramUniform1dv (program : GLuint, location : GLint, count : GLsizei, value : &GLdouble);
+pub extern (C) def glProgramUniform1ui (program : GLuint, location : GLint, v0 : GLuint);
+pub extern (C) def glProgramUniform1uiv (program : GLuint, location : GLint, count : GLsizei, value : &GLuint);
+pub extern (C) def glProgramUniform2i (program : GLuint, location : GLint, v0 : GLint, v1 : GLint);
+pub extern (C) def glProgramUniform2iv (program : GLuint, location : GLint, count : GLsizei, value : &GLint);
+pub extern (C) def glProgramUniform2f (program : GLuint, location : GLint, v0 : GLfloat, v1 : GLfloat);
+pub extern (C) def glProgramUniform2fv (program : GLuint, location : GLint, count : GLsizei, value : &GLfloat);
+pub extern (C) def glProgramUniform2d (program : GLuint, location : GLint, v0 : GLdouble, v1 : GLdouble);
+pub extern (C) def glProgramUniform2dv (program : GLuint, location : GLint, count : GLsizei, value : &GLdouble);
+pub extern (C) def glProgramUniform2ui (program : GLuint, location : GLint, v0 : GLuint, v1 : GLuint);
+pub extern (C) def glProgramUniform2uiv (program : GLuint, location : GLint, count : GLsizei, value : &GLuint);
+pub extern (C) def glProgramUniform3i (program : GLuint, location : GLint, v0 : GLint, v1 : GLint, v2 : GLint);
+pub extern (C) def glProgramUniform3iv (program : GLuint, location : GLint, count : GLsizei, value : &GLint);
+pub extern (C) def glProgramUniform3f (program : GLuint, location : GLint, v0 : GLfloat, v1 : GLfloat, v2 : GLfloat);
+pub extern (C) def glProgramUniform3fv (program : GLuint, location : GLint, count : GLsizei, value : &GLfloat);
+pub extern (C) def glProgramUniform3d (program : GLuint, location : GLint, v0 : GLdouble, v1 : GLdouble, v2 : GLdouble);
+pub extern (C) def glProgramUniform3dv (program : GLuint, location : GLint, count : GLsizei, value : &GLdouble);
+pub extern (C) def glProgramUniform3ui (program : GLuint, location : GLint, v0 : GLuint, v1 : GLuint, v2 : GLuint);
+pub extern (C) def glProgramUniform3uiv (program : GLuint, location : GLint, count : GLsizei, value : &GLuint);
+pub extern (C) def glProgramUniform4i (program : GLuint, location : GLint, v0 : GLint, v1 : GLint, v2 : GLint, v3 : GLint);
+pub extern (C) def glProgramUniform4iv (program : GLuint, location : GLint, count : GLsizei, value : &GLint);
+pub extern (C) def glProgramUniform4f (program : GLuint, location : GLint, v0 : GLfloat, v1 : GLfloat, v2 : GLfloat, v3 : GLfloat);
+pub extern (C) def glProgramUniform4fv (program : GLuint, location : GLint, count : GLsizei, value : &GLfloat);
+pub extern (C) def glProgramUniform4d (program : GLuint, location : GLint, v0 : GLdouble, v1 : GLdouble, v2 : GLdouble, v3 : GLdouble);
+pub extern (C) def glProgramUniform4dv (program : GLuint, location : GLint, count : GLsizei, value : &GLdouble);
+pub extern (C) def glProgramUniform4ui (program : GLuint, location : GLint, v0 : GLuint, v1 : GLuint, v2 : GLuint, v3 : GLuint);
+pub extern (C) def glProgramUniform4uiv (program : GLuint, location : GLint, count : GLsizei, value : &GLuint);
+pub extern (C) def glProgramUniformMatrix2fv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glProgramUniformMatrix3fv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glProgramUniformMatrix4fv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glProgramUniformMatrix2dv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glProgramUniformMatrix3dv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glProgramUniformMatrix4dv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glProgramUniformMatrix2x3fv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glProgramUniformMatrix3x2fv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glProgramUniformMatrix2x4fv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glProgramUniformMatrix4x2fv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glProgramUniformMatrix3x4fv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glProgramUniformMatrix4x3fv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLfloat);
+pub extern (C) def glProgramUniformMatrix2x3dv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glProgramUniformMatrix3x2dv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glProgramUniformMatrix2x4dv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glProgramUniformMatrix4x2dv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glProgramUniformMatrix3x4dv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glProgramUniformMatrix4x3dv (program : GLuint, location : GLint, count : GLsizei, transpose : GLboolean, value : &GLdouble);
+pub extern (C) def glValidateProgramPipeline (pipeline : GLuint);
+pub extern (C) def glGetProgramPipelineInfoLog (pipeline : GLuint, bufSize : GLsizei, dmut length : &GLsizei, dmut infoLog : &GLchar);
+pub extern (C) def glVertexAttribL1d (index : GLuint, x : GLdouble);
+pub extern (C) def glVertexAttribL2d (index : GLuint, x : GLdouble, y : GLdouble);
+pub extern (C) def glVertexAttribL3d (index : GLuint, x : GLdouble, y : GLdouble, z : GLdouble);
+pub extern (C) def glVertexAttribL4d (index : GLuint, x : GLdouble, y : GLdouble, z : GLdouble, w : GLdouble);
+pub extern (C) def glVertexAttribL1dv (index : GLuint, v : &GLdouble);
+pub extern (C) def glVertexAttribL2dv (index : GLuint, v : &GLdouble);
+pub extern (C) def glVertexAttribL3dv (index : GLuint, v : &GLdouble);
+pub extern (C) def glVertexAttribL4dv (index : GLuint, v : &GLdouble);
+pub extern (C) def glVertexAttribLPointer (index : GLuint, size : GLint, type : GLenum, stride : GLsizei, pointer : &void);
+pub extern (C) def glGetVertexAttribLdv (index : GLuint, pname : GLenum, dmut params : &GLdouble);
+pub extern (C) def glViewportArrayv (first : GLuint, count : GLsizei, v : &GLfloat);
+pub extern (C) def glViewportIndexedf (index : GLuint, x : GLfloat, y : GLfloat, w : GLfloat, h : GLfloat);
+pub extern (C) def glViewportIndexedfv (index : GLuint, v : &GLfloat);
+pub extern (C) def glScissorArrayv (first : GLuint, count : GLsizei, v : &GLint);
+pub extern (C) def glScissorIndexed (index : GLuint, left : GLint, bottom : GLint, width : GLsizei, height : GLsizei);    
+pub extern (C) def glScissorIndexedv (index : GLuint, v : &GLint);
+pub extern (C) def glDepthRangeArrayv (first : GLuint, count : GLsizei, v : &GLdouble);
+pub extern (C) def glDepthRangeIndexed (index : GLuint, n : GLdouble, f : GLdouble);
+pub extern (C) def glGetFloati_v (target : GLenum, index : GLuint, dmut data : &GLfloat);
+pub extern (C) def glGetDoublei_v (target : GLenum, index : GLuint, dmut data : &GLdouble);
+//}
+
+pub aka GL_VERSION_4_2 = 1u32
+pub aka GL_UNPACK_COMPRESSED_BLOCK_WIDTH  = 0x9127u32
+pub aka GL_UNPACK_COMPRESSED_BLOCK_HEIGHT = 0x9128u32
+pub aka GL_UNPACK_COMPRESSED_BLOCK_DEPTH  = 0x9129u32
+pub aka GL_UNPACK_COMPRESSED_BLOCK_SIZE   = 0x912Au32
+pub aka GL_PACK_COMPRESSED_BLOCK_WIDTH    = 0x912Bu32
+pub aka GL_PACK_COMPRESSED_BLOCK_HEIGHT   = 0x912Cu32
+pub aka GL_PACK_COMPRESSED_BLOCK_DEPTH    = 0x912Du32
+pub aka GL_PACK_COMPRESSED_BLOCK_SIZE     = 0x912Eu32
+pub aka GL_NUM_SAMPLE_COUNTS              = 0x9380u32
+pub aka GL_MIN_MAP_BUFFER_ALIGNMENT       = 0x90BCu32
+pub aka GL_ATOMIC_COUNTER_BUFFER          = 0x92C0u32
+pub aka GL_ATOMIC_COUNTER_BUFFER_BINDING  = 0x92C1u32
+pub aka GL_ATOMIC_COUNTER_BUFFER_START    = 0x92C2u32
+pub aka GL_ATOMIC_COUNTER_BUFFER_SIZE     = 0x92C3u32
+pub aka GL_ATOMIC_COUNTER_BUFFER_DATA_SIZE = 0x92C4u32
+pub aka GL_ATOMIC_COUNTER_BUFFER_ACTIVE_ATOMIC_COUNTERS = 0x92C5u32
+pub aka GL_ATOMIC_COUNTER_BUFFER_ACTIVE_ATOMIC_COUNTER_INDICES = 0x92C6u32
+pub aka GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_VERTEX_SHADER = 0x92C7u32
+pub aka GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_TESS_CONTROL_SHADER = 0x92C8u32
+pub aka GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_TESS_EVALUATION_SHADER = 0x92C9u32
+pub aka GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_GEOMETRY_SHADER = 0x92CAu32
+pub aka GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_FRAGMENT_SHADER = 0x92CBu32
+pub aka GL_MAX_VERTEX_ATOMIC_COUNTER_BUFFERS = 0x92CCu32
+pub aka GL_MAX_TESS_CONTROL_ATOMIC_COUNTER_BUFFERS = 0x92CDu32
+pub aka GL_MAX_TESS_EVALUATION_ATOMIC_COUNTER_BUFFERS = 0x92CEu32
+pub aka GL_MAX_GEOMETRY_ATOMIC_COUNTER_BUFFERS = 0x92CFu32
+pub aka GL_MAX_FRAGMENT_ATOMIC_COUNTER_BUFFERS = 0x92D0u32
+pub aka GL_MAX_COMBINED_ATOMIC_COUNTER_BUFFERS = 0x92D1u32
+pub aka GL_MAX_VERTEX_ATOMIC_COUNTERS     = 0x92D2u32
+pub aka GL_MAX_TESS_CONTROL_ATOMIC_COUNTERS = 0x92D3u32
+pub aka GL_MAX_TESS_EVALUATION_ATOMIC_COUNTERS = 0x92D4u32
+pub aka GL_MAX_GEOMETRY_ATOMIC_COUNTERS   = 0x92D5u32
+pub aka GL_MAX_FRAGMENT_ATOMIC_COUNTERS   = 0x92D6u32
+pub aka GL_MAX_COMBINED_ATOMIC_COUNTERS   = 0x92D7u32
+pub aka GL_MAX_ATOMIC_COUNTER_BUFFER_SIZE = 0x92D8u32
+pub aka GL_MAX_ATOMIC_COUNTER_BUFFER_BINDINGS = 0x92DCu32
+pub aka GL_ACTIVE_ATOMIC_COUNTER_BUFFERS  = 0x92D9u32
+pub aka GL_UNIFORM_ATOMIC_COUNTER_BUFFER_INDEX = 0x92DAu32
+pub aka GL_UNSIGNED_INT_ATOMIC_COUNTER    = 0x92DBu32
+pub aka GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT = 0x00000001u32
+pub aka GL_ELEMENT_ARRAY_BARRIER_BIT      = 0x00000002u32
+pub aka GL_UNIFORM_BARRIER_BIT            = 0x00000004u32
+pub aka GL_TEXTURE_FETCH_BARRIER_BIT      = 0x00000008u32
+pub aka GL_SHADER_IMAGE_ACCESS_BARRIER_BIT = 0x00000020u32
+pub aka GL_COMMAND_BARRIER_BIT            = 0x00000040u32
+pub aka GL_PIXEL_BUFFER_BARRIER_BIT       = 0x00000080u32
+pub aka GL_TEXTURE_UPDATE_BARRIER_BIT     = 0x00000100u32
+pub aka GL_BUFFER_UPDATE_BARRIER_BIT      = 0x00000200u32
+pub aka GL_FRAMEBUFFER_BARRIER_BIT        = 0x00000400u32
+pub aka GL_TRANSFORM_FEEDBACK_BARRIER_BIT = 0x00000800u32
+pub aka GL_ATOMIC_COUNTER_BARRIER_BIT     = 0x00001000u32
+pub aka GL_ALL_BARRIER_BITS               = 0xFFFFFFFFu32
+pub aka GL_MAX_IMAGE_UNITS                = 0x8F38u32
+pub aka GL_MAX_COMBINED_IMAGE_UNITS_AND_FRAGMENT_OUTPUTS = 0x8F39u32
+pub aka GL_IMAGE_BINDING_NAME             = 0x8F3Au32
+pub aka GL_IMAGE_BINDING_LEVEL            = 0x8F3Bu32
+pub aka GL_IMAGE_BINDING_LAYERED          = 0x8F3Cu32
+pub aka GL_IMAGE_BINDING_LAYER            = 0x8F3Du32
+pub aka GL_IMAGE_BINDING_ACCESS           = 0x8F3Eu32
+pub aka GL_IMAGE_1D                       = 0x904Cu32
+pub aka GL_IMAGE_2D                       = 0x904Du32
+pub aka GL_IMAGE_3D                       = 0x904Eu32
+pub aka GL_IMAGE_2D_RECT                  = 0x904Fu32
+pub aka GL_IMAGE_CUBE                     = 0x9050u32
+pub aka GL_IMAGE_BUFFER                   = 0x9051u32
+pub aka GL_IMAGE_1D_ARRAY                 = 0x9052u32
+pub aka GL_IMAGE_2D_ARRAY                 = 0x9053u32
+pub aka GL_IMAGE_CUBE_MAP_ARRAY           = 0x9054u32
+pub aka GL_IMAGE_2D_MULTISAMPLE           = 0x9055u32
+pub aka GL_IMAGE_2D_MULTISAMPLE_ARRAY     = 0x9056u32
+pub aka GL_INT_IMAGE_1D                   = 0x9057u32
+pub aka GL_INT_IMAGE_2D                   = 0x9058u32
+pub aka GL_INT_IMAGE_3D                   = 0x9059u32
+pub aka GL_INT_IMAGE_2D_RECT              = 0x905Au32
+pub aka GL_INT_IMAGE_CUBE                 = 0x905Bu32
+pub aka GL_INT_IMAGE_BUFFER               = 0x905Cu32
+pub aka GL_INT_IMAGE_1D_ARRAY             = 0x905Du32
+pub aka GL_INT_IMAGE_2D_ARRAY             = 0x905Eu32
+pub aka GL_INT_IMAGE_CUBE_MAP_ARRAY       = 0x905Fu32
+pub aka GL_INT_IMAGE_2D_MULTISAMPLE       = 0x9060u32
+pub aka GL_INT_IMAGE_2D_MULTISAMPLE_ARRAY = 0x9061u32
+pub aka GL_UNSIGNED_INT_IMAGE_1D          = 0x9062u32
+pub aka GL_UNSIGNED_INT_IMAGE_2D          = 0x9063u32
+pub aka GL_UNSIGNED_INT_IMAGE_3D          = 0x9064u32
+pub aka GL_UNSIGNED_INT_IMAGE_2D_RECT     = 0x9065u32
+pub aka GL_UNSIGNED_INT_IMAGE_CUBE        = 0x9066u32
+pub aka GL_UNSIGNED_INT_IMAGE_BUFFER      = 0x9067u32
+pub aka GL_UNSIGNED_INT_IMAGE_1D_ARRAY    = 0x9068u32
+pub aka GL_UNSIGNED_INT_IMAGE_2D_ARRAY    = 0x9069u32
+pub aka GL_UNSIGNED_INT_IMAGE_CUBE_MAP_ARRAY = 0x906Au32
+pub aka GL_UNSIGNED_INT_IMAGE_2D_MULTISAMPLE = 0x906Bu32
+pub aka GL_UNSIGNED_INT_IMAGE_2D_MULTISAMPLE_ARRAY = 0x906Cu32
+pub aka GL_MAX_IMAGE_SAMPLES              = 0x906Du32
+pub aka GL_IMAGE_BINDING_FORMAT           = 0x906Eu32
+pub aka GL_IMAGE_FORMAT_COMPATIBILITY_TYPE = 0x90C7u32
+pub aka GL_IMAGE_FORMAT_COMPATIBILITY_BY_SIZE = 0x90C8u32
+pub aka GL_IMAGE_FORMAT_COMPATIBILITY_BY_CLASS = 0x90C9u32
+pub aka GL_MAX_VERTEX_IMAGE_UNIFORMS      = 0x90CAu32
+pub aka GL_MAX_TESS_CONTROL_IMAGE_UNIFORMS = 0x90CBu32
+pub aka GL_MAX_TESS_EVALUATION_IMAGE_UNIFORMS = 0x90CCu32
+pub aka GL_MAX_GEOMETRY_IMAGE_UNIFORMS    = 0x90CDu32
+pub aka GL_MAX_FRAGMENT_IMAGE_UNIFORMS    = 0x90CEu32
+pub aka GL_MAX_COMBINED_IMAGE_UNIFORMS    = 0x90CFu32
+pub aka GL_COMPRESSED_RGBA_BPTC_UNORM     = 0x8E8Cu32
+pub aka GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM = 0x8E8Du32
+pub aka GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT = 0x8E8Eu32
+pub aka GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT = 0x8E8Fu32
+pub aka GL_TEXTURE_IMMUTABLE_FORMAT       = 0x912Fu32
+
+//__version (GL_GLEXT_PROTOTYPES) {
+pub extern (C) def glDrawArraysInstancedBaseInstance (mode : GLenum, first : GLint, count : GLsizei, instancecount : GLsizei, baseinstance : GLuint);
+pub extern (C) def glDrawElementsInstancedBaseInstance (mode : GLenum, count : GLsizei, type : GLenum, indices : &void, instancecount : GLsizei, baseinstance : GLuint);
+pub extern (C) def glDrawElementsInstancedBaseVertexBaseInstance (mode : GLenum, count : GLsizei, type : GLenum, indices : &void, instancecount : GLsizei, basevertex : GLint, baseinstance : GLuint);
+pub extern (C) def glGetInternalformativ (target : GLenum, internalformat : GLenum, pname : GLenum, bufSize : GLsizei, dmut params : &GLint);
+pub extern (C) def glGetActiveAtomicCounterBufferiv (program : GLuint, bufferIndex : GLuint, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glBindImageTexture (unit : GLuint, texture : GLuint, level : GLint, layered : GLboolean, layer : GLint, access : GLenum, format : GLenum);
+pub extern (C) def glMemoryBarrier (barriers : GLbitfield);
+pub extern (C) def glTexStorage1D (target : GLenum, levels : GLsizei, internalformat : GLenum, width : GLsizei);
+pub extern (C) def glTexStorage2D (target : GLenum, levels : GLsizei, internalformat : GLenum, width : GLsizei, height : GLsizei);
+pub extern (C) def glTexStorage3D (target : GLenum, levels : GLsizei, internalformat : GLenum, width : GLsizei, height : GLsizei, depth : GLsizei);
+pub extern (C) def glDrawTransformFeedbackInstanced (mode : GLenum, id : GLuint, instancecount : GLsizei);
+pub extern (C) def glDrawTransformFeedbackStreamInstanced (mode : GLenum, id : GLuint, stream : GLuint, instancecount : GLsizei);
+//}
+
+
+pub aka GL_VERSION_4_3 = 1u32;
+
+aka GLDEBUGPROC = fn (GLenum, GLenum, GLuint, GLenum, GLsizei, &GLchar, &void)-> void;
+
+pub aka GL_NUM_SHADING_LANGUAGE_VERSIONS  = 0x82E9u32
+pub aka GL_VERTEX_ATTRIB_ARRAY_LONG       = 0x874Eu32
+pub aka GL_COMPRESSED_RGB8_ETC2           = 0x9274u32
+pub aka GL_COMPRESSED_SRGB8_ETC2          = 0x9275u32
+pub aka GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2 = 0x9276u32
+pub aka GL_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2 = 0x9277u32
+pub aka GL_COMPRESSED_RGBA8_ETC2_EAC      = 0x9278u32
+pub aka GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC = 0x9279u32
+pub aka GL_COMPRESSED_R11_EAC             = 0x9270u32
+pub aka GL_COMPRESSED_SIGNED_R11_EAC      = 0x9271u32
+pub aka GL_COMPRESSED_RG11_EAC            = 0x9272u32
+pub aka GL_COMPRESSED_SIGNED_RG11_EAC     = 0x9273u32
+pub aka GL_PRIMITIVE_RESTART_FIXED_INDEX  = 0x8D69u32
+pub aka GL_ANY_SAMPLES_PASSED_CONSERVATIVE = 0x8D6Au32
+pub aka GL_MAX_ELEMENT_INDEX              = 0x8D6Bu32
+pub aka GL_COMPUTE_SHADER                 = 0x91B9u32
+pub aka GL_MAX_COMPUTE_UNIFORM_BLOCKS     = 0x91BBu32
+pub aka GL_MAX_COMPUTE_TEXTURE_IMAGE_UNITS = 0x91BCu32
+pub aka GL_MAX_COMPUTE_IMAGE_UNIFORMS     = 0x91BDu32
+pub aka GL_MAX_COMPUTE_SHARED_MEMORY_SIZE = 0x8262u32
+pub aka GL_MAX_COMPUTE_UNIFORM_COMPONENTS = 0x8263u32
+pub aka GL_MAX_COMPUTE_ATOMIC_COUNTER_BUFFERS = 0x8264u32
+pub aka GL_MAX_COMPUTE_ATOMIC_COUNTERS    = 0x8265u32
+pub aka GL_MAX_COMBINED_COMPUTE_UNIFORM_COMPONENTS = 0x8266u32
+pub aka GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS = 0x90EBu32
+pub aka GL_MAX_COMPUTE_WORK_GROUP_COUNT   = 0x91BEu32
+pub aka GL_MAX_COMPUTE_WORK_GROUP_SIZE    = 0x91BFu32
+pub aka GL_COMPUTE_WORK_GROUP_SIZE        = 0x8267u32
+pub aka GL_UNIFORM_BLOCK_REFERENCED_BY_COMPUTE_SHADER = 0x90ECu32
+pub aka GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_COMPUTE_SHADER = 0x90EDu32
+pub aka GL_DISPATCH_INDIRECT_BUFFER       = 0x90EEu32
+pub aka GL_DISPATCH_INDIRECT_BUFFER_BINDING = 0x90EFu32
+pub aka GL_DEBUG_OUTPUT_SYNCHRONOUS       = 0x8242u32
+pub aka GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH = 0x8243u32
+pub aka GL_DEBUG_CALLBACK_FUNCTION        = 0x8244u32
+pub aka GL_DEBUG_CALLBACK_USER_PARAM      = 0x8245u32
+pub aka GL_DEBUG_SOURCE_API               = 0x8246u32
+pub aka GL_DEBUG_SOURCE_WINDOW_SYSTEM     = 0x8247u32
+pub aka GL_DEBUG_SOURCE_SHADER_COMPILER   = 0x8248u32
+pub aka GL_DEBUG_SOURCE_THIRD_PARTY       = 0x8249u32
+pub aka GL_DEBUG_SOURCE_APPLICATION       = 0x824Au32
+pub aka GL_DEBUG_SOURCE_OTHER             = 0x824Bu32
+pub aka GL_DEBUG_TYPE_ERROR               = 0x824Cu32
+pub aka GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR = 0x824Du32
+pub aka GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR  = 0x824Eu32
+pub aka GL_DEBUG_TYPE_PORTABILITY         = 0x824Fu32
+pub aka GL_DEBUG_TYPE_PERFORMANCE         = 0x8250u32
+pub aka GL_DEBUG_TYPE_OTHER               = 0x8251u32
+pub aka GL_MAX_DEBUG_MESSAGE_LENGTH       = 0x9143u32
+pub aka GL_MAX_DEBUG_LOGGED_MESSAGES      = 0x9144u32
+pub aka GL_DEBUG_LOGGED_MESSAGES          = 0x9145u32
+pub aka GL_DEBUG_SEVERITY_HIGH            = 0x9146u32
+pub aka GL_DEBUG_SEVERITY_MEDIUM          = 0x9147u32
+pub aka GL_DEBUG_SEVERITY_LOW             = 0x9148u32
+pub aka GL_DEBUG_TYPE_MARKER              = 0x8268u32
+pub aka GL_DEBUG_TYPE_PUSH_GROUP          = 0x8269u32
+pub aka GL_DEBUG_TYPE_POP_GROUP           = 0x826Au32
+pub aka GL_DEBUG_SEVERITY_NOTIFICATION    = 0x826Bu32
+pub aka GL_MAX_DEBUG_GROUP_STACK_DEPTH    = 0x826Cu32
+pub aka GL_DEBUG_GROUP_STACK_DEPTH        = 0x826Du32
+pub aka GL_BUFFER                         = 0x82E0u32
+pub aka GL_SHADER                         = 0x82E1u32
+pub aka GL_PROGRAM                        = 0x82E2u32
+pub aka GL_QUERY                          = 0x82E3u32
+pub aka GL_PROGRAM_PIPELINE               = 0x82E4u32
+pub aka GL_SAMPLER                        = 0x82E6u32
+pub aka GL_MAX_LABEL_LENGTH               = 0x82E8u32
+pub aka GL_DEBUG_OUTPUT                   = 0x92E0u32
+pub aka GL_CONTEXT_FLAG_DEBUG_BIT         = 0x00000002u32
+pub aka GL_MAX_UNIFORM_LOCATIONS          = 0x826Eu32
+pub aka GL_FRAMEBUFFER_DEFAULT_WIDTH      = 0x9310u32
+pub aka GL_FRAMEBUFFER_DEFAULT_HEIGHT     = 0x9311u32
+pub aka GL_FRAMEBUFFER_DEFAULT_LAYERS     = 0x9312u32
+pub aka GL_FRAMEBUFFER_DEFAULT_SAMPLES    = 0x9313u32
+pub aka GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS = 0x9314u32
+pub aka GL_MAX_FRAMEBUFFER_WIDTH          = 0x9315u32
+pub aka GL_MAX_FRAMEBUFFER_HEIGHT         = 0x9316u32
+pub aka GL_MAX_FRAMEBUFFER_LAYERS         = 0x9317u32
+pub aka GL_MAX_FRAMEBUFFER_SAMPLES        = 0x9318u32
+pub aka GL_INTERNALFORMAT_SUPPORTED       = 0x826Fu32
+pub aka GL_INTERNALFORMAT_PREFERRED       = 0x8270u32
+pub aka GL_INTERNALFORMAT_RED_SIZE        = 0x8271u32
+pub aka GL_INTERNALFORMAT_GREEN_SIZE      = 0x8272u32
+pub aka GL_INTERNALFORMAT_BLUE_SIZE       = 0x8273u32
+pub aka GL_INTERNALFORMAT_ALPHA_SIZE      = 0x8274u32
+pub aka GL_INTERNALFORMAT_DEPTH_SIZE      = 0x8275u32
+pub aka GL_INTERNALFORMAT_STENCIL_SIZE    = 0x8276u32
+pub aka GL_INTERNALFORMAT_SHARED_SIZE     = 0x8277u32
+pub aka GL_INTERNALFORMAT_RED_TYPE        = 0x8278u32
+pub aka GL_INTERNALFORMAT_GREEN_TYPE      = 0x8279u32
+pub aka GL_INTERNALFORMAT_BLUE_TYPE       = 0x827Au32
+pub aka GL_INTERNALFORMAT_ALPHA_TYPE      = 0x827Bu32
+pub aka GL_INTERNALFORMAT_DEPTH_TYPE      = 0x827Cu32
+pub aka GL_INTERNALFORMAT_STENCIL_TYPE    = 0x827Du32
+pub aka GL_MAX_WIDTH                      = 0x827Eu32
+pub aka GL_MAX_HEIGHT                     = 0x827Fu32
+pub aka GL_MAX_DEPTH                      = 0x8280u32
+pub aka GL_MAX_LAYERS                     = 0x8281u32
+pub aka GL_MAX_COMBINED_DIMENSIONS        = 0x8282u32
+pub aka GL_COLOR_COMPONENTS               = 0x8283u32
+pub aka GL_DEPTH_COMPONENTS               = 0x8284u32
+pub aka GL_STENCIL_COMPONENTS             = 0x8285u32
+pub aka GL_COLOR_RENDERABLE               = 0x8286u32
+pub aka GL_DEPTH_RENDERABLE               = 0x8287u32
+pub aka GL_STENCIL_RENDERABLE             = 0x8288u32
+pub aka GL_FRAMEBUFFER_RENDERABLE         = 0x8289u32
+pub aka GL_FRAMEBUFFER_RENDERABLE_LAYERED = 0x828Au32
+pub aka GL_FRAMEBUFFER_BLEND              = 0x828Bu32
+pub aka GL_READ_PIXELS                    = 0x828Cu32
+pub aka GL_READ_PIXELS_FORMAT             = 0x828Du32
+pub aka GL_READ_PIXELS_TYPE               = 0x828Eu32
+pub aka GL_TEXTURE_IMAGE_FORMAT           = 0x828Fu32
+pub aka GL_TEXTURE_IMAGE_TYPE             = 0x8290u32
+pub aka GL_GET_TEXTURE_IMAGE_FORMAT       = 0x8291u32
+pub aka GL_GET_TEXTURE_IMAGE_TYPE         = 0x8292u32
+pub aka GL_MIPMAP                         = 0x8293u32
+pub aka GL_MANUAL_GENERATE_MIPMAP         = 0x8294u32
+pub aka GL_AUTO_GENERATE_MIPMAP           = 0x8295u32
+pub aka GL_COLOR_ENCODING                 = 0x8296u32
+pub aka GL_SRGB_READ                      = 0x8297u32
+pub aka GL_SRGB_WRITE                     = 0x8298u32
+pub aka GL_FILTER                         = 0x829Au32
+pub aka GL_VERTEX_TEXTURE                 = 0x829Bu32
+pub aka GL_TESS_CONTROL_TEXTURE           = 0x829Cu32
+pub aka GL_TESS_EVALUATION_TEXTURE        = 0x829Du32
+pub aka GL_GEOMETRY_TEXTURE               = 0x829Eu32
+pub aka GL_FRAGMENT_TEXTURE               = 0x829Fu32
+pub aka GL_COMPUTE_TEXTURE                = 0x82A0u32
+pub aka GL_TEXTURE_SHADOW                 = 0x82A1u32
+pub aka GL_TEXTURE_GATHER                 = 0x82A2u32
+pub aka GL_TEXTURE_GATHER_SHADOW          = 0x82A3u32
+pub aka GL_SHADER_IMAGE_LOAD              = 0x82A4u32
+pub aka GL_SHADER_IMAGE_STORE             = 0x82A5u32
+pub aka GL_SHADER_IMAGE_ATOMIC            = 0x82A6u32
+pub aka GL_IMAGE_TEXEL_SIZE               = 0x82A7u32
+pub aka GL_IMAGE_COMPATIBILITY_CLASS      = 0x82A8u32
+pub aka GL_IMAGE_PIXEL_FORMAT             = 0x82A9u32
+pub aka GL_IMAGE_PIXEL_TYPE               = 0x82AAu32
+pub aka GL_SIMULTANEOUS_TEXTURE_AND_DEPTH_TEST = 0x82ACu32
+pub aka GL_SIMULTANEOUS_TEXTURE_AND_STENCIL_TEST = 0x82ADu32
+pub aka GL_SIMULTANEOUS_TEXTURE_AND_DEPTH_WRITE = 0x82AEu32
+pub aka GL_SIMULTANEOUS_TEXTURE_AND_STENCIL_WRITE = 0x82AFu32
+pub aka GL_TEXTURE_COMPRESSED_BLOCK_WIDTH = 0x82B1u32
+pub aka GL_TEXTURE_COMPRESSED_BLOCK_HEIGHT = 0x82B2u32
+pub aka GL_TEXTURE_COMPRESSED_BLOCK_SIZE  = 0x82B3u32
+pub aka GL_CLEAR_BUFFER                   = 0x82B4u32
+pub aka GL_TEXTURE_VIEW                   = 0x82B5u32
+pub aka GL_VIEW_COMPATIBILITY_CLASS       = 0x82B6u32
+pub aka GL_FULL_SUPPORT                   = 0x82B7u32
+pub aka GL_CAVEAT_SUPPORT                 = 0x82B8u32
+pub aka GL_IMAGE_CLASS_4_X_32             = 0x82B9u32
+pub aka GL_IMAGE_CLASS_2_X_32             = 0x82BAu32
+pub aka GL_IMAGE_CLASS_1_X_32             = 0x82BBu32
+pub aka GL_IMAGE_CLASS_4_X_16             = 0x82BCu32
+pub aka GL_IMAGE_CLASS_2_X_16             = 0x82BDu32
+pub aka GL_IMAGE_CLASS_1_X_16             = 0x82BEu32
+pub aka GL_IMAGE_CLASS_4_X_8              = 0x82BFu32
+pub aka GL_IMAGE_CLASS_2_X_8              = 0x82C0u32
+pub aka GL_IMAGE_CLASS_1_X_8              = 0x82C1u32
+pub aka GL_IMAGE_CLASS_11_11_10           = 0x82C2u32
+pub aka GL_IMAGE_CLASS_10_10_10_2         = 0x82C3u32
+pub aka GL_VIEW_CLASS_128_BITS            = 0x82C4u32
+pub aka GL_VIEW_CLASS_96_BITS             = 0x82C5u32
+pub aka GL_VIEW_CLASS_64_BITS             = 0x82C6u32
+pub aka GL_VIEW_CLASS_48_BITS             = 0x82C7u32
+pub aka GL_VIEW_CLASS_32_BITS             = 0x82C8u32
+pub aka GL_VIEW_CLASS_24_BITS             = 0x82C9u32
+pub aka GL_VIEW_CLASS_16_BITS             = 0x82CAu32
+pub aka GL_VIEW_CLASS_8_BITS              = 0x82CBu32
+pub aka GL_VIEW_CLASS_S3TC_DXT1_RGB       = 0x82CCu32
+pub aka GL_VIEW_CLASS_S3TC_DXT1_RGBA      = 0x82CDu32
+pub aka GL_VIEW_CLASS_S3TC_DXT3_RGBA      = 0x82CEu32
+pub aka GL_VIEW_CLASS_S3TC_DXT5_RGBA      = 0x82CFu32
+pub aka GL_VIEW_CLASS_RGTC1_RED           = 0x82D0u32
+pub aka GL_VIEW_CLASS_RGTC2_RG            = 0x82D1u32
+pub aka GL_VIEW_CLASS_BPTC_UNORM          = 0x82D2u32
+pub aka GL_VIEW_CLASS_BPTC_FLOAT          = 0x82D3u32
+pub aka GL_UNIFORM                        = 0x92E1u32
+pub aka GL_UNIFORM_BLOCK                  = 0x92E2u32
+pub aka GL_PROGRAM_INPUT                  = 0x92E3u32
+pub aka GL_PROGRAM_OUTPUT                 = 0x92E4u32
+pub aka GL_BUFFER_VARIABLE                = 0x92E5u32
+pub aka GL_SHADER_STORAGE_BLOCK           = 0x92E6u32
+pub aka GL_VERTEX_SUBROUTINE              = 0x92E8u32
+pub aka GL_TESS_CONTROL_SUBROUTINE        = 0x92E9u32
+pub aka GL_TESS_EVALUATION_SUBROUTINE     = 0x92EAu32
+pub aka GL_GEOMETRY_SUBROUTINE            = 0x92EBu32
+pub aka GL_FRAGMENT_SUBROUTINE            = 0x92ECu32
+pub aka GL_COMPUTE_SUBROUTINE             = 0x92EDu32
+pub aka GL_VERTEX_SUBROUTINE_UNIFORM      = 0x92EEu32
+pub aka GL_TESS_CONTROL_SUBROUTINE_UNIFORM = 0x92EFu32
+pub aka GL_TESS_EVALUATION_SUBROUTINE_UNIFORM = 0x92F0u32
+pub aka GL_GEOMETRY_SUBROUTINE_UNIFORM    = 0x92F1u32
+pub aka GL_FRAGMENT_SUBROUTINE_UNIFORM    = 0x92F2u32
+pub aka GL_COMPUTE_SUBROUTINE_UNIFORM     = 0x92F3u32
+pub aka GL_TRANSFORM_FEEDBACK_VARYING     = 0x92F4u32
+pub aka GL_ACTIVE_RESOURCES               = 0x92F5u32
+pub aka GL_MAX_NAME_LENGTH                = 0x92F6u32
+pub aka GL_MAX_NUM_ACTIVE_VARIABLES       = 0x92F7u32
+pub aka GL_MAX_NUM_COMPATIBLE_SUBROUTINES = 0x92F8u32
+pub aka GL_NAME_LENGTH                    = 0x92F9u32
+pub aka GL_TYPE                           = 0x92FAu32
+pub aka GL_ARRAY_SIZE                     = 0x92FBu32
+pub aka GL_OFFSET                         = 0x92FCu32
+pub aka GL_BLOCK_INDEX                    = 0x92FDu32
+pub aka GL_ARRAY_STRIDE                   = 0x92FEu32
+pub aka GL_MATRIX_STRIDE                  = 0x92FFu32
+pub aka GL_IS_ROW_MAJOR                   = 0x9300u32
+pub aka GL_ATOMIC_COUNTER_BUFFER_INDEX    = 0x9301u32
+pub aka GL_BUFFER_BINDING                 = 0x9302u32
+pub aka GL_BUFFER_DATA_SIZE               = 0x9303u32
+pub aka GL_NUM_ACTIVE_VARIABLES           = 0x9304u32
+pub aka GL_ACTIVE_VARIABLES               = 0x9305u32
+pub aka GL_REFERENCED_BY_VERTEX_SHADER    = 0x9306u32
+pub aka GL_REFERENCED_BY_TESS_CONTROL_SHADER = 0x9307u32
+pub aka GL_REFERENCED_BY_TESS_EVALUATION_SHADER = 0x9308u32
+pub aka GL_REFERENCED_BY_GEOMETRY_SHADER  = 0x9309u32
+pub aka GL_REFERENCED_BY_FRAGMENT_SHADER  = 0x930Au32
+pub aka GL_REFERENCED_BY_COMPUTE_SHADER   = 0x930Bu32
+pub aka GL_TOP_LEVEL_ARRAY_SIZE           = 0x930Cu32
+pub aka GL_TOP_LEVEL_ARRAY_STRIDE         = 0x930Du32
+pub aka GL_LOCATION                       = 0x930Eu32
+pub aka GL_LOCATION_INDEX                 = 0x930Fu32
+pub aka GL_IS_PER_PATCH                   = 0x92E7u32
+pub aka GL_SHADER_STORAGE_BUFFER          = 0x90D2u32
+pub aka GL_SHADER_STORAGE_BUFFER_BINDING  = 0x90D3u32
+pub aka GL_SHADER_STORAGE_BUFFER_START    = 0x90D4u32
+pub aka GL_SHADER_STORAGE_BUFFER_SIZE     = 0x90D5u32
+pub aka GL_MAX_VERTEX_SHADER_STORAGE_BLOCKS = 0x90D6u32
+pub aka GL_MAX_GEOMETRY_SHADER_STORAGE_BLOCKS = 0x90D7u32
+pub aka GL_MAX_TESS_CONTROL_SHADER_STORAGE_BLOCKS = 0x90D8u32
+pub aka GL_MAX_TESS_EVALUATION_SHADER_STORAGE_BLOCKS = 0x90D9u32
+pub aka GL_MAX_FRAGMENT_SHADER_STORAGE_BLOCKS = 0x90DAu32
+pub aka GL_MAX_COMPUTE_SHADER_STORAGE_BLOCKS = 0x90DBu32
+pub aka GL_MAX_COMBINED_SHADER_STORAGE_BLOCKS = 0x90DCu32
+pub aka GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS = 0x90DDu32
+pub aka GL_MAX_SHADER_STORAGE_BLOCK_SIZE  = 0x90DEu32
+pub aka GL_SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT = 0x90DFu32
+pub aka GL_SHADER_STORAGE_BARRIER_BIT     = 0x00002000u32
+pub aka GL_MAX_COMBINED_SHADER_OUTPUT_RESOURCES = 0x8F39u32
+pub aka GL_DEPTH_STENCIL_TEXTURE_MODE     = 0x90EAu32
+pub aka GL_TEXTURE_BUFFER_OFFSET          = 0x919Du32
+pub aka GL_TEXTURE_BUFFER_SIZE            = 0x919Eu32
+pub aka GL_TEXTURE_BUFFER_OFFSET_ALIGNMENT = 0x919Fu32
+pub aka GL_TEXTURE_VIEW_MIN_LEVEL         = 0x82DBu32
+pub aka GL_TEXTURE_VIEW_NUM_LEVELS        = 0x82DCu32
+pub aka GL_TEXTURE_VIEW_MIN_LAYER         = 0x82DDu32
+pub aka GL_TEXTURE_VIEW_NUM_LAYERS        = 0x82DEu32
+pub aka GL_TEXTURE_IMMUTABLE_LEVELS       = 0x82DFu32
+pub aka GL_VERTEX_ATTRIB_BINDING          = 0x82D4u32
+pub aka GL_VERTEX_ATTRIB_RELATIVE_OFFSET  = 0x82D5u32
+pub aka GL_VERTEX_BINDING_DIVISOR         = 0x82D6u32
+pub aka GL_VERTEX_BINDING_OFFSET          = 0x82D7u32
+pub aka GL_VERTEX_BINDING_STRIDE          = 0x82D8u32
+pub aka GL_MAX_VERTEX_ATTRIB_RELATIVE_OFFSET = 0x82D9u32
+pub aka GL_MAX_VERTEX_ATTRIB_BINDINGS     = 0x82DAu32
+pub aka GL_VERTEX_BINDING_BUFFER          = 0x8F4Fu32
+pub aka GL_DISPLAY_LIST                   = 0x82E7u32
+
+//__version(GL_GLEXT_PROTOTYPES) {
+pub extern (C) def glClearBufferData (target : GLenum, internalformat : GLenum, format : GLenum, type : GLenum, data : &void);
+pub extern (C) def glClearBufferSubData (target : GLenum, internalformat : GLenum, offset : GLintptr, size : GLsizeiptr, format : GLenum, type : GLenum, data : &void);
+pub extern (C) def glDispatchCompute (num_groups_x : GLuint, num_groups_y : GLuint, num_groups_z : GLuint);
+pub extern (C) def glDispatchComputeIndirect (indirect : GLintptr);
+pub extern (C) def glCopyImageSubData (srcName : GLuint, srcTarget : GLenum, srcLevel : GLint, srcX : GLint, srcY : GLint, srcZ : GLint, dstName : GLuint, dstTarget : GLenum, dstLevel : GLint, dstX : GLint, dstY : GLint, dstZ : GLint, srcWidth : GLsizei, srcHeight : GLsizei, srcDepth : GLsizei);
+pub extern (C) def glFramebufferParameteri (target : GLenum, pname : GLenum, param : GLint);
+pub extern (C) def glGetFramebufferParameteriv (target : GLenum, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGetInternalformati64v (target : GLenum, internalformat : GLenum, pname : GLenum, bufSize : GLsizei, dmut params : &GLint64);
+pub extern (C) def glInvalidateTexSubImage (texture : GLuint, level : GLint, xoffset : GLint, yoffset : GLint, zoffset : GLint, width : GLsizei, height : GLsizei, depth : GLsizei);
+pub extern (C) def glInvalidateTexImage (texture : GLuint, level : GLint);
+pub extern (C) def glInvalidateBufferSubData (buffer : GLuint, offset : GLintptr, length : GLsizeiptr);
+pub extern (C) def glInvalidateBufferData (buffer : GLuint);
+pub extern (C) def glInvalidateFramebuffer (target : GLenum, numAttachments : GLsizei, attachments : &GLenum);
+pub extern (C) def glInvalidateSubFramebuffer (target : GLenum, numAttachments : GLsizei, attachments : &GLenum, x : GLint, y : GLint, width : GLsizei, height : GLsizei);
+pub extern (C) def glMultiDrawArraysIndirect (mode : GLenum, indirect : &void, drawcount : GLsizei, stride : GLsizei);
+pub extern (C) def glMultiDrawElementsIndirect (mode : GLenum, type : GLenum, indirect : &void, drawcount : GLsizei, stride : GLsizei);
+pub extern (C) def glGetProgramInterfaceiv (program : GLuint, programInterface : GLenum, pname : GLenum, dmut params : &GLint);
+pub extern (C) def glGetProgramResourceIndex (program : GLuint, programInterface : GLenum, name : &GLchar)-> GLuint;
+pub extern (C) def glGetProgramResourceName (program : GLuint, programInterface : GLenum, index : GLuint, bufSize : GLsizei, dmut length : &GLsizei, dmut name : &GLchar);
+pub extern (C) def glGetProgramResourceiv (program : GLuint, programInterface : GLenum, index : GLuint, propCount : GLsizei, props : &GLenum, bufSize : GLsizei, dmut length : &GLsizei, dmut params : &GLint);
+pub extern (C) def glGetProgramResourceLocation (program : GLuint, programInterface : GLenum, name : &GLchar)-> GLint;
+pub extern (C) def glGetProgramResourceLocationIndex (program : GLuint, programInterface : GLenum, name : &GLchar)-> GLint;
+pub extern (C) def glShaderStorageBlockBinding (program : GLuint, storageBlockIndex : GLuint, storageBlockBinding : GLuint);
+pub extern (C) def glTexBufferRange (target : GLenum, internalformat : GLenum, buffer : GLuint, offset : GLintptr, size : GLsizeiptr);
+pub extern (C) def glTexStorage2DMultisample (target : GLenum, samples : GLsizei, internalformat : GLenum, width : GLsizei, height : GLsizei, fixedsamplelocations : GLboolean);
+pub extern (C) def glTexStorage3DMultisample (target : GLenum, samples : GLsizei, internalformat : GLenum, width : GLsizei, height : GLsizei, depth : GLsizei, fixedsamplelocations : GLboolean);
+pub extern (C) def glTextureView (texture : GLuint, target : GLenum, origtexture : GLuint, internalformat : GLenum, minlevel : GLuint, numlevels : GLuint, minlayer : GLuint, numlayers : GLuint);
+pub extern (C) def glBindVertexBuffer (bindingindex : GLuint, buffer : GLuint, offset : GLintptr, stride : GLsizei);
+pub extern (C) def glVertexAttribFormat (attribindex : GLuint, size : GLint, type : GLenum, normalized : GLboolean, relativeoffset : GLuint);
+pub extern (C) def glVertexAttribIFormat (attribindex : GLuint, size : GLint, type : GLenum, relativeoffset : GLuint);
+pub extern (C) def glVertexAttribLFormat (attribindex : GLuint, size : GLint, type : GLenum, relativeoffset : GLuint);
+pub extern (C) def glVertexAttribBinding (attribindex : GLuint, bindingindex : GLuint);
+pub extern (C) def glVertexBindingDivisor (bindingindex : GLuint, divisor : GLuint);
+pub extern (C) def glDebugMessageControl (source : GLenum, type : GLenum, severity : GLenum, count : GLsizei, ids : &GLuint, enabled : GLboolean);
+pub extern (C) def glDebugMessageInsert (source : GLenum, type : GLenum, id : GLuint, severity : GLenum, length : GLsizei, buf : &GLchar);
+pub extern (C) def glDebugMessageCallback (callback : GLDEBUGPROC, userParam : &void);
+pub extern (C) def glGetDebugMessageLog (count : GLuint, bufSize : GLsizei, dmut sources : &GLenum, dmut types : &GLenum, dmut ids : &GLuint, dmut severities : &GLenum, dmut lengths : &GLsizei, dmut messageLog : &GLchar)-> GLuint;
+pub extern (C) def glPushDebugGroup (source : GLenum, id : GLuint, length : GLsizei, message : &GLchar);
+pub extern (C) def glPopDebugGroup ();
+pub extern (C) def glObjectLabel (identifier : GLenum, name : GLuint, length : GLsizei, label : &GLchar);
+pub extern (C) def glGetObjectLabel (identifier : GLenum, name : GLuint, bufSize : GLsizei, dmut length : &GLsizei, dmut label : &GLchar);
+pub extern (C) def glObjectPtrLabel (ptr : &void, length : GLsizei, label : &GLchar);
+pub extern (C) def glGetObjectPtrLabel (ptr : &void, bufSize : GLsizei, dmut length : &GLsizei, dmut label : &GLchar);
+//}
+
+pub aka GL_VERSION_4_4 = 1u32;
+pub aka GL_MAX_VERTEX_ATTRIB_STRIDE       = 0x82E5u32
+pub aka GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED = 0x8221u32
+pub aka GL_TEXTURE_BUFFER_BINDING         = 0x8C2Au32
+pub aka GL_MAP_PERSISTENT_BIT             = 0x0040u32
+pub aka GL_MAP_COHERENT_BIT               = 0x0080u32
+pub aka GL_DYNAMIC_STORAGE_BIT            = 0x0100u32
+pub aka GL_CLIENT_STORAGE_BIT             = 0x0200u32
+pub aka GL_CLIENT_MAPPED_BUFFER_BARRIER_BIT = 0x00004000u32
+pub aka GL_BUFFER_IMMUTABLE_STORAGE       = 0x821Fu32
+pub aka GL_BUFFER_STORAGE_FLAGS           = 0x8220u32
+pub aka GL_CLEAR_TEXTURE                  = 0x9365u32
+pub aka GL_LOCATION_COMPONENT             = 0x934Au32
+pub aka GL_TRANSFORM_FEEDBACK_BUFFER_INDEX = 0x934Bu32
+pub aka GL_TRANSFORM_FEEDBACK_BUFFER_STRIDE = 0x934Cu32
+pub aka GL_QUERY_BUFFER                   = 0x9192u32
+pub aka GL_QUERY_BUFFER_BARRIER_BIT       = 0x00008000u32
+pub aka GL_QUERY_BUFFER_BINDING           = 0x9193u32
+pub aka GL_QUERY_RESULT_NO_WAIT           = 0x9194u32
+pub aka GL_MIRROR_CLAMP_TO_EDGE           = 0x8743u32
+    
+
+//__version (GL_GLEXT_PROTOTYPES) {
+pub extern (C) def  glBufferStorage (target : GLenum, size : GLsizeiptr, data : &void, flags : GLbitfield);
+pub extern (C) def  glClearTexImage (texture : GLuint, level : GLint, format : GLenum, type : GLenum, data : &void);
+pub extern (C) def  glClearTexSubImage (texture : GLuint, level : GLint, xoffset : GLint, yoffset : GLint, zoffset : GLint, width : GLsizei, height : GLsizei, depth : GLsizei, format : GLenum, type : GLenum, data : &void);
+pub extern (C) def  glBindBuffersBase (target : GLenum, first : GLuint, count : GLsizei, buffers : &GLuint);
+pub extern (C) def  glBindBuffersRange (target : GLenum, first : GLuint, count : GLsizei, buffers : &GLuint, offsets : &GLintptr, sizes : &GLsizeiptr);
+pub extern (C) def  glBindTextures (first : GLuint, count : GLsizei, textures : &GLuint);
+pub extern (C) def  glBindSamplers (first : GLuint, count : GLsizei, samplers : &GLuint);
+pub extern (C) def  glBindImageTextures (first : GLuint, count : GLsizei, textures : &GLuint);
+pub extern (C) def  glBindVertexBuffers (first : GLuint, count : GLsizei, buffers : &GLuint, offsets : &GLintptr, strides : &GLsizei);
+//}

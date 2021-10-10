@@ -1,0 +1,153 @@
+mod krepusko::opengl::texture;
+import std::io, std::conv;
+import sdl2::_, std::fs::path;
+
+pub class TextureError over Exception {
+    pub let msg : [c8];
+
+    pub self (msg : [c8]) with msg = msg {}
+
+    impl Streamable {
+        pub over toStream (self, dmut stream : &StringStream) {
+            self::super.toStream (alias stream);
+        }
+    }
+}
+
+
+/**
+ * A simple texture containing data that have been uploaded to the GPU
+ * This texture are read only, thus cant be used as GTexture
+ */
+pub class Texture2D {
+
+    let mut _tex = 0u32;
+
+    let mut _w : u32 = 0u32;
+
+    let mut _h : u32 = 0u32;
+    
+    /**
+     * Create an empty texture containing nothing
+     */
+    pub self () {}
+
+    /**
+     * Create a texture from datas, a given width and a given height
+     */
+    pub self (datas : &(void),  w : u32, h : u32, format : u32) with 
+        _w = w, _h = h
+        throws &TextureError
+    {
+        glGenTextures (1, alias &self._tex);
+
+        glBindTexture (GL_TEXTURE_2D, self._tex);
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, cast!i32 (GL_REPEAT));
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, cast!i32 (GL_REPEAT));
+        
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, cast!i32 (GL_LINEAR_MIPMAP_LINEAR));
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, cast!i32 (GL_LINEAR));
+
+        match format {
+            SDL_PIXELFORMAT_RGBA32 => glTexImage2D (GL_TEXTURE_2D, 0, cast!i32 (GL_RGBA), cast!i32 (w), cast!i32 (h), 0, GL_RGBA, GL_UNSIGNED_BYTE, datas);
+            SDL_PIXELFORMAT_RGB24 => glTexImage2D (GL_TEXTURE_2D, 0, cast!i32 (GL_RGB), cast!i32 (w), cast!i32 (h), 0, GL_RGB, GL_UNSIGNED_BYTE, datas);
+            SDL_PIXELFORMAT_ARGB8888 => glTexImage2D (GL_TEXTURE_2D, 0, cast!i32 (GL_RGBA), cast!i32 (w), cast!i32 (h), 0, GL_RGBA, GL_UNSIGNED_BYTE, datas);
+            SDL_PIXELFORMAT_BGR24 => {                
+                let aux = self.convertBgrToRgb24 (cast!{&u8} (datas), w, h);
+                glTexImage2D (GL_TEXTURE_2D, 0, cast!i32 (GL_RGB), cast!i32 (w), cast!i32 (h), 0, GL_RGB, GL_UNSIGNED_BYTE, cast!{&void} (aux.ptr));
+            }
+            _ => throw TextureError::new ("Unknwon pixel format : "s8 ~ format.to![c8] ());
+        }
+
+        glGenerateMipmap (GL_TEXTURE_2D);
+        glBindTexture (GL_TEXTURE_2D, 0u32);
+    } catch {
+        x : &TextureError => throw x;
+        _  => throw TextureError::new ("Failed to upload texture, data are not valid"s8);
+    }
+
+    /**
+     * Bind the texture to the current active sampler
+     */
+    pub def bind (self) {
+        glBindTexture (GL_TEXTURE_2D, self._tex);        
+    }
+
+    /**
+     * Unbind the texture
+     */
+    pub def unbind (self) {
+        glBindTexture (GL_TEXTURE_2D, 0u32);        
+    }
+
+
+    impl Disposable {
+
+
+        pub over dispose (mut self) {
+            if (self._tex != 0u32) {
+                glDeleteTextures (1, alias &self._tex);
+                self._tex = 0u32;                
+            }
+            self._w = 0u32;
+            self._h = 0u32;
+        }
+    }
+    
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }
+
+    
+    /**
+     * Convert an image of bgr format to rgb format
+     */
+    prv def convertBgrToRgb24 (self, data : &u8, w : u32, h : u32) -> dmut [u8]
+        throws &TextureError
+    {
+        let dmut end = [0u8 ; new w * h];
+        let mut src = data;
+        let mut z = 0us;
+        for _ in 0u32 .. w {
+            for _ in 0u32 .. h {
+                end [z] = *(src + 2us);
+                end [z + 1us] = *(src + 1us);
+                end [z + 2us] = *src;                
+                src += 3us;
+                z += 3us;
+            }
+        }
+
+        alias end
+    } catch {
+        _ => throw TextureError::new ("Failed to convert to rgb format"s8);
+    }
+    
+
+}
+
+/**
+ * Load a texture from an image file
+ * @params: 
+ *   - file_name: the path to the image to load
+ * @returns: a Texture2D containing the loaded image
+ * @throws: 
+ *  - &TextureError: if the loading failed
+ */
+pub def textureFromFile (file_name : &Path)-> dmut &Texture2D
+    throws &TextureError
+{
+    let dmut surf = IMG_Load (file_name.toStr ().ptr);
+    if (surf is null) {
+        throw TextureError::new ("Failed to load texture : "s8 ~ file_name.toStr ());
+    }
+
+    let dmut tex = Texture2D::new ((*surf).pixels, cast!u32 ((*surf).w), cast!u32 ((*surf).h), (*(*surf).format).format);
+    SDL_FreeSurface (alias surf);
+
+    alias tex
+} catch {
+    x : &TextureError => throw x;
+    _ : &SegFault  => throw TextureError::new ("Failed to load the textures (SDL2 error: seg fault)"s8);
+}

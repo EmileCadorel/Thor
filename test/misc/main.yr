@@ -1,0 +1,8 @@
+import krepusko::concurrency::signal;
+import std::io;
+import krepusko::math::vector, krepusko::opengl::vertex;
+
+
+def main () {
+    println (sizeof ([Vertex!{vec3, vec2, vec4} ; 10u64]));
+}

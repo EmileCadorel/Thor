@@ -1,0 +1,126 @@
+mod krepusko::opengl::gtexture;
+import sdl2::opengl, sdl2::opengl_ext;
+
+/**
+ * A GTexture is a special texture in which we can write values (using a GBuffer) via a shader
+ * The result of the texture is then usable as any texture in another shader
+ * This is commonly used in Deferred shading
+ */
+pub class GTexture {
+
+    let mut _tex = 0u32;
+
+    /**
+     * Create a gtexture with a size of width * height containing float componenents
+     * @params: 
+     * - size: the size of each components (8, 16 or 32)
+     *  - nb_component: the number of components (float to vec4)
+     *  - w: the width of the texture
+     *  - h: the height of the texture
+     */
+    pub self {T of f32} (size : u32, nb_component : u32, w : u32, h : u32) {
+        glGenTextures (1, alias &self._tex);
+        glBindTexture (GL_TEXTURE_2D, self._tex);
+        
+        match (size, nb_component) {
+            (8, 1) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RED, w, h, 0, GL_RED, GL_FLOAT, 0u32) }
+            (16, 1) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_R16F, w, h, 0, GL_RED, GL_FLOAT, 0u32) }
+            (32, 1) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_R32F, w, h, 0, GL_RED, GL_FLOAT, 0u32) }
+            (8, 2) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RG, w, h, 0, GL_RG, GL_FLOAT, 0u32) }
+            (16, 2) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RG16F, w, h, 0, GL_RG, GL_FLOAT, 0u32) }
+            (32, 2) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RG32F, w, h, 0, GL_RG, GL_FLOAT, 0u32) }
+            (8, 3) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_FLOAT, 0u32) }
+            (16, 3) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB16F, w, h, 0, GL_RGB, GL_FLOAT, 0u32) }
+            (32, 3) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB32F, w, h, 0, GL_RGB, GL_FLOAT, 0u32) }
+            (8, 4) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_FLOAT, 0u32) }
+            (16, 4) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, 0u32) }
+            (32, 4) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA32F, w, h, 0, GL_RGBA, GL_FLOAT, 0u32) }
+        }
+        
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, cast!i32 (GL_LINEAR));
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, cast!i32 (GL_LINEAR));
+        glBindTexture (GL_TEXTURE_2D, 0u32);
+    }
+
+    /**
+     * Create a gtexture with a size of width * height containing byte componenents   
+     * @params: 
+     * - size: the size of each components (8, 16 or 32)
+     *  - nb_component: the number of components (float to vec4)
+     *  - w: the width of the texture
+     *  - h: the height of the texture
+     */     
+    pub self {T of u8} (size : u32, nb_component : u32, w : u32, h : u32) {
+        glGenTextures (1, alias &self._tex);
+        glBindTexture (GL_TEXTURE_2D, self._tex);
+        
+        match (size, nb_component) {
+            (8, 1) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RED, w, h, 0, GL_RED, GL_UNSIGNED_BYTE, 0u32) }
+            (16, 1) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_R16F, w, h, 0, GL_RED, GL_UNSIGNED_BYTE, 0u32) }
+            (32, 1) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_R32F, w, h, 0, GL_RED, GL_UNSIGNED_BYTE, 0u32) }
+            (8, 2) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RG, w, h, 0, GL_RG, GL_UNSIGNED_BYTE, 0u32) }
+            (16, 2) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RG16F, w, h, 0, GL_RG, GL_UNSIGNED_BYTE, 0u32) }
+            (32, 2) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RG32F, w, h, 0, GL_RG, GL_UNSIGNED_BYTE, 0u32) }
+            (8, 3) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0u32) }
+            (16, 3) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB16F, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0u32) }
+            (32, 3) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB32F, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0u32) }
+            (8, 4) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0u32) }
+            (16, 4) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0u32) }
+            (32, 4) => { glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA32F, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0u32) }
+        }
+        
+        glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, cast!i32 (GL_LINEAR));
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, cast!i32 (GL_LINEAR));
+        glBindTexture (GL_TEXTURE_2D, 0u32);
+    }
+
+    /**
+     * Attach the texture to a given Color component
+     * @params:
+     *  - i: the index of the color component (from 0) 
+     */
+    pub def attach (self, i : u32) {
+        glBindTexture (GL_TEXTURE_2D, self._tex);
+        glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, self._tex, 0);        
+    }
+
+    /**
+     * Bind the texture of the frame buffer to the current texture
+     * @example: 
+     * ================
+     * glActiveTexure (GL_TEXTURE_0);
+     * glUniform1i (glGetUniformLocation (program, "shadowMap"s8.ptr), 0);
+     * depth.bindTexture ();
+     * ================
+     */
+    pub def bind (self) {
+        glBindTexture (GL_TEXTURE_2D, self._tex);
+    }
+
+    /**
+     * Unbind the texture
+     */
+    pub def unbind (self) {
+        glBindTexture (GL_TEXTURE_2D, 0u32);
+    }
+
+    impl Disposable {
+
+        /**
+         * Free the texture pointer
+         */
+        pub over dispose (mut self) {
+            if (self._tex != 0u32) {
+                glDeleteTextures (1, alias &self._tex);
+                self._tex = 0u32;
+            }
+        }        
+    }
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }    
+
+}
+
+

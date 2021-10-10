@@ -1,0 +1,101 @@
+mod sdl2::image;
+import sdl2::surface, sdl2::rwops, sdl2::version;
+
+
+pub aka  SDL_IMAGE_MAJOR_VERSION = 2u8
+pub aka  SDL_IMAGE_MINOR_VERSION = 0u8
+pub aka  SDL_IMAGE_PATCHLEVEL    = 5u8
+
+
+/**
+ *  This is the version number macro for the current SDL_image version.
+ */
+pub aka  SDL_IMAGE_COMPILEDVERSION = 
+    SDL_VERSIONNUM(SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_PATCHLEVEL)
+
+/**
+ *  This macro will evaluate to true if compiled with SDL_image at least X.Y.Z.
+ */
+pub def  SDL_IMAGE_VERSION_ATLEAST(X : u8, Y : u8, Z : u8) -> bool {
+    (SDL_IMAGE_COMPILEDVERSION >= SDL_VERSIONNUM(X, Y, Z))
+}
+
+/* This function gets the version of the dynamically linked SDL_image library.
+   it should NOT be used to fill a version structure, instead you should
+   use the SDL_IMAGE_VERSION() macro.
+ */
+pub extern (C) def IMG_Linked_Version()-> &SDL_version;
+
+pub enum
+| IMG_INIT_JPG = 0x00000001u32
+| IMG_INIT_PNG = 0x00000002u32
+| IMG_INIT_TIF = 0x00000004u32
+| IMG_INIT_WEBP = 0x00000008u32
+-> IMG_InitFlags;
+
+/* Loads dynamic libraries and prepares them for use.  Flags should be
+   one or more flags from IMG_InitFlags OR'd together.
+   It returns the flags successfully initialized, or 0 on failure.
+ */
+pub extern (C) def IMG_Init(flags : i32)-> i32;
+
+/* Unloads libraries loaded with IMG_Init */
+pub extern (C) def IMG_Quit();
+
+/* Load an image from an SDL data source.
+   The 'type' may be one of: "BMP", "GIF", "PNG", etc.
+
+   If the image format supports a transparent pixel, SDL will set the
+   colorkey for the surface.  You can enable RLE acceleration on the
+   surface afterwards by calling:
+    SDL_SetColorKey(image, SDL_RLEACCEL, image->format->colorkey);
+ */
+pub extern (C) def IMG_LoadTyped_RW(src : &SDL_RWops, freesrc : i32, type : &c8)-> dmut &SDL_Surface;
+/* Convenience functions */
+pub extern (C) def IMG_Load(file : &c8)-> dmut &SDL_Surface;
+pub extern (C) def IMG_Load_RW(src : &SDL_RWops, freesrc : i32)-> dmut &SDL_Surface;
+
+
+/* Functions to detect a file type, given a seekable source */
+pub extern (C) def IMG_isICO(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isCUR(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isBMP(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isGIF(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isJPG(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isLBM(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isPCX(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isPNG(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isPNM(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isSVG(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isTIF(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isXCF(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isXPM(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isXV(src : &SDL_RWops)-> i32;
+pub extern (C) def IMG_isWEBP(src : &SDL_RWops)-> i32;
+
+/* Individual loading functions */
+pub extern (C) def IMG_LoadICO_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadCUR_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadBMP_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadGIF_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadJPG_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadLBM_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadPCX_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadPNG_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadPNM_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadSVG_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadTGA_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadTIF_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadXCF_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadXPM_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadXV_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+pub extern (C) def IMG_LoadWEBP_RW(src : &SDL_RWops)-> dmut &SDL_Surface;
+
+pub extern (C) def IMG_ReadXPMFromArray(dmut xpm : &(&c8))-> dmut &SDL_Surface;
+
+/* Individual saving functions */
+pub extern (C) def IMG_SavePNG(surface : &SDL_Surface, file : &c8)-> i32;
+pub extern (C) def IMG_SavePNG_RW(surface : &SDL_Surface, dmut dst : &SDL_RWops, freedst : i32)-> i32;
+pub extern (C) def IMG_SaveJPG(surface : &SDL_Surface, file : &c8, quality : i32)-> i32;
+pub extern (C) def IMG_SaveJPG_RW(surface : &SDL_Surface, dmut dst : &SDL_RWops, freedst : i32, quality : i32)-> i32;
+

@@ -1,0 +1,422 @@
+mod krepusko::core::input;
+pub import sdl2::_;
+import std::collection::map;
+import krepusko::concurrency::signal;
+import std::io;
+
+pub enum
+| NONE = 0u8
+| DOWN = 1u8
+| RELEASE = 2u8
+| REPEAT = 3u8
+| ALL = 4u8
+ -> KeyEvent;
+
+pub struct
+| code : SDL_Keycode
+| type : KeyEvent
+ -> KeyInfo;
+
+pub struct
+| button : u8
+| type : KeyEvent
+ -> MouseInfo;
+
+
+pub struct
+| x : i32
+| y : i32
+| info : MouseInfo
+ -> MouseEvent;
+
+pub class InputManager {
+
+    let dmut _keys = HashMap!{KeyInfo, &Signal!{KeyInfo}}::new ();
+    let dmut _combinations = HashMap!{[SDL_Keycode], &Signal}::new ();
+    let dmut _mouse = HashMap!{MouseInfo, &Signal!{i32, i32, MouseInfo}}::new ();
+    let dmut _motion = Signal!{i32, i32, MouseInfo}::new ();
+    let dmut _quit = Signal::new ();
+    let dmut _resize = Signal!{u32, u32}::new ();
+    let dmut _isDown = HashMap!{SDL_Keycode, bool}::new ();
+    
+
+    pub self () {}
+
+    /**
+     * Run the poll event function 
+     * This function emits the signal
+     */
+    pub def pollEvents (mut self) {
+        let dmut e : SDL_Event = SDL_Event (padding-> [0u8 ; 56u32]);
+        while SDL_PollEvent (alias &e) != 0 {
+            match e.type {
+                SDL_EventType::SDL_KEYDOWN => self:.manageKeyDown (e);
+                SDL_EventType::SDL_KEYUP => self:.manageKeyUp (e);
+                SDL_EventType::SDL_MOUSEBUTTONDOWN => self.manageMouseButtonDown (e);
+                SDL_EventType::SDL_MOUSEBUTTONUP => self.manageMouseButtonUp (e);
+                SDL_EventType::SDL_MOUSEMOTION => self.manageMouseMotion (e);
+                SDL_EventType::SDL_QUIT => self._quit.emit ();
+                SDL_EventType::SDL_WINDOWEVENT => self._resize.emit (cast!u32 (e.window.data1), cast!u32 (e.window.data2));
+            }
+        }
+    }
+    
+    /**
+     * Connect a key event to a slot 
+     */
+    pub def connect (mut self, key : KeyInfo, f : fn (KeyInfo)-> void) {
+        match self._keys [key] ? {
+            Ok (x : _) => self._keys:.insert (key, x.connect (f));
+            _ => self._keys:.insert (key, Signal!{KeyInfo}::new ().connect (f));
+        }
+    }
+
+    /**
+     * Connect a key event to a slot 
+     */
+    pub def connect (mut self, key : KeyInfo, f : dg (KeyInfo)-> void) {
+        match self._keys [key] ? {
+            Ok (x : _) => self._keys:.insert (key, x.connect (f));
+            _ => self._keys:.insert (key, Signal!{KeyInfo}::new ().connect (f));
+        }
+    }
+
+    /**
+     * Disconnect a slot from key event  
+     */
+    pub def disconnect (mut self, key : KeyInfo, f : fn (KeyInfo)-> void) {
+        match self._keys [key] ? {            
+            Ok (x : _) => {
+                let s = x.disconnect (f);
+                if !s.isEmpty ()
+                    self._keys:.insert (key, x.disconnect (f));
+                else self._keys:.remove (key);
+            }
+        }
+    }
+
+    /**
+     * Disconnect a slot from key event 
+     */
+    pub def disconnect (mut self, key : KeyInfo, f : dg (KeyInfo)-> void) {
+        match self._keys [key] ? {
+            Ok (x : _) => {
+                let s = x.disconnect (f);
+                if !s.isEmpty () 
+                    self._keys:.insert (key, s);
+                else self._keys:.remove (key);
+            }
+        }
+    }
+    
+    /**
+     * Connect a mouse event to a slot
+     */
+    pub def connect (mut self, mouse : MouseInfo, f : fn (i32, i32, MouseInfo)-> void) {
+        match self._mouse [mouse] ? {
+            Ok (x : _) => self._mouse:.insert (mouse, x.connect (f));
+            _ => self._mouse:.insert (mouse, Signal!{i32, i32, MouseInfo}::new ().connect (f));
+        }
+    }
+
+    /**
+     * Connect a mouse event to a slot
+     */
+    pub def connect (mut self, mouse : MouseInfo, f : dg (i32, i32, MouseInfo)-> void) {
+        match self._mouse [mouse] ? {
+            Ok (x : _) => self._mouse:.insert (mouse, x.connect (f));
+            _ => self._mouse:.insert (mouse, Signal!{i32, i32, MouseInfo}::new ().connect (f));
+        }
+    }
+
+    
+    /**
+     * Disconnect a slot from a mouse event 
+     */
+    pub def disconnect (mut self, mouse : MouseInfo, f : fn (i32, i32, MouseInfo)-> void) {
+        match self._mouse [mouse] ? {
+            Ok (x : _) => {
+                let s = x.disconnect (f);
+                if !s.isEmpty ()
+                    self._mouse:.insert (mouse, s);
+                else self._mouse:.remove (mouse);
+            }
+        }
+    }
+
+    /**
+     * Disconnect a slot from a mouse event 
+     */
+    pub def disconnect (mut self, mouse : MouseInfo, f : dg (i32, i32, MouseInfo)-> void) {
+        match self._mouse [mouse] ? {
+            Ok (x : _) => {
+                let s = x.disconnect (f);
+                if !s.isEmpty ()
+                    self._mouse:.insert (mouse, s);
+                else self._mouse:.remove (mouse);
+            }
+        }
+    }
+    
+    /**
+     * Connect a combination event
+     */
+    pub def connect (mut self, keys : [SDL_Keycode], f : fn ()-> void) {
+        match self._combinations [keys] ? {
+            Ok (x : _) => self._combinations:.insert (keys, x.connect (f));
+            _ => self._combinations:.insert (keys, Signal::new ().connect (f));
+        }        
+    }
+
+    /**
+     * Connect a combination event
+     */
+    pub def connect (mut self, keys : [SDL_Keycode], f : dg ()-> void) {
+        match self._combinations [keys] ? {
+            Ok (x : _) => self._combinations:.insert (keys, x.connect (f));
+            _ => self._combinations:.insert (keys, Signal::new ().connect (f));
+        }        
+    }
+
+    /**
+     * Disconnect a slot from combination event
+     */
+    pub def disconnect (mut self, keys : [SDL_Keycode], f : fn ()-> void) {
+        match self._combinations [keys] ? {
+            Ok (x : _) => {
+                let s = x.disconnect (f);
+                if !s.isEmpty ()
+                    self._combinations:.insert (keys, s);
+                else self._combinations:.remove (keys);
+            }
+        }        
+    }
+
+    /**
+     * Disconnect a slot from a combination event
+     */
+    pub def disconnect (mut self, keys : [SDL_Keycode], f : dg ()-> void) {
+        match self._combinations [keys] ? {
+            Ok (x : _) => {
+                let s = x.disconnect (f);
+                if !s.isEmpty ()
+                    self._combinations:.insert (keys, s);
+                else self._combinations:.remove (keys);                
+            }
+        }        
+    }
+    
+    /**
+     * Connect the mouse motion event to a slot
+     */
+    pub def connectMotion (mut self, f : fn (i32, i32, MouseInfo)-> void) {
+        self._motion = self._motion.connect (f);
+    }
+
+    /**
+     * Connect the mouse motion event to a slot
+     */
+    pub def connectMotion (mut self, f : dg (i32, i32, MouseInfo)-> void) {
+        self._motion = self._motion.connect (f);
+    }
+
+
+    /**
+     * Disconnect a slot from the mouse motion event
+     */
+    pub def disconnectMotion (mut self, f : fn (i32, i32, MouseInfo)-> void) {
+        self._motion = self._motion.disconnect (f);
+    }
+
+    /**
+     * Disconnect a slot from the mouse motion event
+     */
+    pub def disconnectMotion (mut self, f : dg (i32, i32, MouseInfo)-> void) {
+        self._motion = self._motion.disconnect (f);
+    }
+   
+    /**
+     * Connect the signal emitted when the application is exited
+     */
+    pub def connectQuit (mut self, f : fn ()-> void) {
+        self._quit = self._quit.connect (f);
+    }
+
+    /**
+     * Connect the signal emitted when the application is exited
+     */
+    pub def connectQuit (mut self, f : dg ()-> void) {
+        self._quit = self._quit.connect (f);
+    }
+    
+    /**
+     * Disconnect the signal emitted when the application is exited
+     */
+    pub def disconnectQuit (mut self, f : fn ()-> void) {
+        self._quit = self._quit.disconnect (f);
+    }
+
+    /**
+     * Disconnect the signal emitted when the application is exited
+     */
+    pub def disconnectQuit (mut self, f : dg ()-> void) {
+        self._quit = self._quit.disconnect (f);
+    }
+
+    /**
+     * Connect the signal emitted when the window is resized
+     */
+    pub def connectResize (mut self, f : fn (u32, u32)-> void) {
+        self._resize = self._resize.connect (f);
+    }
+
+    /**
+     * Connect the signal emitted when the application is exited
+     */
+    pub def connectResize (mut self, f : dg (u32, u32)-> void) {
+        self._resize = self._resize.connect (f);
+    }
+    
+    /**
+     * Disconnect the signal emitted when the application is exited
+     */
+    pub def disconnectResize (mut self, f : fn (u32, u32)-> void) {
+        self._resize = self._resize.disconnect (f);
+    }
+
+    /**
+     * Disconnect the signal emitted when the application is exited
+     */
+    pub def disconnectResize (mut self, f : dg (u32, u32)-> void) {
+        self._resize = self._resize.disconnect (f);
+    }
+
+
+    /***
+     * ========================================================================
+     * ========================================================================
+     * =========================            PRV           =====================
+     * ========================================================================
+     * ========================================================================
+     */
+    
+
+    /**
+     * Manage an event of type SDL_KEYDOWN
+     */
+    def manageKeyDown (mut self, e : SDL_Event) {
+        let key = e.key.keysym.sym;
+        if !self.isDown (key) {
+            self._isDown:.insert (key, true);
+            let emitted = self:.manageCombination ();            
+            if !emitted {
+                match self._keys [KeyInfo (key, KeyEvent::DOWN)]? {
+                    Ok (x : _) => {
+                        x.emit (KeyInfo (key, KeyEvent::DOWN));                    
+                    }
+                    _ => {
+                        match self._keys [KeyInfo (key, KeyEvent::ALL)]? {
+                            Ok (x : _) => x.emit (KeyInfo (key, KeyEvent::DOWN));
+                        }
+                    }
+                }
+            }
+        } else {
+            match self._keys [KeyInfo (key, KeyEvent::REPEAT)]? {
+                Ok (x : _) => 
+                    x.emit (KeyInfo (key, KeyEvent::REPEAT));                    
+                _ => {
+                    match self._keys [KeyInfo (key, KeyEvent::ALL)]? {
+                        Ok (x : _) => x.emit (KeyInfo (key, KeyEvent::REPEAT));
+                    }
+                }
+            }
+        }
+    }
+       
+    /**
+     * Manage a SDL_KEYDOWN event that might be involved in a combination
+     */
+    def manageCombination (mut self) -> bool {
+        let mut emitted = false;
+        for ks, x in self._combinations {
+            let mut todo = true;
+            for k in ks {
+                if self.isDown (k) {
+                    todo = false;
+                    break {}
+                } 
+            }
+            if todo { x.emit (); emitted = true; }
+        }
+        
+        emitted
+    }
+
+
+    /**
+     * Manage an event of type SDL_KEYUP
+     */
+    def manageKeyUp (mut self, e : SDL_Event) {
+        let key = e.key.keysym.sym;
+        self._isDown:.remove (key);
+        match self._keys [KeyInfo (key, KeyEvent::RELEASE)]? {
+            Ok (x : _) => 
+                x.emit (KeyInfo (key, KeyEvent::RELEASE));                    
+            _ => {
+                match self._keys [KeyInfo (key, KeyEvent::ALL)]? {
+                    Ok (x : _) => x.emit (KeyInfo (key, KeyEvent::DOWN));
+                }
+            }
+        }
+    }
+
+    /**
+     * Manage an event of type SDL_MOUSEBUTTONDOWN
+     */
+    def manageMouseButtonDown (self, e : SDL_Event) {
+        let button = e.button.button;
+        match self._mouse [MouseInfo (button, KeyEvent::DOWN)]? {
+            Ok (x : _) => 
+                x.emit (e.button.x, e.button.y, MouseInfo(button, KeyEvent::DOWN));                    
+            _ => {
+                match self._mouse [MouseInfo (button, KeyEvent::ALL)]? {
+                    Ok (x : _) => x.emit (e.button.x, e.button.y, MouseInfo (button, KeyEvent::DOWN));
+                }
+            }
+        }
+    }
+
+    /**
+     * Manage an event of type SDL_MOUSEBUTTONUP
+     */
+    def manageMouseButtonUp (self, e : SDL_Event) {
+        let button = e.button.button;
+        match self._mouse [MouseInfo (button, KeyEvent::RELEASE)]? {
+            Ok (x : _) => 
+                x.emit (e.button.x, e.button.y, MouseInfo(button, KeyEvent::RELEASE));                    
+            _ => {
+                match self._mouse [MouseInfo (button, KeyEvent::ALL)]? {
+                    Ok (x : _) => x.emit (e.button.x, e.button.y, MouseInfo (button, KeyEvent::DOWN));
+                }
+            }
+        }
+    }
+
+    /**
+     * Emit the signal for a SDL_MOUSEMOTION event
+     */
+    def manageMouseMotion (self, e : SDL_Event) {
+        self._motion.emit (e.button.x, e.button.y, MouseInfo (0u8, KeyEvent::NONE));
+    }
+
+
+    def isDown (self, key : SDL_Keycode) -> bool {
+        match self._isDown [key]? {
+            Ok (x : _) => { x }
+            _ => { false }
+        }
+    }    
+}
+
+

@@ -1,0 +1,368 @@
+mod sdl2::scancode;
+
+pub aka SDL_Scancode = u32;
+pub aka SDL_SCANCODE_UNKNOWN = 0u32
+
+/**
+ *  \name Usage page 0x07
+ *
+ *  These values are from usage page 0x07 (USB keyboard page).
+ */
+/* @{ */
+
+pub aka SDL_SCANCODE_A = 4u32
+pub aka SDL_SCANCODE_B = 5u32
+pub aka SDL_SCANCODE_C = 6u32
+pub aka SDL_SCANCODE_D = 7u32
+pub aka SDL_SCANCODE_E = 8u32
+pub aka SDL_SCANCODE_F = 9u32
+pub aka SDL_SCANCODE_G = 10u32
+pub aka SDL_SCANCODE_H = 11u32
+pub aka SDL_SCANCODE_I = 12u32
+pub aka SDL_SCANCODE_J = 13u32
+pub aka SDL_SCANCODE_K = 14u32
+pub aka SDL_SCANCODE_L = 15u32
+pub aka SDL_SCANCODE_M = 16u32
+pub aka SDL_SCANCODE_N = 17u32
+pub aka SDL_SCANCODE_O = 18u32
+pub aka SDL_SCANCODE_P = 19u32
+pub aka SDL_SCANCODE_Q = 20u32
+pub aka SDL_SCANCODE_R = 21u32
+pub aka SDL_SCANCODE_S = 22u32
+pub aka SDL_SCANCODE_T = 23u32
+pub aka SDL_SCANCODE_U = 24u32
+pub aka SDL_SCANCODE_V = 25u32
+pub aka SDL_SCANCODE_W = 26u32
+pub aka SDL_SCANCODE_X = 27u32
+pub aka SDL_SCANCODE_Y = 28u32
+pub aka SDL_SCANCODE_Z = 29u32
+
+pub aka SDL_SCANCODE_1 = 30u32
+pub aka SDL_SCANCODE_2 = 31u32
+pub aka SDL_SCANCODE_3 = 32u32
+pub aka SDL_SCANCODE_4 = 33u32
+pub aka SDL_SCANCODE_5 = 34u32
+pub aka SDL_SCANCODE_6 = 35u32
+pub aka SDL_SCANCODE_7 = 36u32
+pub aka SDL_SCANCODE_8 = 37u32
+pub aka SDL_SCANCODE_9 = 38u32
+pub aka SDL_SCANCODE_0 = 39u32
+
+pub aka SDL_SCANCODE_RETURN = 40u32
+pub aka SDL_SCANCODE_ESCAPE = 41u32
+pub aka SDL_SCANCODE_BACKSPACE = 42u32
+pub aka SDL_SCANCODE_TAB = 43u32
+pub aka SDL_SCANCODE_SPACE = 44u32
+
+pub aka SDL_SCANCODE_MINUS = 45u32
+pub aka SDL_SCANCODE_EQUALS = 46u32
+pub aka SDL_SCANCODE_LEFTBRACKET = 47u32
+pub aka SDL_SCANCODE_RIGHTBRACKET = 48u32
+pub aka SDL_SCANCODE_BACKSLASH = 49u32 /**< Located at the lower left of the return
+ *   key on ISO keyboards and at the right end
+ *   of the QWERTY row on ANSI keyboards.
+ *   Produces REVERSE SOLIDUS (backslash) and
+ *   VERTICAL LINE in a US layoutu32 REVERSE
+ *   SOLIDUS and VERTICAL LINE in a UK Mac
+ *   layoutu32 NUMBER SIGN and TILDE in a UK
+ *   Windows layoutu32 DOLLAR SIGN and POUND SIGN
+ *   in a Swiss German layoutu32 NUMBER SIGN and
+ *   APOSTROPHE in a German layoutu32 GRAVE
+ *   ACCENT and POUND SIGN in a French Mac
+ *   layoutu32 and ASTERISK and MICRO SIGN in a
+ *   French Windows layout.
+ */
+pub aka SDL_SCANCODE_NONUSHASH = 50u32 /**< ISO USB keyboards actually use this code
+ *   instead of 49 for the same keyu32 but all
+ *   OSes I've seen treat the two codes
+ *   identically. Sou32 as an implementoru32 unless
+ *   your keyboard generates both of those
+ *   codes and your OS treats them differentlyu32
+ *   you should generate pub aka SDL_SCANCODE_BACKSLASH
+ *   instead of this code. As a useru32 you
+ *   should not rely on this code because SDL
+ *   will never generate it with most (all?)
+ *   keyboards.
+ */
+pub aka SDL_SCANCODE_SEMICOLON = 51u32
+pub aka SDL_SCANCODE_APOSTROPHE = 52u32
+pub aka SDL_SCANCODE_GRAVE = 53u32 /**< Located in the top left corner (on both ANSI
+ *   and ISO keyboards). Produces GRAVE ACCENT and
+ *   TILDE in a US Windows layout and in US and UK
+ *   Mac layouts on ANSI keyboardsu32 GRAVE ACCENT
+ *   and NOT SIGN in a UK Windows layoutu32 SECTION
+ *   SIGN and PLUS-MINUS SIGN in US and UK Mac
+ *   layouts on ISO keyboardsu32 SECTION SIGN and
+ *   DEGREE SIGN in a Swiss German layout (Mac:
+ *   only on ISO keyboards)u32 CIRCUMFLEX ACCENT and
+ *   DEGREE SIGN in a German layout (Mac: only on
+ *   ISO keyboards)u32 SUPERSCRIPT TWO and TILDE in a
+ *   French Windows layoutu32 COMMERCIAL AT and
+ *   NUMBER SIGN in a French Mac layout on ISO
+ *   keyboardsu32 and LESS-THAN SIGN and GREATER-THAN
+ *   SIGN in a Swiss Germanu32 Germanu32 or French Mac
+ *   layout on ANSI keyboards.
+ */
+pub aka SDL_SCANCODE_COMMA = 54u32
+pub aka SDL_SCANCODE_PERIOD = 55u32
+pub aka SDL_SCANCODE_SLASH = 56u32
+
+pub aka SDL_SCANCODE_CAPSLOCK = 57u32
+
+pub aka SDL_SCANCODE_F1 = 58u32
+pub aka SDL_SCANCODE_F2 = 59u32
+pub aka SDL_SCANCODE_F3 = 60u32
+pub aka SDL_SCANCODE_F4 = 61u32
+pub aka SDL_SCANCODE_F5 = 62u32
+pub aka SDL_SCANCODE_F6 = 63u32
+pub aka SDL_SCANCODE_F7 = 64u32
+pub aka SDL_SCANCODE_F8 = 65u32
+pub aka SDL_SCANCODE_F9 = 66u32
+pub aka SDL_SCANCODE_F10 = 67u32
+pub aka SDL_SCANCODE_F11 = 68u32
+pub aka SDL_SCANCODE_F12 = 69u32
+
+pub aka SDL_SCANCODE_PRINTSCREEN = 70u32
+pub aka SDL_SCANCODE_SCROLLLOCK = 71u32
+pub aka SDL_SCANCODE_PAUSE = 72u32
+pub aka SDL_SCANCODE_INSERT = 73u32 /**< insert on PCu32 help on some Mac keyboards (but
+does send code 73u32 not 117) */
+pub aka SDL_SCANCODE_HOME = 74u32
+pub aka SDL_SCANCODE_PAGEUP = 75u32
+pub aka SDL_SCANCODE_DELETE = 76u32
+pub aka SDL_SCANCODE_END = 77u32
+pub aka SDL_SCANCODE_PAGEDOWN = 78u32
+pub aka SDL_SCANCODE_RIGHT = 79u32
+pub aka SDL_SCANCODE_LEFT = 80u32
+pub aka SDL_SCANCODE_DOWN = 81u32
+pub aka SDL_SCANCODE_UP = 82u32
+
+pub aka SDL_SCANCODE_NUMLOCKCLEAR = 83u32 /**< num lock on PCu32 clear on Mac keyboards
+ */
+pub aka SDL_SCANCODE_KP_DIVIDE = 84u32
+pub aka SDL_SCANCODE_KP_MULTIPLY = 85u32
+pub aka SDL_SCANCODE_KP_MINUS = 86u32
+pub aka SDL_SCANCODE_KP_PLUS = 87u32
+pub aka SDL_SCANCODE_KP_ENTER = 88u32
+pub aka SDL_SCANCODE_KP_1 = 89u32
+pub aka SDL_SCANCODE_KP_2 = 90u32
+pub aka SDL_SCANCODE_KP_3 = 91u32
+pub aka SDL_SCANCODE_KP_4 = 92u32
+pub aka SDL_SCANCODE_KP_5 = 93u32
+pub aka SDL_SCANCODE_KP_6 = 94u32
+pub aka SDL_SCANCODE_KP_7 = 95u32
+pub aka SDL_SCANCODE_KP_8 = 96u32
+pub aka SDL_SCANCODE_KP_9 = 97u32
+pub aka SDL_SCANCODE_KP_0 = 98u32
+pub aka SDL_SCANCODE_KP_PERIOD = 99u32
+
+pub aka SDL_SCANCODE_NONUSBACKSLASH = 100u32 /**< This is the additional key that ISO
+ *   keyboards have over ANSI onesu32
+ *   located between left shift and Y.
+ *   Produces GRAVE ACCENT and TILDE in a
+ *   US or UK Mac layoutu32 REVERSE SOLIDUS
+ *   (backslash) and VERTICAL LINE in a
+ *   US or UK Windows layoutu32 and
+ *   LESS-THAN SIGN and GREATER-THAN SIGN
+ *   in a Swiss Germanu32 Germanu32 or French
+ *   layout. */
+pub aka SDL_SCANCODE_APPLICATION = 101u32 /**< windows contextual menuu32 compose */
+pub aka SDL_SCANCODE_POWER = 102u32 /**< The USB document says this is a status flagu32
+ *   not a physical key - but some Mac keyboards
+ *   do have a power key. */
+pub aka SDL_SCANCODE_KP_EQUALS = 103u32
+pub aka SDL_SCANCODE_F13 = 104u32
+pub aka SDL_SCANCODE_F14 = 105u32
+pub aka SDL_SCANCODE_F15 = 106u32
+pub aka SDL_SCANCODE_F16 = 107u32
+pub aka SDL_SCANCODE_F17 = 108u32
+pub aka SDL_SCANCODE_F18 = 109u32
+pub aka SDL_SCANCODE_F19 = 110u32
+pub aka SDL_SCANCODE_F20 = 111u32
+pub aka SDL_SCANCODE_F21 = 112u32
+pub aka SDL_SCANCODE_F22 = 113u32
+pub aka SDL_SCANCODE_F23 = 114u32
+pub aka SDL_SCANCODE_F24 = 115u32
+pub aka SDL_SCANCODE_EXECUTE = 116u32
+pub aka SDL_SCANCODE_HELP = 117u32
+pub aka SDL_SCANCODE_MENU = 118u32
+pub aka SDL_SCANCODE_SELECT = 119u32
+pub aka SDL_SCANCODE_STOP = 120u32
+pub aka SDL_SCANCODE_AGAIN = 121u32   /**< redo */
+pub aka SDL_SCANCODE_UNDO = 122u32
+pub aka SDL_SCANCODE_CUT = 123u32
+pub aka SDL_SCANCODE_COPY = 124u32
+pub aka SDL_SCANCODE_PASTE = 125u32
+pub aka SDL_SCANCODE_FIND = 126u32
+pub aka SDL_SCANCODE_MUTE = 127u32
+pub aka SDL_SCANCODE_VOLUMEUP = 128u32
+pub aka SDL_SCANCODE_VOLUMEDOWN = 129u32
+/* not sure whether there's a reason to enable these */
+/*     pub aka SDL_SCANCODE_LOCKINGCAPSLOCK = 130u32  */
+/*     pub aka SDL_SCANCODE_LOCKINGNUMLOCK = 131u32 */
+/*     pub aka SDL_SCANCODE_LOCKINGSCROLLLOCK = 132u32 */
+pub aka SDL_SCANCODE_KP_COMMA = 133u32
+pub aka SDL_SCANCODE_KP_EQUALSAS400 = 134u32
+
+pub aka SDL_SCANCODE_INTERNATIONAL1 = 135u32 /**< used on Asian keyboardsu32 see
+footnotes in USB doc */
+pub aka SDL_SCANCODE_INTERNATIONAL2 = 136u32
+pub aka SDL_SCANCODE_INTERNATIONAL3 = 137u32 /**< Yen */
+pub aka SDL_SCANCODE_INTERNATIONAL4 = 138u32
+pub aka SDL_SCANCODE_INTERNATIONAL5 = 139u32
+pub aka SDL_SCANCODE_INTERNATIONAL6 = 140u32
+pub aka SDL_SCANCODE_INTERNATIONAL7 = 141u32
+pub aka SDL_SCANCODE_INTERNATIONAL8 = 142u32
+pub aka SDL_SCANCODE_INTERNATIONAL9 = 143u32
+pub aka SDL_SCANCODE_LANG1 = 144u32 /**< Hangul/English toggle */
+pub aka SDL_SCANCODE_LANG2 = 145u32 /**< Hanja conversion */
+pub aka SDL_SCANCODE_LANG3 = 146u32 /**< Katakana */
+pub aka SDL_SCANCODE_LANG4 = 147u32 /**< Hiragana */
+pub aka SDL_SCANCODE_LANG5 = 148u32 /**< Zenkaku/Hankaku */
+pub aka SDL_SCANCODE_LANG6 = 149u32 /**< reserved */
+pub aka SDL_SCANCODE_LANG7 = 150u32 /**< reserved */
+pub aka SDL_SCANCODE_LANG8 = 151u32 /**< reserved */
+pub aka SDL_SCANCODE_LANG9 = 152u32 /**< reserved */
+
+pub aka SDL_SCANCODE_ALTERASE = 153u32 /**< Erase-Eaze */
+pub aka SDL_SCANCODE_SYSREQ = 154u32
+pub aka SDL_SCANCODE_CANCEL = 155u32
+pub aka SDL_SCANCODE_CLEAR = 156u32
+pub aka SDL_SCANCODE_PRIOR = 157u32
+pub aka SDL_SCANCODE_RETURN2 = 158u32
+pub aka SDL_SCANCODE_SEPARATOR = 159u32
+pub aka SDL_SCANCODE_OUT = 160u32
+pub aka SDL_SCANCODE_OPER = 161u32
+pub aka SDL_SCANCODE_CLEARAGAIN = 162u32
+pub aka SDL_SCANCODE_CRSEL = 163u32
+pub aka SDL_SCANCODE_EXSEL = 164u32
+
+pub aka SDL_SCANCODE_KP_00 = 176u32
+pub aka SDL_SCANCODE_KP_000 = 177u32
+pub aka SDL_SCANCODE_THOUSANDSSEPARATOR = 178u32
+pub aka SDL_SCANCODE_DECIMALSEPARATOR = 179u32
+pub aka SDL_SCANCODE_CURRENCYUNIT = 180u32
+pub aka SDL_SCANCODE_CURRENCYSUBUNIT = 181u32
+pub aka SDL_SCANCODE_KP_LEFTPAREN = 182u32
+pub aka SDL_SCANCODE_KP_RIGHTPAREN = 183u32
+pub aka SDL_SCANCODE_KP_LEFTBRACE = 184u32
+pub aka SDL_SCANCODE_KP_RIGHTBRACE = 185u32
+pub aka SDL_SCANCODE_KP_TAB = 186u32
+pub aka SDL_SCANCODE_KP_BACKSPACE = 187u32
+pub aka SDL_SCANCODE_KP_A = 188u32
+pub aka SDL_SCANCODE_KP_B = 189u32
+pub aka SDL_SCANCODE_KP_C = 190u32
+pub aka SDL_SCANCODE_KP_D = 191u32
+pub aka SDL_SCANCODE_KP_E = 192u32
+pub aka SDL_SCANCODE_KP_F = 193u32
+pub aka SDL_SCANCODE_KP_XOR = 194u32
+pub aka SDL_SCANCODE_KP_POWER = 195u32
+pub aka SDL_SCANCODE_KP_PERCENT = 196u32
+pub aka SDL_SCANCODE_KP_LESS = 197u32
+pub aka SDL_SCANCODE_KP_GREATER = 198u32
+pub aka SDL_SCANCODE_KP_AMPERSAND = 199u32
+pub aka SDL_SCANCODE_KP_DBLAMPERSAND = 200u32
+pub aka SDL_SCANCODE_KP_VERTICALBAR = 201u32
+pub aka SDL_SCANCODE_KP_DBLVERTICALBAR = 202u32
+pub aka SDL_SCANCODE_KP_COLON = 203u32
+pub aka SDL_SCANCODE_KP_HASH = 204u32
+pub aka SDL_SCANCODE_KP_SPACE = 205u32
+pub aka SDL_SCANCODE_KP_AT = 206u32
+pub aka SDL_SCANCODE_KP_EXCLAM = 207u32
+pub aka SDL_SCANCODE_KP_MEMSTORE = 208u32
+pub aka SDL_SCANCODE_KP_MEMRECALL = 209u32
+pub aka SDL_SCANCODE_KP_MEMCLEAR = 210u32
+pub aka SDL_SCANCODE_KP_MEMADD = 211u32
+pub aka SDL_SCANCODE_KP_MEMSUBTRACT = 212u32
+pub aka SDL_SCANCODE_KP_MEMMULTIPLY = 213u32
+pub aka SDL_SCANCODE_KP_MEMDIVIDE = 214u32
+pub aka SDL_SCANCODE_KP_PLUSMINUS = 215u32
+pub aka SDL_SCANCODE_KP_CLEAR = 216u32
+pub aka SDL_SCANCODE_KP_CLEARENTRY = 217u32
+pub aka SDL_SCANCODE_KP_BINARY = 218u32
+pub aka SDL_SCANCODE_KP_OCTAL = 219u32
+pub aka SDL_SCANCODE_KP_DECIMAL = 220u32
+pub aka SDL_SCANCODE_KP_HEXADECIMAL = 221u32
+
+pub aka SDL_SCANCODE_LCTRL = 224u32
+pub aka SDL_SCANCODE_LSHIFT = 225u32
+pub aka SDL_SCANCODE_LALT = 226u32 /**< altu32 option */
+pub aka SDL_SCANCODE_LGUI = 227u32 /**< windowsu32 command (apple)u32 meta */
+pub aka SDL_SCANCODE_RCTRL = 228u32
+pub aka SDL_SCANCODE_RSHIFT = 229u32
+pub aka SDL_SCANCODE_RALT = 230u32 /**< alt gru32 option */
+pub aka SDL_SCANCODE_RGUI = 231u32 /**< windowsu32 command (apple)u32 meta */
+
+pub aka SDL_SCANCODE_MODE = 257u32    /**< I'm not sure if this is really not covered
+ *   by any of the aboveu32 but since there's a
+ *   special KMOD_MODE for it I'm adding it here
+ */
+
+/* @} *//* Usage page 0x07 */
+
+/**
+ *  \name Usage page 0x0C
+ *
+ *  These values are mapped from usage page 0x0C (USB consumer page).
+ */
+/* @{ */
+
+pub aka SDL_SCANCODE_AUDIONEXT = 258u32
+pub aka SDL_SCANCODE_AUDIOPREV = 259u32
+pub aka SDL_SCANCODE_AUDIOSTOP = 260u32
+pub aka SDL_SCANCODE_AUDIOPLAY = 261u32
+pub aka SDL_SCANCODE_AUDIOMUTE = 262u32
+pub aka SDL_SCANCODE_MEDIASELECT = 263u32
+pub aka SDL_SCANCODE_WWW = 264u32
+pub aka SDL_SCANCODE_MAIL = 265u32
+pub aka SDL_SCANCODE_CALCULATOR = 266u32
+pub aka SDL_SCANCODE_COMPUTER = 267u32
+pub aka SDL_SCANCODE_AC_SEARCH = 268u32
+pub aka SDL_SCANCODE_AC_HOME = 269u32
+pub aka SDL_SCANCODE_AC_BACK = 270u32
+pub aka SDL_SCANCODE_AC_FORWARD = 271u32
+pub aka SDL_SCANCODE_AC_STOP = 272u32
+pub aka SDL_SCANCODE_AC_REFRESH = 273u32
+pub aka SDL_SCANCODE_AC_BOOKMARKS = 274u32
+
+/* @} *//* Usage page 0x0C */
+
+/**
+ *  \name Walther keys
+ *
+ *  These are values that Christian Walther added (for mac keyboard?).
+ */
+/* @{ */
+
+pub aka SDL_SCANCODE_BRIGHTNESSDOWN = 275u32
+pub aka SDL_SCANCODE_BRIGHTNESSUP = 276u32
+pub aka SDL_SCANCODE_DISPLAYSWITCH = 277u32 /**< display mirroring/dual display
+switchu32 video mode switch */
+pub aka SDL_SCANCODE_KBDILLUMTOGGLE = 278u32
+pub aka SDL_SCANCODE_KBDILLUMDOWN = 279u32
+pub aka SDL_SCANCODE_KBDILLUMUP = 280u32
+pub aka SDL_SCANCODE_EJECT = 281u32
+pub aka SDL_SCANCODE_SLEEP = 282u32
+
+pub aka SDL_SCANCODE_APP1 = 283u32
+pub aka SDL_SCANCODE_APP2 = 284u32
+
+/* @} *//* Walther keys */
+
+/**
+ *  \name Usage page 0x0C (additional media keys)
+ *
+ *  These values are mapped from usage page 0x0C (USB consumer page).
+ */
+/* @{ */
+
+pub aka SDL_SCANCODE_AUDIOREWIND = 285u32
+pub aka SDL_SCANCODE_AUDIOFASTFORWARD = 286u32
+
+/* @} *//* Usage page 0x0C (additional media keys) */
+
+/* Add any other keys here. */
+
+pub aka SDL_NUM_SCANCODES = 512u32 /**< not a keyu32 just marks the number of scancodes
+    for array bounds */
+

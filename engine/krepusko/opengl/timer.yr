@@ -1,0 +1,64 @@
+mod krepusko::opengl::timer;
+import sdl2::opengl, sdl2::opengl_ext;
+import krepusko::concurrency::timer;
+import std::conv;
+
+/**
+ * The frame timer is a timer able to calculate the time spent in GPU drawing
+ * This is different to a concurrency::timer, that compute the time spent in CPU 
+ */
+pub class FrameTimer {
+
+    let dmut _queryIDs = [0u32, 0u32];
+
+    let mut _start = 0u64;
+
+    let mut _stop = 0u64;
+
+    let mut _msCpu = 0u32;
+
+    let dmut _cpuTimer = Timer::new ();
+
+    pub self () {
+        glGenQueries (2, alias self._queryIDs.ptr);        
+    }
+
+    pub def startFrame (mut self) {
+        self._cpuTimer:.reset ();
+        __pragma!trusted ({ glQueryCounter (self._queryIDs [0], GL_TIMESTAMP) });
+    }
+
+    pub def endFrame (mut self) {
+        __pragma!trusted ({
+            glQueryCounter (self._queryIDs [1], GL_TIMESTAMP);
+            
+            let mut stopTimerAvailable = 0;
+            while stopTimerAvailable == 0 {
+                glGetQueryObjectiv (self._queryIDs [1], GL_QUERY_RESULT_AVAILABLE, alias &stopTimerAvailable);
+            }
+
+            glGetQueryObjectui64v (self._queryIDs [0], GL_QUERY_RESULT, alias &self._start);
+            glGetQueryObjectui64v (self._queryIDs [1], GL_QUERY_RESULT, alias &self._stop);
+
+        });
+        self._msCpu = self._cpuTimer.timeSinceStart ();
+    }
+
+    /**
+     * Get the amount of time spent in the CPU between the startFrame and endFrame
+     */
+    pub def cpuTime (self) -> f32 {
+        let ret = self._msCpu.to!f32 () - ((self._stop.to!f32 () - self._start.to!f32 ()) / 1_000_000.0f);
+        if (ret < 0.0f) {
+            0.0f
+        } else ret
+    }
+
+    /**
+     * Get the amount of time spent in the GPU between the startFrame and endFrame
+     */
+    pub def gpuTime (self)-> f32 {
+        (self._stop.to!f32 () - self._start.to!f32 ()) / 1_000_000.0f
+    }
+    
+}

@@ -1,0 +1,90 @@
+mod krepusko::opengl::mesh;
+import krepusko::opengl::vertex, krepusko::opengl::shader;
+import krepusko::math::vector;
+import krepusko::opengl::buffers;
+import sdl2::opengl, sdl2::opengl_ext;
+
+/**
+ * A non indexed mesh that contains a buffers, and can be drawn using a shader
+ */
+pub class Mesh {V of Vertex!{U}, U...} {
+
+    let dmut _vao = VertexArrayObject::new ();
+
+    let dmut _vbo = VertexBufferObject!{V}::new ();
+
+    /**
+     * Create an empty mesh containing nothing
+     */
+    pub self () {}
+
+    /**
+     * Create a mesh from a list of points (assumed to be triangles)
+     */
+    pub self (verts : [V]) {
+        self._vao:.generate ();
+        self._vbo:.generate ();
+
+        self._vbo:.setLocalVertices (verts);
+        
+        self._vao.bind ();
+        self._vbo.bind ();
+        self._vbo:.uploadAndClearLocal ();
+
+        self._vao.unbind ();
+        self._vbo.unbind ();        
+    }
+
+    /**
+     * Draw the mesh using a shader
+     */    
+    pub def draw (self, shader : &Shader) {
+        self._vao.bind ();
+        self._vbo.bind ();
+
+        shader.bindAttributes (sizeof (V));
+        glDrawArrays (GL_TRIANGLES, 0, cast!i32 (self._vbo.getSize ()));
+        shader.unbindAttributes ();
+
+        self._vbo.unbind ();
+        self._vao.unbind ();
+    }
+
+
+    impl Disposable {
+
+        /**
+         * Clear the vao and vbos
+         */
+        pub over dispose (mut self) {
+            self._vao:.dispose ();
+            self._vbo:.dispose ();
+        }        
+    }
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }    
+}
+
+
+pub def createQuadMesh (w : f32, h : f32) -> dmut &Mesh!{Vertex!{vec3}} {
+    return Mesh::new (
+        [Vertex!{vec3} (vec3 (-h, -w, 0.0f)),
+         Vertex!{vec3} (vec3 (h, -w, 0.0f)),
+         Vertex!{vec3} (vec3 (-h, w, 0.0f)),
+
+         Vertex!{vec3} (vec3 (h, w, 0.0f)),
+         Vertex!{vec3} (vec3 (h, -w, 0.0f)),
+         Vertex!{vec3} (vec3 (-h, w, 0.0f))]
+        );
+}
+
+
+pub def createTriangleMesh (size : f32) -> dmut &Mesh!{Vertex!{vec3}} {
+    return Mesh::new (
+        [Vertex!{vec3} (vec3 (-size, -size, 0.0f)),
+         Vertex!{vec3} (vec3 (size, -size, 0.0f)),
+         Vertex!{vec3} (vec3 (0.0f, size, 0.0f))]
+        );
+}

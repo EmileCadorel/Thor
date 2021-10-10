@@ -1,0 +1,24 @@
+mod sdl2::_;
+
+pub import sdl2::events;
+pub import sdl2::gesture;
+pub import sdl2::image;
+pub import sdl2::joystick;
+pub import sdl2::keyboard;
+pub import sdl2::keycode;
+pub import sdl2::mouse;
+pub import sdl2::opengl_ext;
+pub import sdl2::opengl;
+pub import sdl2::pixels;
+pub import sdl2::rect;
+pub import sdl2::rwops;
+pub import sdl2::scancode;
+pub import sdl2::sdl;
+pub import sdl2::stdinc;
+pub import sdl2::surface;
+pub import sdl2::timer;
+pub import sdl2::touch;
+pub import sdl2::ttf;
+pub import sdl2::version;
+pub import sdl2::video;
+

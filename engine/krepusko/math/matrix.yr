@@ -1,0 +1,40 @@
+mod krepusko::math::matrix;
+
+
+pub struct
+| a1 : f32 = 1.0f
+| b1 : f32 = 0.0f
+| a2 : f32 = 0.0f
+| b2 : f32 = 1.0f
+ -> mat2;
+
+pub struct
+| a1 : f32 = 1.0f
+| b1 : f32 = 0.0f
+| c1 : f32 = 0.0f
+| a2 : f32 = 0.0f 
+| b2 : f32 = 1.0f 
+| c2 : f32 = 0.0f
+| a3 : f32 = 0.0f
+| b3 : f32 = 0.0f 
+| c3 : f32 = 1.0f
+ -> mat3;
+
+pub struct
+| a1 : f32 = 1.0f 
+| b1 : f32 = 0.0f
+| c1 : f32 = 0.0f
+| d1 : f32 = 0.0f
+| a2 : f32 = 0.0f  
+| b2 : f32 = 1.0f 
+| c2 : f32 = 0.0f 
+| d2 : f32 = 0.0f
+| a3 : f32 = 0.0f
+| b3 : f32 = 0.0f
+| c3 : f32 = 1.0f 
+| d3 : f32 = 0.0f 
+| a4 : f32 = 0.0f
+| b4 : f32 = 0.0f
+| c4 : f32 = 0.0f
+| d4 : f32 = 1.0f
+ -> mat4;

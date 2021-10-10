@@ -1,0 +1,326 @@
+mod krepusko::opengl::shader;
+import krepusko::opengl::uniform;
+import sdl2::opengl, sdl2::opengl_ext;
+import std::io;
+
+pub class ShaderError over Exception {
+    pub let msg : [c8];
+
+    pub self (msg : [c8]) with msg = msg {}
+
+    impl Streamable {
+        pub over toStream (self, dmut stream : &StringStream) {
+            self::super.toStream (alias stream);
+        }
+    }
+    
+}
+
+
+
+pub class Shader {
+
+    /// The pointer to the program 
+    let mut _program = 0u32;
+
+    /**
+     * The list of attributes of the program
+     * It contains 3 infos :
+     *   - .0 : the number of element in the attribute, (ex. 12 for vec3) 
+     *   - .1 : The size in memory of one element (ex. 4 for vec3)
+     *   - .2 : The associated OpenGL value (ex. GL_FLOAT for vec3)
+     */
+    let dmut _attributes : [(u32, usize, u32)] = [];
+
+    /**
+     * An array whose size is the number of uniform in the shader
+     * And each index contains the id of the texture
+     */
+    let dmut _textures : [u32] = [];
+    
+    /**
+     * Compile a shader based on a vertex and a fragment shader
+     */
+    pub self compile (vert : [c8], frag : [c8])
+        throws &ShaderError
+    {
+        self:.compileShaders (vert, frag);
+        self:.retreiveAttributes ();
+        self:.retreiveTextures ();
+    }
+
+
+    /**
+     * Use this shader to render the upcomming draw
+     */
+    pub def use (self) {
+        glUseProgram (self._program);
+    }
+
+    /**
+     * Stop using this shader to render drawings
+     */
+    pub def unuse (self) {
+        glUseProgram (0u32);
+    }
+
+    /**
+     * Bind the attributes that are to be used by the vbos
+     * @params: 
+     *  - size: the size of the attributes to bind
+     * @example: 
+     * =====================
+     * let dmut shader = Shader::new ("..."s8, "..."s8);
+     * shader.bindAttributes (sizeof (Vertex!{vec3, vec3, vec2}));
+     * =====================
+     */
+    pub def bindAttributes (self, size : usize) {
+        let mut offset : &void = null;
+        for i in 0us .. self._attributes.len {
+            glEnableVertexAttribArray (cast!u32 (i));
+            __pragma!trusted ({
+                if (self._attributes [i]._2 == GL_FLOAT) {
+                    glVertexAttribPointer (cast!u32 (i), cast!i32 (self._attributes [i]._0), GL_FLOAT, false, cast!i32 (size), offset);
+                } else {
+                    glVertexAttribIPointer (cast!u32 (i), cast!i32 (self._attributes [i]._0), GL_UNSIGNED_INT, cast!i32 (size), offset);
+                }
+                offset += cast!usize (self._attributes [i]._0) * self._attributes [i]._1;
+            })
+        }
+    }
+
+    /**
+     * Unbind the attributes of the shader
+     */
+    pub def unbindAttributes (self) {
+        for i in 0us .. self._attributes.len {            
+            glDisableVertexAttribArray (cast!u32 (i));
+        }
+    }    
+
+    /**
+     * @returns: a pointer to a uniform value
+     * @params: 
+     *   - name: the name of the uniform in the program
+     */
+    pub def uniform (self, name : [c8]) -> Uniform
+        throws &ShaderError
+    {
+        let loc = glGetUniformLocation (self._program, name.ptr);
+        if (loc < 0) {
+            throw ShaderError::new ("Invalid uniform : "s8 ~ name);
+        }
+        Uniform (self._program, loc)
+    }
+
+    /**
+     * @returns: a pointer to a sampler value 
+     * @params: 
+     *   - name: the name of the sampler in the program
+     */
+    pub def texture (self, name : [c8]) -> Sampler
+        throws &ShaderError
+    {
+        let loc = glGetUniformLocation (self._program, name.ptr);
+        if (loc < 0) {
+            throw ShaderError::new ("Invalid uniform : "s8 ~ name);
+        }
+        __pragma!trusted ({
+            Sampler (self._program, self._textures [loc], loc)
+        })
+    }
+    
+    impl Disposable {
+
+        /**
+         * Remove the program from memory
+         */
+        pub over dispose (mut self) {
+            if (self._program != 0u32) {
+                glDeleteProgram (self._program);
+                self._program = 0u32;
+                self._attributes = [];
+            }
+        }       
+    }
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }
+
+    /***
+     * ========================================================================
+     * ========================================================================
+     * =========================        COMPILATION       =====================
+     * ========================================================================
+     * ========================================================================
+     */
+
+    /**
+     * Compite the shader from two source files
+     */
+    prv def compileShaders (mut self, vert : [c8], frag : [c8])
+        throws &ShaderError
+    {
+        let vs = glCreateShader (GL_VERTEX_SHADER);
+        let fs = glCreateShader (GL_FRAGMENT_SHADER);
+        self._program = glCreateProgram ();
+        
+        let vv = vert.ptr, ff = frag.ptr;        
+        glShaderSource (vs, 1, alias &vv, null);
+        glShaderSource (fs, 1, alias &ff, null);
+
+        glCompileShader (vs);
+        glCompileShader (fs);
+
+
+        let mut res = 0;
+        glGetShaderiv (vs, GL_COMPILE_STATUS, alias &res);
+        if res != 1 {
+            throw ShaderError::new ("Failed to compile vertex shader : "s8 ~ self.getShaderInfoLog (vs));
+        }
+
+        glGetShaderiv (fs, GL_COMPILE_STATUS, alias &res);
+        if res != 1 {
+            throw ShaderError::new ("Failed to compile fragment shader : "s8 ~ self.getShaderInfoLog (fs));
+        }
+
+        glAttachShader (self._program, vs);
+        glAttachShader (self._program, fs);
+        glLinkProgram (self._program);
+
+        glGetProgramiv (self._program, GL_LINK_STATUS, alias &res);
+        if res != 1 {
+            throw ShaderError::new ("Failed to compile fragment shader : "s8 ~ self.getProgramInfoLog (self._program));
+        }
+
+        glDeleteShader (vs);
+        glDeleteShader (fs);        
+    }
+
+    /**
+     * @returns: the log message of the shader compilation
+     */
+    prv def getShaderInfoLog (self, ps : u32)-> [c8] {
+        let dmut res = ['\u{0}'c8 ; new 255us];
+        let mut len : i32 = 0;
+        glGetShaderInfoLog (ps, 255, alias &len, alias res.ptr);
+
+        res [0 .. len]
+    } catch {
+        _ : &OutOfArray => {
+            ""s8
+        }
+    }
+
+    /**
+     * @returns: the log message of the program linkage
+     */
+    prv def getProgramInfoLog (self, ps : u32)-> [c8] {
+        let dmut res = ['\u{0}'c8 ; new 255us];
+        let mut len : i32 = 0;
+        glGetProgramInfoLog (ps, 255, alias &len, alias res.ptr);
+
+        res [0 .. len]
+    } catch {
+        _ : &OutOfArray => {
+            ""s8
+        }
+    }
+    
+    /***
+     * ========================================================================
+     * ========================================================================
+     * =========================        ATTRIBUTES        =====================
+     * ========================================================================
+     * ========================================================================
+     */
+
+    /**
+     * Retreive the list of attributes in the program
+     * @info: store them inside the self._attributes slice
+     * @throws: 
+     *  - &ShaderError: if there is an attribute type that is unknown
+     */
+    prv def retreiveAttributes (mut self)
+        throws &ShaderError
+    {
+        let mut count = 0;
+        glGetProgramiv (self._program, GL_ACTIVE_ATTRIBUTES, alias &count);
+
+        self._attributes = [(0u32, 0us, 0u32) ; new count];
+
+        let mut len = 0, mut size = 0, mut type = 0u32;
+        for i in 0 .. count {
+            glGetActiveAttrib (self._program, cast!u32 (i), 0, alias &len, alias &size, alias &type, null);
+            let real_size = self.getSizeOfType (type);
+            __pragma!trusted ({
+                self._attributes [i] = real_size;
+            })
+        }
+    }
+
+    /**
+     * Get the size of a type that can be used to bind attributes
+     * @throws: 
+     *  - &ShaderError: if the type is unknown
+     */
+    prv def getSizeOfType (self, type : u32)-> (u32, usize, u32)
+        throws &ShaderError
+    {
+        import std::conv;
+        match type {
+            GL_FLOAT_VEC2 => { (2u32, sizeof (f32), GL_FLOAT) }
+            GL_FLOAT_VEC3 => { (3u32, sizeof (f32), GL_FLOAT) }
+            GL_FLOAT_VEC4 => { (4u32, sizeof (f32), GL_FLOAT) }
+            GL_FLOAT_MAT2 => { (4u32, sizeof (f32), GL_FLOAT) }
+            GL_FLOAT_MAT3 => { (9u32, sizeof (f32), GL_FLOAT) }
+            GL_FLOAT_MAT4 => { (16u32, sizeof (f32), GL_FLOAT) }
+            GL_UNSIGNED_INT_VEC3 => { (3u32, sizeof (u32), GL_UNSIGNED_INT) }
+            GL_UNSIGNED_INT_VEC4 => { (4u32, sizeof (u32), GL_UNSIGNED_INT) }
+            _ => {
+                throw ShaderError::new ("Unknown type : "s8 ~ type.to![c8] ());
+            }
+        }
+    }
+
+    /***
+     * ========================================================================
+     * ========================================================================
+     * =========================         TEXTURES         =====================
+     * ========================================================================
+     * ========================================================================
+     */
+
+    /**
+     * Texture have a strange behavior in OpenGL, they have two index, first the location of the uniform that can be retreived easily
+     * And second, the number of texture that preceed it, that must be computed.
+     * This function, stores the second information inside the self._texture slice
+     */
+    prv def retreiveTextures (mut self) {
+        let mut count = 0;
+        glGetProgramiv (self._program, GL_ACTIVE_UNIFORMS, alias &count);
+
+        let mut nb_texture = 0u32;
+        self._textures = [0u32 ; new count];
+
+        let mut size = 0, mut type = 0u32, mut len = 0;
+        let dmut buf = ['\u{0}'c8 ; new 32u32];
+    
+        for i in 0u32 .. cast!u32 (count) {
+            glGetActiveUniform (self._program, i, 32, alias &len, alias &size, alias &type, alias buf.ptr);
+            if (type == GL_SAMPLER_1D || type == GL_SAMPLER_2D || type == GL_SAMPLER_3D || type == GL_SAMPLER_CUBE) {
+                let loc = glGetUniformLocation (self._program, buf.ptr);
+                __pragma!trusted ({
+                    self._textures [loc] = nb_texture;
+                })
+                nb_texture += 1u32;
+            }
+            
+        }
+        
+    }
+
+    
+}
+   

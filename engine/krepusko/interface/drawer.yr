@@ -1,0 +1,169 @@
+mod krepusko::interface::drawer;
+import krepusko::opengl::shader, krepusko::opengl::mesh, krepusko::opengl::vertex;
+import krepusko::opengl::uniform;
+import krepusko::math::vector, krepusko::math::matrix, krepusko::math::utils;
+import std::io, std::conv;
+
+
+aka texture_vs = str8#{
+    #version 450 core
+    
+    in vec3 position;
+    in vec2 tex_coord;
+    out vec2 frag_coord;
+    uniform vec2 translation;
+    uniform vec2 scale;
+    uniform mat4 rotation;
+    
+    void main() {   
+	vec4 pos = rotation * vec4 (position.xy, 1, 1);
+	gl_Position =  vec4 ((pos.xy * scale) + translation, 1, 1);
+	frag_coord = tex_coord;
+    }
+};
+
+aka texture_fs = str8#{
+    #version 450 core
+    
+    in vec2 frag_coord;
+    uniform sampler2D diffuse;
+    uniform vec3 color;
+    out vec4 out_color;
+    
+    void main () {
+	out_color = max (texture (diffuse, frag_coord), vec4 (color, 0.0));
+    }
+};
+
+
+aka color_vs = str8#{
+    #version 450 core
+    
+    in vec3 position;
+    uniform vec2 translation;
+    uniform vec2 scale;
+    uniform mat4 rotation;
+    
+    void main() {   
+	vec4 pos = rotation * vec4 (position.xy, 1, 1);
+	gl_Position =  vec4 ((pos.xy * scale) + translation, 1, 1);
+    }
+};
+
+aka color_fs = str8#{
+    #version 450 core
+    
+    uniform vec3 color;
+    out vec4 out_color;
+    void main () {
+	out_color = vec4 (color, 1.0);
+    }
+};
+
+pub class WidgetDrawer {
+
+    let dmut _texShader : &Shader;    
+    let dmut _colorShader : &Shader;
+
+    let dmut _colorQuad = createQuadMesh (1.0f, 1.0f);
+    let dmut _colorTriangle = createTriangleMesh (1.0f);
+
+    let mut _pos = vec2 (0.0f, 0.0f);
+    let mut _size = vec2 (0.0f, 0.0f);
+    let mut _global_size = vec2 (0.0f, 0.0f);
+    
+    /**
+     * Create a new widget drawer
+     * @params: 
+     *   - w: the width of the window
+     *   - h: the height of the window
+     */
+    pub self (w : u32, h : u32) with
+        _texShader = __pragma!trusted ({ Shader::compile (texture_vs, texture_fs) }),
+        _colorShader = __pragma!trusted ({ Shader::compile (color_vs, color_fs) }),
+        _size = vec2 (w.to!f32 (), h.to!f32 ()),
+        _global_size = vec2 (w.to!f32 (), h.to!f32 ())
+    {}
+
+    /**
+     * Resize the drawing to correspond to the window size
+     */
+    pub def resize (mut self, w : u32, h : u32) {
+        self._size = vec2 (w.to!f32 (), h.to!f32 ());
+        self._global_size = self._size;
+    }
+
+    /**
+     * Draw a quad on the screen
+     * @paramas: 
+     *  - pos: the position of the top left corner of the quad (between 0 and 1)
+     *  - size: the size of the quad between O and 1
+     *  - color: the color of the quad
+     */
+    pub def drawQuad (self, pos : vec2, size : vec2, color : vec3) {
+        let pixel_pos = vec2 ((pos.x * self._size.x) + self._pos.x, (pos.y * self._size.y) + self._pos.y);
+        let pixel_size = vec2 (size.x * self._size.x, size.y * self._size.y);
+
+        
+        let x_move = -1.0f + (pixel_pos.x + pixel_size.x / 2.0f) / (self._global_size.x / 2.0f);
+        let y_move = 1.0f - (pixel_pos.y + pixel_size.y / 2.0f) / (self._global_size.y / 2.0f);
+
+        let x_scale = pixel_size.x / self._global_size.x;
+        let y_scale = pixel_size.y / self._global_size.y;
+        
+        self._colorShader.use ();
+        __pragma!trusted ({
+            self._colorShader.uniform ("translation"s8).set (vec2 (x_move, y_move));
+            self._colorShader.uniform ("scale"s8).set (vec2 (x_scale, y_scale));
+            self._colorShader.uniform ("rotation"s8).set (mat4 ());
+            self._colorShader.uniform ("color"s8).set (color);
+        });
+
+        self._colorQuad.draw (self._colorShader);
+        self._colorShader.unuse ();
+    }
+
+
+    /**
+     * Draw a triangle on the screen
+     * @params: 
+     *   - center: the center of the triangle
+     *   - size: the size of the triangle (size of the height)
+     *   - color: the color of the triangle
+     */
+    pub def drawTriangle (self, center : vec2, size : f32, color : vec3) {               
+        let pixel_pos = vec2 ((center.x * self._size.x) + self._pos.x, (center.y * self._size.y) + self._pos.y);
+        let pixel_size = vec2 (size * self._size.x, size * self._size.y);
+
+        let x_move = -1.0f + (pixel_pos.x) / (self._global_size.x / 2.0f);
+        let y_move = 1.0f - (pixel_pos.y) / (self._global_size.y / 2.0f);
+
+        let x_scale = pixel_size.x / self._global_size.x;
+        let y_scale = pixel_size.y / self._global_size.y;
+        
+        self._colorShader.use ();
+        __pragma!trusted ({
+            self._colorShader.uniform ("translation"s8).set (vec2 (x_move, y_move));
+            self._colorShader.uniform ("scale"s8).set (vec2 (x_scale, y_scale));
+            self._colorShader.uniform ("rotation"s8).set (mat4 ());
+            self._colorShader.uniform ("color"s8).set (color);
+        });
+
+        self._colorTriangle.draw (self._colorShader);
+        self._colorShader.unuse ();
+    }
+
+
+    impl Disposable {
+
+        pub over dispose (mut self) {
+            self._texShader:.dispose ();
+            self._colorShader:.dispose ();
+        }        
+    }
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }
+    
+}

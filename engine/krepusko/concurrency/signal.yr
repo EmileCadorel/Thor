@@ -1,0 +1,121 @@
+mod krepusko::concurrency::signal;
+import std::io;
+
+pub class Signal {T...} {
+
+    let _foos : [fn (T)-> void] = [];
+    let _degs : [dg (T)-> void] = [];
+    
+    
+    pub self () {}
+
+    prv self (foos : [fn(T)-> void], degs : [dg(T)-> void]) with _foos = foos, _degs = degs
+    {}
+
+    pub def connect (self, f : fn (T)-> void)-> dmut &Signal!{T} {
+        Signal!{T}::new (self._foos ~ [f], self._degs)
+    }
+
+    pub def connect (self, f : dg (T)-> void)-> dmut &Signal!{T} {
+        Signal!{T}::new (self._foos, self._degs ~ [f])
+    }
+
+    pub def disconnect (self, f : dg (T)-> void) -> dmut &Signal!{T} {
+        let mut res : [dg(T)-> void] = [];
+        for i in self._degs {
+            if (i !is f) res = res ~ [i];
+        }
+
+        Signal!{T}::new (self._foos, res)
+    }
+
+    pub def disconnect (self, f : fn (T)-> void) -> dmut &Signal!{T} {
+        let mut res : [fn(T)-> void] = [];
+        for i in self._foos {
+            if (i !is f) res = res ~ [i];
+        }
+
+        Signal!{T}::new (res, self._degs)
+    }
+
+    pub def isEmpty (self) -> bool {
+        self._foos.len == 0us && self._degs.len == 0us
+    }
+
+    
+    pub def emit (self, values : T) {
+        for i in self._foos {
+            i (expand values);
+        }
+
+        for j in self._degs {
+            j (expand values);
+        }
+    }
+
+    impl Streamable {
+        pub over toStream (self, dmut stream : &StringStream) {
+            stream:.write (typeof (self)::typeid, "(", self._foos.len, ", ", self._degs.len, ")");
+        }
+    }
+
+}
+
+pub class Signal {
+
+    let _foos : [fn ()-> void] = [];
+    let _degs : [dg ()-> void] = [];
+
+    pub self () {}
+
+    prv self (foos : [fn()-> void], degs : [dg()-> void]) with _foos = foos, _degs = degs
+    {}
+
+    pub def connect (self, f : fn ()-> void)-> dmut &Signal {
+        Signal::new (self._foos ~ [f], self._degs)
+    }
+
+    pub def connect (self, f : dg ()-> void)-> dmut &Signal {
+        Signal::new (self._foos, self._degs ~ [f])
+    }
+
+    
+    pub def disconnect (self, f : dg ()-> void) -> dmut &Signal {
+        let mut res : [dg()-> void] = [];
+        for i in self._degs {
+            if (i !is f) res = res ~ [i];
+        }
+
+        Signal::new (self._foos, res)
+    }
+
+    pub def disconnect (self, f : fn ()-> void) -> dmut &Signal {
+        let mut res : [fn()-> void] = [];
+        for i in self._foos {
+            if (i !is f) res = res ~ [i];
+        }
+
+        Signal::new (res, self._degs)
+    }
+
+    pub def isEmpty (self) -> bool {
+        self._foos.len == 0us && self._degs.len == 0us
+    }
+    
+    pub def emit (self) {
+        for i in self._foos {
+            i ();
+        }
+
+        for j in self._degs {
+            j ();
+        }
+    }
+
+    impl Streamable {
+        pub over toStream (self, dmut stream : &StringStream) {
+            stream:.write (typeof (self)::typeid, "(", self._foos.len, ", ", self._degs.len, ")");
+        }
+    }
+    
+}

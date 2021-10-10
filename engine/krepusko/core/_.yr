@@ -1,0 +1,6 @@
+mod krepusko::core::_;
+
+pub import krepusko::core::application;
+pub import krepusko::core::activity;
+pub import krepusko::core::input;
+pub import krepusko::core::window;

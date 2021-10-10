@@ -1,0 +1,30 @@
+mod krepusko::utils::fs;
+import std::fs::_, std::fs;
+import std::env, std::io;
+import std::config::toml, std::lexer;
+
+
+aka __KREPUSKO_INCLUDE_DIR_VAR__ = "KREPUSKO_INCLUDE_PATH_YMIR"s8;
+aka __KREPUSKO_ADDONS_VAR__ = "KREPUSKO_ADDONS_YMIR"s8;
+
+pub def getAbsoluteLocation (path : &Path) -> &Path {
+    let krepusko_dir = getEnv (__KREPUSKO_INCLUDE_DIR_VAR__);
+    let filename = Path::new (krepusko_dir).push (path);
+    if (!std::fs::isFile (filename)) {
+        let addon_dir = getEnv (__KREPUSKO_ADDONS_VAR__);
+        let second_file = Path::new (addon_dir).push (path);
+        if (!std::fs::isFile (filename)) {
+            path
+        } else second_file
+    } else filename
+}
+
+
+pub def getTomlContent (path : &Path) -> &Config
+    throws &FsError, &SyntaxError
+{
+    with dmut f = File::open (path) {
+        toml::parse (f:.readAll ())
+    }
+    
+}

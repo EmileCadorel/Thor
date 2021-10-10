@@ -1,0 +1,19 @@
+mod krepusko::concurrency::timer;
+import sdl2::timer;
+
+
+pub class Timer {
+
+    let mut _start_time : u32 = 0u32;
+    
+    pub self () {}
+
+    pub def reset (mut self) {
+        self._start_time = cast!u32 (SDL_GetTicks ());
+    }
+
+    pub def timeSinceStart (self) -> u32 {
+        cast!u32 (SDL_GetTicks ()) - self._start_time
+    }        
+    
+}

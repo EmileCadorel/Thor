@@ -1,0 +1,77 @@
+mod krepusko::interface::widget;
+import krepusko::math::vector;
+import krepusko::interface::drawer;
+
+/**
+ * Ancestor of all graphical elements
+ */
+pub class @abstract Widget {
+
+    let mut _position : vec2 ;
+
+    let mut _size : vec2 ; 
+
+    /**
+     * Create a new widget at a given position, and of a given size
+     * @warning: 
+     * ==================
+     * the position of a widget is relative to the position of its parent, not of the window
+     * Idem for the size
+     *==================
+     * @params: 
+     *   - position: a vec2 between 0 and 1
+     *   - size: a vec2 between 0 and 1
+     */
+    pub self (position : vec2, size : vec2) with
+        _position = position, _size = size
+    {}    
+    
+
+    /**
+     * Draw the widget using a drawer
+     * @info: the drawer is correctly positionned, and sized, thus there is no need to worry about relativenness and that kind of stuff
+     */
+    pub def draw (self, drawer : &WidgetDrawer) ; 
+
+
+    /**
+     * Method called when the object is on the widget
+     * @params: 
+     *  - pos: the position of the cursor relative to the widget between 0 and 1
+     */
+    pub def onHover (mut self, _ : vec2) {}
+
+
+    /**
+     * Method called when the cursor left the widget
+     * @params: 
+     *  - pos: the position of the cursor relative to the widget between 0 and 1
+     */
+    pub def onHoverEnd (mut self, _ : vec2) {}
+
+
+    /**
+     * Method called when the cursor is on the widget and clicked
+     * @params: 
+     *  - pos: the position of the cursor relative to the widget between 0 and 1
+     */
+    pub def onClick (mut self, _ : vec2) {}
+
+
+    /**
+     * Method called when the cursor is on the widget and the left clicked is released
+     * @params: 
+     *   - pos: the position of the cursor relative to the widget between 0 and 1
+     */
+    pub def onClickEnd (mut self, _ : vec2) {}
+
+
+    /**
+     * Search a sub widget by its name
+     * @returns: the object or an empty option if not found
+     */
+    pub def find (self, _ : [c8])-> (&Widget)? {
+        ((&Widget)?)::__err__
+    }        
+           
+}

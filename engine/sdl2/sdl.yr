@@ -1,0 +1,60 @@
+mod sdl2::sdl;
+
+/* As of version 0.5, SDL is loaded dynamically into the application */
+
+/**
+ *  \name SDL_INIT_*
+ *
+ *  These are the flags which may be passed to SDL_Init().  You should
+ *  specify the subsystems which you will be using in your application.
+ */
+/* @{ */
+pub aka SDL_INIT_TIMER =        0x00000001u32
+pub aka SDL_INIT_AUDIO =          0x00000010u32
+pub aka SDL_INIT_VIDEO =          0x00000020u32  /**< SDL_INIT_VIDEO implies SDL_INIT_EVENTS */
+pub aka SDL_INIT_JOYSTICK =       0x00000200u32  /**< SDL_INIT_JOYSTICK implies SDL_INIT_EVENTS */
+pub aka SDL_INIT_HAPTIC  =        0x00001000u32
+pub aka SDL_INIT_GAMECONTROLLER =  0x00002000u32  /**< SDL_INIT_GAMECONTROLLER implies SDL_INIT_JOYSTICK */
+pub aka SDL_INIT_EVENTS       =  0x00004000u32
+pub aka SDL_INIT_SENSOR       =  0x00008000u32
+pub aka SDL_INIT_NOPARACHUTE  =  0x00100000u32  /**< compatibility; this flag is ignored. */
+pub aka SDL_INIT_EVERYTHING = ( 
+    SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS | 
+    SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC | SDL_INIT_GAMECONTROLLER | SDL_INIT_SENSOR 
+            );
+/* @} */
+
+/**
+ *  This function initializes  the subsystems specified by \c flags
+ */
+pub extern (C) def SDL_Init(flags : u32)-> i32;
+
+/**
+ *  This function initializes specific SDL subsystems
+ *
+ *  Subsystem initialization is ref-counted, you must call
+ *  SDL_QuitSubSystem() for each SDL_InitSubSystem() to correctly
+ *  shutdown a subsystem manually (or call SDL_Quit() to force shutdown).
+ *  If a subsystem is already loaded then this call will
+ *  increase the ref-count and return.
+ */
+pub extern (C) def SDL_InitSubSystem(flags : u32)-> i32;
+
+/**
+ *  This function cleans up specific SDL subsystems
+ */
+pub extern (C) def SDL_QuitSubSystem(flags : u32)-> void;
+
+/**
+ *  This function returns a mask of the specified subsystems which have
+ *  previously been initialized.
+ *
+ *  If \c flags is 0, it returns a mask of all initialized subsystems.
+ */
+pub extern (C) def SDL_WasInit(flags : u32)-> u32;
+
+/**
+ *  This function cleans up all initialized subsystems. You should
+ *  call it upon all exit conditions.
+ */
+pub extern (C) def SDL_Quit();

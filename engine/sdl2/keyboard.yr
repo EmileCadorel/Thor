@@ -1,0 +1,168 @@
+mod sdl2::keyboard;
+import sdl2::keycode, sdl2::scancode, sdl2::video, sdl2::rect;
+
+/**
+ *  \brief The SDL keysym structure, used in key events.
+ *
+ *  \note  If you are looking for translated character input, see the ::SDL_TEXTINPUT event.
+ */
+pub struct
+| scancode : SDL_Scancode      /**< SDL physical key code - see ::SDL_Scancode for details */
+| sym : SDL_Keycode         /**< SDL virtual key code - see ::SDL_Keycode for details */
+| modif : u16                 /**< current key modifiers */
+| unused : u32
+ -> SDL_Keysym;
+
+/* Function prototypes */
+
+/**
+ *  \brief Get the window which currently has keyboard focus.
+ */
+pub extern (C) def SDL_GetKeyboardFocus()-> &SDL_Window;
+
+/**
+ *  \brief Get a snapshot of the current state of the keyboard.
+ *
+ *  \param numkeys if non-NULL, receives the length of the returned array.
+ *
+ *  \return An array of key states. Indexes into this array are obtained by using ::SDL_Scancode values.
+ *
+ *  \b Example:
+ *  \code
+ *  const Uint8 *state = SDL_GetKeyboardState(NULL);
+ *  if ( state[SDL_SCANCODE_RETURN] )   {
+ *      printf("<RETURN> is pressed.\n");
+ *  }
+ *  \endcode
+ */
+pub extern (C) def SDL_GetKeyboardState(dmut numkeys : &i32)-> &u8;
+
+/**
+ *  \brief Get the current key modifier state for the keyboard.
+ */
+pub extern (C) def SDL_GetModState()-> SDL_Keymod;
+
+/**
+ *  \brief Set the current key modifier state for the keyboard.
+ *
+ *  \note This does not change the keyboard state, only the key modifier flags.
+ */
+pub extern (C) def SDL_SetModState(modstate : SDL_Keymod);
+
+/**
+ *  \brief Get the key code corresponding to the given scancode according
+ *         to the current keyboard layout.
+ *
+ *  See ::SDL_Keycode for details.
+ *
+ *  \sa SDL_GetKeyName()
+ */
+pub extern (C) def SDL_GetKeyFromScancode(scancode : SDL_Scancode)-> SDL_Keycode;
+
+/**
+ *  \brief Get the scancode corresponding to the given key code according to the
+ *         current keyboard layout.
+ *
+ *  See ::SDL_Scancode for details.
+ *
+ *  \sa SDL_GetScancodeName()
+ */
+pub extern (C) def SDL_GetScancodeFromKey(key : SDL_Keycode)-> SDL_Scancode;
+
+/**
+ *  \brief Get a human-readable name for a scancode.
+ *
+ *  \return A pointer to the name for the scancode.
+ *          If the scancode doesn't have a name, this function returns
+ *          an empty string ("").
+ *
+ *  \sa SDL_Scancode
+ */
+pub extern (C) def SDL_GetScancodeName(scancode : SDL_Scancode)-> &c8;
+
+/**
+ *  \brief Get a scancode from a human-readable name
+ *
+ *  \return scancode, or SDL_SCANCODE_UNKNOWN if the name wasn't recognized
+ *
+ *  \sa SDL_Scancode
+ */
+pub extern (C) def SDL_GetScancodeFromName(name : &c8)-> SDL_Scancode;
+
+/**
+ *  \brief Get a human-readable name for a key.
+ *
+ *  \return A pointer to a UTF-8 string that stays valid at least until the next
+ *          call to this function. If you need it around any longer, you must
+ *          copy it.  If the key doesn't have a name, this function returns an
+ *          empty string ("").
+ *
+ *  \sa SDL_Keycode
+ */
+pub extern (C) def SDL_GetKeyName(key : SDL_Keycode)-> &c8;
+
+/**
+ *  \brief Get a key code from a human-readable name
+ *
+ *  \return key code, or SDLK_UNKNOWN if the name wasn't recognized
+ *
+ *  \sa SDL_Keycode
+ */
+pub extern (C) def SDL_GetKeyFromName(name : &c8)-> SDL_Keycode;
+
+/**
+ *  \brief Start accepting Unicode text input events.
+ *         This function will show the on-screen keyboard if supported.
+ *
+ *  \sa SDL_StopTextInput()
+ *  \sa SDL_SetTextInputRect()
+ *  \sa SDL_HasScreenKeyboardSupport()
+ */
+pub extern (C) def SDL_StartTextInput();
+
+/**
+ *  \brief Return whether or not Unicode text input events are enabled.
+ *
+ *  \sa SDL_StartTextInput()
+ *  \sa SDL_StopTextInput()
+ */
+pub extern (C) def SDL_IsTextInputActive ()-> bool;
+
+/**
+ *  \brief Stop receiving any text input events.
+ *         This function will hide the on-screen keyboard if supported.
+ *
+ *  \sa SDL_StartTextInput()
+ *  \sa SDL_HasScreenKeyboardSupport()
+ */
+pub extern (C) def SDL_StopTextInput ();
+
+/**
+ *  \brief Set the rectangle used to type Unicode text inputs.
+ *         This is used as a hint for IME and on-screen keyboard placement.
+ *
+ *  \sa SDL_StartTextInput()
+ */
+pub extern (C) def SDL_SetTextInputRect (rect : &SDL_Rect);
+
+/**
+ *  \brief Returns whether the platform has some screen keyboard support.
+ *
+ *  \return SDL_TRUE if some keyboard support is available else SDL_FALSE.
+ *
+ *  \note Not all screen keyboard functions are supported on all platforms.
+ *
+ *  \sa SDL_IsScreenKeyboardShown()
+ */
+pub extern (C) def SDL_HasScreenKeyboardSupport ()-> bool;
+
+/**
+ *  \brief Returns whether the screen keyboard is shown for given window.
+ *
+ *  \param window The window for which screen keyboard should be queried.
+ *
+ *  \return SDL_TRUE if screen keyboard is shown else SDL_FALSE.
+ *
+ *  \sa SDL_HasScreenKeyboardSupport()
+ */
+pub extern (C) def SDL_IsScreenKeyboardShown(window : &SDL_Window)-> bool;

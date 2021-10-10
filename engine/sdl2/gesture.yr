@@ -1,0 +1,36 @@
+mod sdl2::gesture;
+import sdl2::touch, sdl2::rwops;
+
+pub aka SDL_GestureID  = i64;
+
+/* Function prototypes */
+
+/**
+ *  \brief Begin Recording a gesture on the specified touch, or all touches (-1)
+ *
+ *
+ */
+pub extern (C) def SDL_RecordGesture(touchId : SDL_TouchID)-> i32;
+
+
+/**
+ *  \brief Save all currently loaded Dollar Gesture templates
+ *
+ *
+ */
+pub extern (C) def SDL_SaveAllDollarTemplates(dmut dst : &SDL_RWops)-> i32;
+
+/**
+ *  \brief Save a currently loaded Dollar Gesture template
+ *
+ *
+ */
+pub extern (C) def SDL_SaveDollarTemplate(gestureId : SDL_GestureID, dmut dst : &SDL_RWops)-> i32;
+
+
+/**
+ *  \brief Load Dollar Gesture templates from a file
+ *
+ *
+ */
+pub extern (C) def SDL_LoadDollarTemplates(touchId : SDL_TouchID, dmut src : &SDL_RWops)-> i32;

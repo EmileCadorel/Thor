@@ -1,0 +1,130 @@
+mod krepusko::opengl::gbuffer;
+import sdl2::opengl, krepusko::opengl::gtexture;
+import sdl2::opengl_ext;
+
+
+/**
+ * A GBuffer is used in Deferred shading
+ * It stores different GTexture in which drawing is made
+ * The texture are then usable by another rendering
+ */
+pub class GBuffer {
+
+    let mut _fbo : u32 = 0u32;
+
+    let mut _rbo : u32 = 0u32;
+    
+    let mut _w : u32 = 0u32;
+
+    let mut _h : u32 = 0u32;
+
+    let dmut _textures : [&GTexture] = [];
+
+    /**
+     * Create an empty Gbuffer, that does nothing
+     */
+    pub self () {}    
+
+    /**
+     * Create a GBuffer of a given size, associated to GTextures
+     */
+    pub self (w : u32, h : u32, dmut textures : [&GTexture], with_depth : bool = false) with 
+        _w = w, _h = h, _textures = alias textures
+    {
+        glGenFramebuffers (1, alias &self._fbo);
+        glBindFramebuffer (GL_FRAMEBUFFER, self._fbo);
+        
+        let dmut attachement : [u32] = [];
+        for i in 0us .. textures.len {
+            __pragma!trusted ({ textures [i].attach (cast!u32 (i)); });
+            attachement = alias (attachement ~ [GL_COLOR_ATTACHMENT0 + i]);
+            glBindTexture (GL_TEXTURE_2D, 0u32);
+        }
+
+        glDrawBuffers (cast!i32 (attachement.len), attachement.ptr);
+
+        if (with_depth) {
+            glGenRenderbuffers (1, alias &self._rbo);
+            glBindRenderbuffer (GL_RENDERBUFFER, self._rbo);
+            glRenderbufferStorage (GL_RENDERBUFFER, GL_DEPTH_COMPONENT, cast!i32 (w), cast!i32 (h));
+            glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, self._rbo);
+            glBindRenderbuffer (GL_RENDERBUFFER, 0u32);
+        }
+
+        glBindFramebuffer (GL_FRAMEBUFFER, 0u32);
+    }
+
+    /**
+     * Use the GBuffer for the upcoming drawing
+     */
+    pub def use (self) {
+        glBindFramebuffer (GL_FRAMEBUFFER, self._fbo);
+        glViewport (0, 0, cast!i32 (self._w), cast!i32 (self._h));        
+    }
+    
+    /**
+     * Stop using the GBuffer for upcoming draws
+     */
+    pub def unuse (self) {
+        glBindFramebuffer (GL_FRAMEBUFFER, 0u32);
+    }
+
+    /**
+     * @returns: the texture at index i
+     * @throws: 
+     *   - &OutOfArray
+     */
+    pub def getTexture (self, i : u32)-> &GTexture
+        throws &OutOfArray
+    {
+        self._textures [i]
+    }
+
+    /**
+     * Blit the depth texture into the current depth buffer
+     * This is used when mutliple buffer are used for drawing
+     * For example, a cubemap is generaly drawn only one time after the defereed shading, and must access the depth component of the object rendered inside the gbuffer
+     * @params: 
+     *   - w: the width of the dst
+     *   - h: the height of the dst
+     */
+    pub def blitDepth (self, w : u32, h : u32) {
+        glBindFramebuffer (GL_FRAMEBUFFER, self._fbo);
+        glBindFramebuffer (GL_DRAW_FRAMEBUFFER, 0u32);
+        glBlitFramebuffer (0, 0, cast!i32 (self._w), cast!i32 (self._h), 0, 0, cast!i32 (w), cast!i32 (h), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+
+        glBindFramebuffer (GL_FRAMEBUFFER, 0u32);
+    }
+
+    impl Disposable {
+
+        /**
+         * Free the textures, the frame buffer, and the render buffer
+         */
+        pub over dispose (mut self) {
+            for i in 0us .. self._textures.len {
+                __pragma!trusted ({
+                    self._textures [i]:.dispose ();
+                });
+            }
+
+            if (self._fbo != 0u32) {
+                glDeleteFramebuffers (1, alias &self._fbo);
+                self._fbo = 0u32;
+                if (self._rbo != 0u32) {
+                    glDeleteRenderbuffers (1, alias &self._rbo);
+                    self._rbo = 0u32;
+                }
+            }
+
+            self._w = 0u32;
+            self._h = 0u32;            
+        }
+    }
+    
+
+    __dtor (mut self) {
+        self:.dispose ();
+    }
+    
+}

@@ -1,0 +1,26 @@
+mod sdl2::rect;
+
+pub struct
+| x : i32
+| y : i32
+ -> SDL_Point;
+
+pub struct
+| x : f32
+| y : f32
+ -> SDL_FPoint;
+
+pub struct
+| x : i32
+| y : i32
+| w : i32
+| h : i32
+ -> SDL_Rect;
+
+
+pub struct
+| x : f32
+| y : f32
+| w : f32
+| h : f32
+ -> SDL_FRect;

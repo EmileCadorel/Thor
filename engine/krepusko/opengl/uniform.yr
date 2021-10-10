@@ -1,0 +1,189 @@
+mod krepusko::opengl::uniform;
+import krepusko::math::vector;
+import krepusko::math::matrix;
+import krepusko::opengl::cubemap, krepusko::opengl::gtexture;
+import krepusko::opengl::depthbuffer;
+import sdl2::opengl_ext;
+
+
+
+pub struct
+| prg : u32
+| loc : i32
+ -> Uniform;
+
+pub struct
+| prg : u32
+| index : u32
+| loc : i32
+ -> Sampler;
+
+/**
+ * Set a uniform value to a f32 value
+ */
+pub def set (un : Uniform, f : f32) {
+    glUniform1f (un.loc, f);
+}
+
+/**
+ * Set a uniform value to a i32 value
+ */
+pub def set (un : Uniform, i : i32) {
+    glUniform1i (un.loc, i);
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : vec2) {
+    glUniform2fv (un.loc, 1, cast!{&void} (&v));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : vec3) {
+    glUniform3fv (un.loc, 1, cast!{&void} (&v));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : vec4) {
+    glUniform4fv (un.loc, 1, cast!{&void} (&v));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : [vec2]) {
+    glUniform2fv (un.loc, cast!i32 (v.len), cast!{&void} (v.ptr));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : [vec3]) {
+    glUniform3fv (un.loc, cast!i32 (v.len), cast!{&void} (v.ptr));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : [vec4]) {
+    glUniform4fv (un.loc, cast!i32 (v.len), cast!{&void} (v.ptr));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : ivec2) {
+    glUniform2iv (un.loc, 1, cast!{&void} (&v));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : ivec3) {
+    glUniform3iv (un.loc, 1, cast!{&void} (&v));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : ivec4) {
+    glUniform4iv (un.loc, 1, cast!{&void} (&v));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : [ivec2]) {
+    glUniform2iv (un.loc, cast!i32 (v.len), cast!{&void} (v.ptr));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : [ivec3]) {
+    glUniform3iv (un.loc, cast!i32 (v.len), cast!{&void} (v.ptr));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : [ivec4]) {
+    glUniform4iv (un.loc, cast!i32 (v.len), cast!{&void} (v.ptr));
+}
+
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : mat2) {
+    glUniformMatrix2fv (un.loc, 1, false, cast!{&void} (&v));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : [mat2]) {
+    glUniformMatrix2fv (un.loc, cast!i32 (v.len), false, cast!{&void} (v.ptr));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : mat3) {
+    glUniformMatrix3fv (un.loc, 1, false, cast!{&void} (&v));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : [mat3]) {
+    glUniformMatrix3fv (un.loc, cast!i32 (v.len), false, cast!{&void} (v.ptr));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : mat4) {
+    glUniformMatrix4fv (un.loc, 1, false, cast!{&void} (&v));
+}
+
+/**
+ * Set a uniform value to a vec2 value
+ */
+pub def set (un : Uniform, v : [mat4]) {
+    glUniformMatrix4fv (un.loc, cast!i32 (v.len), false, cast!{&void} (v.ptr));
+}
+
+
+/**
+ * Bind a cubemap to a sampler
+ */
+pub def set (samp : Sampler, cb : &CubeMap) {
+    glActiveTexture (GL_TEXTURE0 + samp.index);
+    glUniform1i (samp.loc, cast!i32 (samp.index));
+    cb.bind ();
+}
+
+/**
+ * Bind a gtexture to a sampler
+ */
+pub def set (samp : Sampler, gtex : &GTexture) {
+    glActiveTexture (GL_TEXTURE0 + samp.index);
+    glUniform1i (samp.loc, cast!i32 (samp.index));
+    gtex.bind ();
+}
+
+
+/**
+ * Bind a cubemap to a sampler
+ */
+pub def set (samp : Sampler, depth : &DepthBuffer) {
+    glActiveTexture (GL_TEXTURE0 + samp.index);
+    glUniform1i (samp.loc, cast!i32 (samp.index));
+    depth.bindTexture ();
+}
